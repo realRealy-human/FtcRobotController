@@ -9,10 +9,10 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class ServoManage {
     private Servo servo;
     private Telemetry telemetry;
-    public ServoManage(HardwareMap hardwareMap, Telemetry telemetryGet, String name) {
+    public ServoManage(HardwareMap hardwareMap, Telemetry telemetry, String name) {
         servo = hardwareMap.get(Servo.class, name);
 
-        telemetry = telemetryGet;
+        this.telemetry = telemetry;
     }
     public void servoPosition1() {
         servo.setPosition(0);

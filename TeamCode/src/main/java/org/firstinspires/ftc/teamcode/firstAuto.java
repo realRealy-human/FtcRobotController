@@ -9,8 +9,6 @@ import org.firstinspires.ftc.teamcode.Intake.Claw;
 @TeleOp(name = "firstAuto", group = "Examples")
 public class firstAuto extends LinearOpMode {
     private Claw claw;
-    private double openPos = 0.232;
-    private double closePos = 0.055;
 
     @Override
     public void runOpMode() {
@@ -19,7 +17,7 @@ public class firstAuto extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            claw.openOrCloseClaw(gamepad1.a, gamepad1.y, closePos, openPos);
+            claw.openOrCloseClaw(gamepad1.a, gamepad1.y);
 
             sleep(200);
         }

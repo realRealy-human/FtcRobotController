@@ -10,10 +10,10 @@ public class ElevatorControl {
     public DcMotor elevatorMotor;
     private Telemetry telemetry;
 
-    public ElevatorControl(HardwareMap hardwareMap, Telemetry telemetryGet) {
+    public ElevatorControl(HardwareMap hardwareMap, Telemetry telemetry) {
         elevatorMotor = hardwareMap.get(DcMotor.class, "leftBack");
 
-        telemetry = telemetryGet;
+        this.telemetry = telemetry;
     }
 
     public void controlElevator(Double power) {
