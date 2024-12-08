@@ -9,10 +9,10 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 public class Color {
     private ColorSensor colorSensor;
     private Telemetry telemetry;
-    public Color(HardwareMap hardwareMap, Telemetry telemetryGet) {
+    public Color(HardwareMap hardwareMap, Telemetry telemetry) {
         colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor");
 
-        telemetry = telemetryGet;
+        this.telemetry = telemetry;
     }
     public int colorSenseRed() {
         return colorSensor.red();

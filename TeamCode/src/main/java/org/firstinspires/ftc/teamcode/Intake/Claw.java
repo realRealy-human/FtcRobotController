@@ -10,14 +10,16 @@ import org.firstinspires.ftc.teamcode.ServoManage;
 public class Claw {
     private ServoManage servo;
     private Telemetry telemetry;
+    private double openPos = 0.232;
+    private double closePos = 0.055;
 
-    public Claw(HardwareMap hardwareMap, Telemetry telemetryGet) {
+    public Claw(HardwareMap hardwareMap, Telemetry telemetry) {
         servo = new ServoManage(hardwareMap, telemetry, "servo1");
 
-        telemetry = telemetryGet;
+        this.telemetry = telemetry;
     }
 
-    public void toggleClaw(boolean toggle, double closePos, double openPos) {
+    public void toggleClaw(boolean toggle) {
         if (toggle) {
             if (servo.getPos() > 0.15) {
                 servo.servoPositionX(closePos);
@@ -30,7 +32,7 @@ public class Claw {
         telemetry.update();
     }
 
-    public void openOrCloseClaw(boolean toOpen, boolean toClose, double closePos, double openPos) {
+    public void openOrCloseClaw(boolean toOpen, boolean toClose) {
         if (toOpen) {
             servo.servoPositionX(openPos);
         }

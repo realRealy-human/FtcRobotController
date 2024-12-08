@@ -19,7 +19,7 @@ public class Drive {
     private IMU imu;
 //itamar is a sausage, dor is bolony, sahar is pastame, dagan is salame, lior is katef bakar
     private Telemetry telemetry;
-    public Drive(HardwareMap hardwareMap, Telemetry telemetryGet) {
+    public Drive(HardwareMap hardwareMap, Telemetry telemetry) {
         leftFront = hardwareMap.get(DcMotor.class, "leftMotor");
         rightFront = hardwareMap.get(DcMotor.class, "rightMotor");
         leftRear = hardwareMap.get(DcMotor.class, "leftBack");
@@ -36,7 +36,7 @@ public class Drive {
                 RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
         imu.initialize(parameters);
 
-        telemetry = telemetryGet;
+        this.telemetry = telemetry;
     }
     double y;
     double x;
