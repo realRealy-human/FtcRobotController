@@ -10,13 +10,11 @@ public class PController {
     private Telemetry telemetry;
     private DcMotor motor;
 
-    public PController(HardwareMap hardwareMap, Telemetry telemetry) {
+    public PController(HardwareMap hardwareMap, Telemetry telemetry, double kp) {
         motor = hardwareMap.get(DcMotor.class, "leftMotor");
 
         this.telemetry = telemetry;
-    }
 
-    public PController(double kp) {
         this.kp = kp;
     }
 
