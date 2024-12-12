@@ -26,4 +26,15 @@ public class Color {
     public int senseObject() {
         return colorSensor.alpha();
     }
+
+    private boolean searchForObject() {
+        // Read the color sensor data
+        int red = colorSensor.red();
+        int green = colorSensor.green();
+        int blue = colorSensor.blue();
+        int alpha = colorSensor.alpha(); // Overall light intensity
+
+        // Check for an object based on light intensity or color threshold
+        return alpha > 100 || red > 50 || blue > 50 || green > 50;
+    }
 }

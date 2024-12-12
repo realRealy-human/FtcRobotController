@@ -25,7 +25,9 @@ public class Intake1 {
             motor.setPower(-0.5);
         }
         motor.setPower(0);
+    }
 
-
+    public void move(double speed) {
+        motor.setPower(speed);
     }
 }
