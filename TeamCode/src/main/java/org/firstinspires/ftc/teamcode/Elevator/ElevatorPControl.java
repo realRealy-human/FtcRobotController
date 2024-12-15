@@ -25,4 +25,8 @@ public class ElevatorPControl {
         telemetry.addData("leftMotor position" ,motor.getCurrentPosition()  /28f * 12f / 120f * 12.5f);
         telemetry.update();
     }
+
+    public double FindLocation(){
+        return motor.getCurrentPosition();
+    }
 }
