@@ -1,20 +1,18 @@
 package org.firstinspires.ftc.teamcode.Elevator;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Intake.Claw;
 
-public class ElevatorUpDown {
+public class ElevatorAndClaw {
     private Claw claw;
     private ElevatorPControl elevator;
     private int buttonPresses = 0;
 
-    public ElevatorUpDown(HardwareMap hardwareMap, Telemetry telemetry) {
+    public ElevatorAndClaw(HardwareMap hardwareMap, Telemetry telemetry) {
         claw = new Claw(hardwareMap, telemetry);
-        elevator = new ElevatorPControl(hardwareMap, telemetry)
+        elevator = new ElevatorPControl(hardwareMap, telemetry);
     }
 
     public void ElevatorUpDown1() {
