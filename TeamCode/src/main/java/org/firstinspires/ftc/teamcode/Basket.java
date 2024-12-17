@@ -25,6 +25,7 @@ public class Basket {
         servoManage.servoPositionX(openPos);
     }
 
+    // starting positions and naming things
     public void openBasketLimited(int length) {
         servoManage.servoPositionX(0.4);
 

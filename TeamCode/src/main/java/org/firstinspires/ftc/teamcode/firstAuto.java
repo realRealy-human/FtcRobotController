@@ -13,6 +13,7 @@ public class firstAuto extends LinearOpMode {
     private IntakeAndArm intakeAndArm;
     private Basket basket;
     private ElevatorPControl elevatorPControl;
+    // defining the basic things for the system
 
 
 
@@ -22,7 +23,10 @@ public class firstAuto extends LinearOpMode {
         elevatorPControl = new ElevatorPControl(hardwareMap, telemetry);
         intakeAndArm = new IntakeAndArm(hardwareMap, telemetry);
 
+
         basket.closeBasket();
+
+        // more defining and putting things in their starting positions
 
         waitForStart();
 
@@ -39,8 +43,10 @@ public class firstAuto extends LinearOpMode {
 //                    elevatorPControl.goTo(0);
 //                }
 //            }
+            // if you press on A and it's starting position is below 500 it will go up and if its higher it will go down
             if (gamepad1.y) {
                 intakeAndArm.searchAndCollectGamePiece(true);
+                // if Y is pressed it will find a game piece and take it
             }
         }
     }  }
