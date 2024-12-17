@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.PID;
 
 // define the class
 public class ElevatorPControl {
-    // define the motor and telemetry
+    // define the motor, telemetry and the PID object
     private DcMotor motor;
     private Telemetry telemetry;
     private PID pID;
@@ -20,6 +20,8 @@ public class ElevatorPControl {
         motor = hardwareMap.get(DcMotor.class, "leftMotor");
         // set the zero power behavior of the motor
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        // create the PID object
         pID = new PID(telemetry);
 
         // save the telemetry
@@ -27,7 +29,8 @@ public class ElevatorPControl {
     }
 
     public void goTo(double target) {
-      pID.p(motor, target, 0.18);
+        // use p from pid
+        pID.p(motor, target, 0.18);
     }
 
     public double FindLocation(){
