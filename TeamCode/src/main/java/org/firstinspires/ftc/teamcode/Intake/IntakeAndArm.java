@@ -24,12 +24,12 @@ public class IntakeAndArm {
 
     public void searchAndCollectGamePiece(boolean redGroup) {
 //        while(!(((redGroup ? colorSensor.blue() : colorSensor.red()) > 200) || colorSensor.green() > 200)) {}
-        while (arm.moveArmP(95) != 95) {}
+        arm.moveArmP(95);
 
         intake.waitForGamePiece();
         intake.move(0.5);
 
-        while (arm.moveArmP(0) != 0) {}
+        arm.moveArmP(0);
         intake.move(0);
     }
 }

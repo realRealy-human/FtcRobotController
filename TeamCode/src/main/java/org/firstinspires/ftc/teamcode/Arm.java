@@ -12,24 +12,19 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class Arm {
     private DcMotor arm;
     private Telemetry telemetry;
+    private PID pID;
+
     public Arm(HardwareMap hardwareMap, Telemetry telemetry, String name) {
         arm = hardwareMap.get(DcMotor.class, "leftBack");
         arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        pID = new PID(telemetry);
 
         this.telemetry = telemetry;
     }
     public void goToGamePad(Gamepad gamepad) {
         arm.setPower(gamepad.right_stick_y);
     }
-    public double moveArmP(double target) {
-        double kp =  0.5; // Proportional gain
-        double error = target - arm.getCurrentPosition()  /28f * 12f / 120f * 12.5f; //TODO numbers aren't right probably
-        double output = kp * error;
-
-        arm.setPower(output);
-        telemetry.addData("Arm position" ,arm.getCurrentPosition()  /28f * 12f / 120f * 12.5f);
-        telemetry.update();
-
-        return arm.getCurrentPosition();
+    public void moveArmP(double target) {
+        pID.p(arm, target, 0.5);
     }
 }
