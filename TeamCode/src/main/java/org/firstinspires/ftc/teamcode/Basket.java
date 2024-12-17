@@ -1,19 +1,25 @@
 package org.firstinspires.ftc.teamcode;
 
+// import stuff
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+// define the class
 public class Basket {
+    // define the servoManage object, the telemetry and the open and close position variables
     private ServoManage servoManage;
     private Telemetry telemetry;
     private double openPos = 0.4;
     private double closePos = 0.6;
+
+    // define the constructor
     public Basket(HardwareMap hardwareMap, Telemetry telemetry, String name) {
         servoManage = new ServoManage(hardwareMap, telemetry, name);
 
+        // save the telemetry
         this.telemetry = telemetry;
     }
 

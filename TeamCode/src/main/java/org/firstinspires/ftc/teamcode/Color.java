@@ -1,20 +1,24 @@
 package org.firstinspires.ftc.teamcode;
 
+// import stuff
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import com.qualcomm.robotcore.hardware.ColorSensor;
 
+// define the class
 public class Color {
-    private ColorSensor colorSensor;
+    // define the telemetry and the colorSensor variable
     private Telemetry telemetry;
+    private ColorSensor colorSensor;
+
+    // define the constructor
     public Color(HardwareMap hardwareMap, Telemetry telemetry) {
         colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor");
-        // defining the things we need in this system
 
+        // save the telemetry
         this.telemetry = telemetry;
-        // updating telemetry
     }
     public int colorSenseRed() {
         return colorSensor.red();
