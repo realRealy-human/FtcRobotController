@@ -196,7 +196,7 @@ public class AutonomusBasketDemo {
         startMotors();
         timer.reset();
         while(timer.seconds() < 1) {
-
+        //erase later
         }
 
 
