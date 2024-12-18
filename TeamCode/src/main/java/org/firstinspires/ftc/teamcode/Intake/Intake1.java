@@ -26,7 +26,7 @@ public class Intake1 {
     }
 
     public void waitForGamePiece() {
-        while (colorSensor.colorSenseRed() < 400) {
+        while (colorSensor.colorSenseRed() < 400 || colorSensor.colorSenseBlue() < 400 || colorSensor.colorSenseGreen() < 150 && colorSensor.colorSenseRed() < 150 ) {
             motor.setPower(-0.5);
         }
         //when the red colorSensor doesn't sense red it will go backwards

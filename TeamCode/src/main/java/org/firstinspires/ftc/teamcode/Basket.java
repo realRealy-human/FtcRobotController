@@ -11,6 +11,7 @@ public class Basket {
     private Telemetry telemetry;
     private double openPos = 0.4;
     private double closePos = 0.6;
+
     public Basket(HardwareMap hardwareMap, Telemetry telemetry, String name) {
         servoManage = new ServoManage(hardwareMap, telemetry, name);
 
