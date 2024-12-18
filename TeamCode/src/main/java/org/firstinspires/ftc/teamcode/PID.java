@@ -1,19 +1,21 @@
 package org.firstinspires.ftc.teamcode;
 
+// import stuff
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-// importing functions
-
+// define the class
 public class PID {
+    // define the telemetry variable
     private Telemetry telemetry;
     //creating telemetry
 
+    // define the constructor
     public PID(Telemetry telemetry) {
+        // save the telemetry
         this.telemetry = telemetry;
     }
-    // updating telemetry
 
     public void p(DcMotor motor, double target, double kp) {
         double error = 1;

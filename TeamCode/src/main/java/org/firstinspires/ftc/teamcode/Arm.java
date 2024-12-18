@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+// import stuff
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -9,21 +10,21 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+// define the class
 public class Arm {
+    // define the motor, the telemetry and the PID object variables
     private DcMotor arm;
     private Telemetry telemetry;
     private PID pID;
 
-    // defining everything
-
+    // define the constructor
     public Arm(HardwareMap hardwareMap, Telemetry telemetry, String name) {
         arm = hardwareMap.get(DcMotor.class, "leftBack");
         arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         pID = new PID(telemetry);
-        // defining things so the function works
 
+        // save the telemetry
         this.telemetry = telemetry;
-        // updating telemetry
     }
     public void goToGamePad(Gamepad gamepad) {
         arm.setPower(gamepad.right_stick_y);
