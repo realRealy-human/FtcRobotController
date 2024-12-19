@@ -127,7 +127,7 @@ public class AutonomusBasketDemo {
         elevator.goTo(1000);
         startMotors();
         timer.reset();
-        while(timer.seconds() < 0.5) {
+        while(timer.seconds() < 0.2) {
 
         }
         elevator.goTo(700);
@@ -158,7 +158,7 @@ public class AutonomusBasketDemo {
         intake.waitForGamePiece();
         goRight();
         timer.reset();
-        while(timer.seconds() < 1) {
+        while(timer.seconds() < 0.4) {
 
         }
         startMotors();
@@ -166,21 +166,18 @@ public class AutonomusBasketDemo {
         while(timer.seconds() < 0.7) {
 
         }
+        arm.moveArmP(0);
         intake.move(1);
         timer.reset();
         while(timer.seconds() < 0.5) {
 
         }
-        elevator.goTo(100);
+        elevator.goTo(1000);
         Busket.openBasket();
         Busket.closeBasket();
         elevator.goTo(0);
-        arm.moveArmP(0);
+        arm.moveArmP(100);
 
-        elevator.goTo(100);
-        Busket.openBasket();
-        Busket.closeBasket();
-        elevator.goTo(0);
 
         goLeft();
         timer.reset();
@@ -198,6 +195,45 @@ public class AutonomusBasketDemo {
         while(timer.seconds() < 1) {
         //erase later
         }
+        arm.moveArmP(0);
+        intake.move(1);
+        timer.reset();
+        while(timer.seconds() < 0.5) {
+
+        }
+        elevator.goTo(1000);
+        Busket.openBasket();
+        Busket.closeBasket();
+        elevator.goTo(0);
+        arm.moveArmP(100);
+        goLeft();
+        timer.reset();
+        while(timer.seconds() < 0.1) {
+
+        }
+        goBackwards();
+        timer.reset();
+        while(timer.seconds() < 0.7) {
+
+        }
+        intake.waitForGamePiece();
+        startMotors();
+        timer.reset();
+        while(timer.seconds() < 0.7) {
+
+        }
+        arm.moveArmP(0);
+        intake.move(1);
+        timer.reset();
+        while(timer.seconds() < 0.5) {
+
+        }
+        elevator.goTo(1000);
+        Busket.openBasket();
+        Busket.closeBasket();
+        elevator.goTo(0);
+        arm.moveArmP(100);
+
 
 
 
