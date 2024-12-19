@@ -12,7 +12,7 @@ public class Basket {
     // define the servoManage object, the telemetry and the open and close position variables
     private ServoManage servoManage;
     private Telemetry telemetry;
-    private double openPos = 0.4;
+    private double  openPos = 0.4;
     private double closePos = 0.6;
 
     // define the constructor
