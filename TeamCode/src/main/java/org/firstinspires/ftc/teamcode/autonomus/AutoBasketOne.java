@@ -22,11 +22,10 @@ public class AutoBasketOne extends LinearOpMode {
         drive.setPoseEstimate(startPose);
 
         TrajectorySequence seq1 = drive.trajectorySequenceBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(0, 24))
+                .lineToConstantHeading(new Vector2d(0, -16))
                 .lineToConstantHeading(new Vector2d(0, MeterToInch(1.287)))
-                .back(0.05)
-                .turn(Math.toDegrees(90))
-                .back(0.9144)
+                .splineToLinearHeading(new Pose2d(-52, -36, Math.toRadians(180)), Math.toRadians(0))
+                .lineToLinearHeading(new Pose2d(-60,-60,Math.toRadians(225)))
                 .turn(Math.toDegrees(Math.atan(0.37161216 * 1.5) / (0.37161216 * 0.5)))
                 .forward(MeterToInch(Math.sqrt(0.37161216 * 0.5) / (0.37161216 * 1.5)))
                 .turn(Math.toDegrees(180 - Math.atan((0.37161216 * 0.5) / (0.37161216 * 1.5))))
