@@ -59,7 +59,6 @@ public class ElevatorAndClaw {
 
                 // initialise the button presses variable
                 buttonPresses = 0;
-
         }
     }
 }

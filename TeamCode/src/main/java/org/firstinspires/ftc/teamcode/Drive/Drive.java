@@ -66,7 +66,6 @@ public class Drive {
         x = gamepad.left_stick_x;
         rx = -gamepad.right_stick_x;
     }
-
     public void driveUsingGamepad(Gamepad gamepad) {
         checkGamepad(gamepad);
 
@@ -79,7 +78,6 @@ public class Drive {
         rightFront.setPower(y - x - rx / denominator);
         rightRear.setPower(y + x - rx / denominator);
     }
-
     public void fieldCentricUsingGamePad(Gamepad gamepad) {
         checkGamepad(gamepad);
 
@@ -115,10 +113,7 @@ public class Drive {
         backLeftPower = (rotY - rotX + rx) / denominator;
         frontRightPower = (rotY - rotX - rx) / denominator;
         backRightPower = (rotY + rotX - rx) / denominator;
-
-
-    }
-    public void startMotors() {
+        // power the motors
         leftFront.setPower(frontLeftPower);
         leftRear.setPower(backLeftPower);
         rightFront.setPower(frontRightPower);
