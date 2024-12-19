@@ -16,8 +16,6 @@ public class firstAuto extends LinearOpMode {
     private ElevatorPControl elevatorPControl;
     // defining the basic things for the system
 
-
-
     @Override
       public void runOpMode() {
         basket = new Basket(hardwareMap, telemetry, "servo1");
