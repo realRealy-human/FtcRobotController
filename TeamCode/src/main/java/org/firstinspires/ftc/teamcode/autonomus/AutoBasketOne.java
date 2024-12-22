@@ -1,11 +1,15 @@
 package org.firstinspires.ftc.teamcode.autonomus;
 
 
+import android.graphics.Color;
+
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Arm;
 import org.firstinspires.ftc.teamcode.Basket;
 import org.firstinspires.ftc.teamcode.Elevator.ElevatorControl;
@@ -13,8 +17,6 @@ import org.firstinspires.ftc.teamcode.Elevator.ElevatorPControl;
 import org.firstinspires.ftc.teamcode.Elevator.ElevatorAndClaw;
 import org.firstinspires.ftc.teamcode.Intake.Intake1;
 import org.firstinspires.ftc.teamcode.Intake.Claw;
-import org.firstinspires.ftc.teamcode.Color;
-
 
 
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
@@ -30,58 +32,81 @@ public class AutoBasketOne extends LinearOpMode {
     private Claw Claw;
     private Intake1 Intake;
     private Basket Basket;
+    private Color Color;
 
 
     @Override
     public void runOpMode() {
         arm = new Arm(hardwareMap, telemetry, "");
+        Elevator = new ElevatorPControl(hardwareMap,telemetry );
+        Claw = new Claw(hardwareMap, telemetry);
+        Intake = new Intake1(hardwareMap, telemetry);
+
+
 
         drive = new SampleMecanumDrive(hardwareMap);
         drive.setPoseEstimate(startPose);
 
         TrajectorySequence seq1 = drive.trajectorySequenceBuilder(startPose)
                 .lineToConstantHeading(new Vector2d(0, -18)) // 2
-                .addTemporalMarker(() -> Elevator.goTo(1000))
+                .addTemporalMarker(2,() -> Elevator.goTo(1000))
+
                 .lineToConstantHeading(new Vector2d(0, -16)) // 2
-                .addTemporalMarker(() -> Elevator.goTo(700))
-                .addTemporalMarker(() -> Claw.openOrCloseClaw(true,false))
+                .addDisplacementMarker(() -> Elevator.goTo(700))
+                .addDisplacementMarker(() -> Claw.openOrCloseClaw(true,false))
+
                 .lineToConstantHeading(new Vector2d(0, -18))
-                .addTemporalMarker(() -> Elevator.goTo(0))
-                .addTemporalMarker(() -> Claw.openOrCloseClaw(false,true))
+                .addTemporalMarker(7,() -> Elevator.goTo(0))
+                .addTemporalMarker(8,() -> Claw.openOrCloseClaw(false,true))
+
                 .splineToLinearHeading(new Pose2d(52, -36, Math.toRadians(180)), Math.toRadians(0)) // 3
-                .addTemporalMarker(() -> Intake.waitForGamePiece())
+                .addDisplacementMarker(() -> Intake.waitForGamePiece())
 
                 .lineToLinearHeading(new Pose2d(60,-60,Math.toRadians(225))) // 4
-                .addTemporalMarker(() -> arm.moveArmP(0))
-                .addTemporalMarker(() -> Intake.move(1))
-                .wait(20)
-                .addTemporalMarker(() -> Elevator.goTo(1000))
-                .addTemporalMarker(() -> Basket.openBasket())
-                .addTemporalMarker(() -> Elevator.goTo(0))
+                .addTemporalMarker(11,() -> arm.moveArmP(0))
+                .addDisplacementMarker(() -> Intake.move(1))
+                .addTemporalMarker(() -> {
+                    sleep(200);
+                })
+
+                .addDisplacementMarker(() -> Elevator.goTo(1000))
+                .addDisplacementMarker(() -> Basket.openBasket())
+                .addDisplacementMarker(() -> Elevator.goTo(0))
                 .addTemporalMarker(() -> Basket.closeBasket())
                 .addTemporalMarker(() -> arm.moveArmP(100))
+
                 .lineToLinearHeading(new Pose2d(60,-36, Math.toRadians(180))) // 5
-                .addTemporalMarker(() -> Intake.waitForGamePiece())
+                .addDisplacementMarker(() -> Intake.waitForGamePiece())
+
                 .lineToLinearHeading(new Pose2d(60,-60,Math.toRadians(225))) // 6
-                .addTemporalMarker(() -> arm.moveArmP(0))
-                .addTemporalMarker(() -> Intake.move(1))
-                .wait(20)
-                .addTemporalMarker(() ->Elevator.goTo(1000))
-                .addTemporalMarker(() -> Basket.openBasket())
-                .addTemporalMarker(() -> Elevator.goTo(0))
-                .addTemporalMarker(() -> Basket.closeBasket())
-                .addTemporalMarker(() -> arm.moveArmP(100))
+                .addTemporalMarker(17,() -> arm.moveArmP(0))
+                .addDisplacementMarker(() -> Intake.move(1))
+                .addTemporalMarker(() -> {
+                    sleep(200);
+                })
+
+                .addDisplacementMarker(() ->Elevator.goTo(1000))
+                .addDisplacementMarker(() -> Basket.openBasket())
+                .addDisplacementMarker(() -> Elevator.goTo(0))
+                .addTemporalMarker(20,() -> Basket.closeBasket())
+                .addTemporalMarker(20,() -> arm.moveArmP(100))
+
                 .lineToLinearHeading(new Pose2d(60,-36,Math.toRadians(45)))
-                .addTemporalMarker(() -> Intake.waitForGamePiece())
+                .addDisplacementMarker(() -> Intake.waitForGamePiece())
+
                 .lineToLinearHeading(new Pose2d(60,-60,Math.toRadians(45))) // 8
-                .addTemporalMarker(() -> arm.moveArmP(0))
-                .addTemporalMarker(() -> Intake.move(1))
-                .wait(20)
-                .addTemporalMarker(() -> Elevator.goTo(1000))
-                .addTemporalMarker(() -> Basket.openBasket())
-                .addTemporalMarker(() -> Elevator.goTo(0))
-                .addTemporalMarker(() -> Basket.closeBasket())
-                .addTemporalMarker(() -> arm.moveArmP(100))
+                .addTemporalMarker(22,() -> arm.moveArmP(0))
+                .addTemporalMarker(22.5,() -> Intake.move(1))
+                .addTemporalMarker(() -> {
+                    sleep(200);
+                })
+
+                .addDisplacementMarker(() -> Elevator.goTo(1000))
+                .addDisplacementMarker(() -> Basket.openBasket())
+                .addDisplacementMarker(() -> Elevator.goTo(0))
+                .addTemporalMarker(24.5,() -> Basket.closeBasket())
+                .addTemporalMarker(25,() -> arm.moveArmP(100))
+
                 .splineToLinearHeading(new Pose2d(-16, 0, Math.toRadians(180)), Math.toRadians(0)) //9
 
 
