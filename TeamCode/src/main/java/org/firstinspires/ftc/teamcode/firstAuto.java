@@ -5,23 +5,30 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Elevator.ElevatorPControl;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Elevator.ElevatorPControl;
 import org.firstinspires.ftc.teamcode.Intake.IntakeAndArm;
+import org.firstinspires.ftc.teamcode.Basket;
+
+
 
 @TeleOp(name = "firstAuto", group = "Examples")
 public class firstAuto extends LinearOpMode {
     private IntakeAndArm intakeAndArm;
     private Basket basket;
     private ElevatorPControl elevatorPControl;
+    private boolean open = false;
+    private Servo servo;
     // defining the basic things for the system
+
 
     @Override
       public void runOpMode() {
         basket = new Basket(hardwareMap, telemetry, "servo1");
         elevatorPControl = new ElevatorPControl(hardwareMap, telemetry);
         intakeAndArm = new IntakeAndArm(hardwareMap, telemetry);
-
+        servo = hardwareMap.get(Servo.class, "servo1");
 
         basket.closeBasket();
 
@@ -46,6 +53,22 @@ public class firstAuto extends LinearOpMode {
             if (gamepad1.y) {
                 intakeAndArm.searchAndCollectGamePiece(true);
                 // if Y is pressed it will find a game piece and take it
+
+
+
+
             }
+            if (gamepad1.b) {
+                open = !open;
+
+                if (open) {
+                    basket.openBasket();
+                }
+                else {
+                 basket.closeBasket();
+                }
+            }
+//            servo.setPosition(0.5);
         }
     }  }
+
