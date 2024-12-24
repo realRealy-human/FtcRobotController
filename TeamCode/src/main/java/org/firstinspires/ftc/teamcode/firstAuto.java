@@ -11,9 +11,14 @@ import org.firstinspires.ftc.teamcode.Elevator.ElevatorPControl;
 import org.firstinspires.ftc.teamcode.Intake.Claw;
 import org.firstinspires.ftc.teamcode.Intake.IntakeAndArm;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import org.firstinspires.ftc.teamcode.Basket;
 
 
+=======
+import org.firstinspires.ftc.teamcode.Intake.Intake1;
+import org.firstinspires.ftc.teamcode.Intake.Claw;
+>>>>>>> Stashed changes
 =======
 import org.firstinspires.ftc.teamcode.Intake.Intake1;
 import org.firstinspires.ftc.teamcode.Intake.Claw;
@@ -25,8 +30,14 @@ public class firstAuto extends LinearOpMode {
     private Basket basket;
     private ElevatorPControl elevatorPControl;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     private boolean open = false;
     private Servo servo;
+=======
+    private Claw Claw;
+    private double openPos = 0.232;
+    private double closePos = 0.055;
+>>>>>>> Stashed changes
 =======
     private Claw Claw;
     private double openPos = 0.232;
@@ -41,8 +52,11 @@ public class firstAuto extends LinearOpMode {
         elevatorPControl = new ElevatorPControl(hardwareMap, telemetry);
         intakeAndArm = new IntakeAndArm(hardwareMap, telemetry);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         servo = hardwareMap.get(Servo.class, "servo1");
 =======
+=======
+>>>>>>> Stashed changes
         Claw = new Claw(hardwareMap, telemetry);
 
 >>>>>>> Stashed changes
@@ -71,6 +85,7 @@ public class firstAuto extends LinearOpMode {
             }
             // if you press on A and it's starting position is below 500 it will go up and if its higher it will go down
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             if (gamepad1.y) {
                 intakeAndArm.searchAndCollectGamePiece(true);
                 // if Y is pressed it will find a game piece and take it
@@ -78,6 +93,11 @@ public class firstAuto extends LinearOpMode {
 
 
 
+=======
+           if (gamepad1.y) {
+             intakeAndArm.searchAndCollectGamePiece(true);
+//                // if Y is pressed it will find a game piece and take it
+>>>>>>> Stashed changes
 =======
            if (gamepad1.y) {
              intakeAndArm.searchAndCollectGamePiece(true);
@@ -97,12 +117,19 @@ public class firstAuto extends LinearOpMode {
 //            servo.setPosition(0.5);
         }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     }  }
 
 =======
+=======
+>>>>>>> Stashed changes
 
 
 
 
+<<<<<<< Updated upstream
+    }
+>>>>>>> Stashed changes
+=======
     }
 >>>>>>> Stashed changes
