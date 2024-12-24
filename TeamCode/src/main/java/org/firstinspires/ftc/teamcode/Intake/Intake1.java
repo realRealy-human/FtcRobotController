@@ -15,7 +15,7 @@ public class Intake1 {
 
     public Intake1(HardwareMap hardwareMap, Telemetry telemetry) {
         colorSensor = new Color(hardwareMap, telemetry);
-        motor = hardwareMap.get(DcMotor.class, "leftMotor");
+        motor = hardwareMap.get(DcMotor.class, "intake");
         // fully defining and adding things
 
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

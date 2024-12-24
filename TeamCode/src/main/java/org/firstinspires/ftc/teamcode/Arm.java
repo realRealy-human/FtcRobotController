@@ -18,8 +18,8 @@ public class Arm {
     private PID pID;
 
     // define the constructor
-    public Arm(HardwareMap hardwareMap, Telemetry telemetry, String name) {
-        arm = hardwareMap.get(DcMotor.class, "leftBack");
+    public Arm(HardwareMap hardwareMap, Telemetry telemetry) {
+        arm = hardwareMap.get(DcMotor.class, "arm");
         arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         pID = new PID(telemetry);
 

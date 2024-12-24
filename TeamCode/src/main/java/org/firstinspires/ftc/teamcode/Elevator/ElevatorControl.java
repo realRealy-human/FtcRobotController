@@ -15,7 +15,7 @@ public class ElevatorControl {
 
     //
     public ElevatorControl(HardwareMap hardwareMap, Telemetry telemetry) {
-        elevatorMotor = hardwareMap.get(DcMotor.class, "leftBack");
+        elevatorMotor = hardwareMap.get(DcMotor.class, "elevator");
 
         this.telemetry = telemetry;
     }

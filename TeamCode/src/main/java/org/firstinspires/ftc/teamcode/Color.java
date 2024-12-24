@@ -11,37 +11,37 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 public class Color {
     // define the telemetry and the colorSensor variable
     private Telemetry telemetry;
-    private ColorSensor colorSensor;
+//    private ColorSensor colorSensor;
 
     // define the constructor
     public Color(HardwareMap hardwareMap, Telemetry telemetry) {
-        colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor");
+//        colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor");
 
         // save the telemetry
         this.telemetry = telemetry;
     }
     public int colorSenseRed() {
-        return colorSensor.red();
+        return 0;//colorSensor.red();
     }
     public int colorSenseGreen() {
-        return colorSensor.green();
+        return 0;//colorSensor.green();
     }
     public int colorSenseBlue() {
-        return colorSensor.blue();
+        return 0;//colorSensor.blue();
     }
     public int senseObject() {
-        return colorSensor.alpha();
+        return 0;//colorSensor.alpha();
     }
     // defining the types of colorSensors we have like what color they are
 
     private boolean searchForObject() {
         // Read the color sensor data
-        int red = colorSensor.red();
-        int green = colorSensor.green();
-        int blue = colorSensor.blue();
-        int alpha = colorSensor.alpha(); // Overall light intensity
+//        int red = colorSensor.red();
+//        int green = colorSensor.green();
+//        int blue = colorSensor.blue();
+//        int alpha = colorSensor.alpha(); // Overall light intensity
 
         // Check for an object based on light intensity or color threshold
-        return alpha > 100 || red > 50 || blue > 50 || green > 50;
+        return true;//alpha > 100 || red > 50 || blue > 50 || green > 50;
     }
 }

@@ -19,7 +19,7 @@ public class Claw {
     // define the constructor
     public Claw(HardwareMap hardwareMap, Telemetry telemetry) {
         // create the servoManage object
-        servo = new ServoManage(hardwareMap, telemetry, "servo1");
+        servo = new ServoManage(hardwareMap, telemetry, "claw");
 
         // save the telemetry
         this.telemetry = telemetry;

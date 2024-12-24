@@ -21,14 +21,14 @@ public class PID {
         double error = 1;
         // defining the kp to later on change the error
         while (error != 0) {
-            error = target - motor.getCurrentPosition() / 28f * 12f / 120f * 12.5f; //TODO numbers aren't right probably
+            error = target - motor.getCurrentPosition();
             double output = kp * error;
             // when there is an error it will get the position on the motor and based on the numbers it will fix the error
 
             motor.setPower(output);
 
             // now the motor speed is the changed number which is right
-            telemetry.addData("Arm position", motor.getCurrentPosition() / 28f * 12f / 120f * 12.5f);
+            telemetry.addData("Arm position", motor.getCurrentPosition() );
             // adding data to telemetry
             telemetry.update();
             //updating the telemetry
