@@ -60,11 +60,10 @@ public class firstAuto extends LinearOpMode {
                 }
             }
             // if you press on A and it's starting position is below 500 it will go up and if its higher it will go down
-            if (gamepad1.y) {
-                intake.waitForGamePieceWIthDistance();
-                // if Y is pressed it will find a game piece and take it
 
-            }
+            intake.waitForGamePieceWIthDistance(gamepad1.y);
+            // if Y is pressed it will find a game piece and take it
+
             if (gamepad1.x) {
                 Claw.toggleClaw(true);
                 sleep(500);
@@ -79,7 +78,6 @@ public class firstAuto extends LinearOpMode {
                 }
                 sleep(750);
             }
-
         }
     }
 }
