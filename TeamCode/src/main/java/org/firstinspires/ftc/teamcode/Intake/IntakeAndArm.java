@@ -32,7 +32,7 @@ public class IntakeAndArm {
         arm.moveArmP(95);
         //moving the arm using P
 
-        intake.waitForGamePiece();
+        intake.waitForGamePieceWIthColor();
         intake.move(0.5);
         //when a game piece is found the intake will move
 

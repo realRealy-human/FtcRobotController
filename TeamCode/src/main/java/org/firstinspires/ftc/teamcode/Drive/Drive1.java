@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 // define class
-public class Drive {
+public class Drive1 {
     // define motors, imu and telemetry
     private DcMotor leftFront;
     private DcMotor rightFront;
@@ -22,7 +22,7 @@ public class Drive {
     private Telemetry telemetry;
 
     // define constructor
-    public Drive(HardwareMap hardwareMap, Telemetry telemetry) {
+    public Drive1(HardwareMap hardwareMap, Telemetry telemetry) {
         // map motors to hardware
         leftFront = hardwareMap.get(DcMotor.class, "leftMotor");
         rightFront = hardwareMap.get(DcMotor.class, "rightMotor");
@@ -33,10 +33,10 @@ public class Drive {
         imu = hardwareMap.get(IMU.class, "imu");
 
         // define motors direction
-        leftFront.setDirection(DcMotorSimple.Direction.FORWARD);
-        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        leftRear.setDirection(DcMotorSimple.Direction.FORWARD);
-        rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightFront.setDirection(DcMotorSimple.Direction.FORWARD);
+        leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightRear.setDirection(DcMotorSimple.Direction.FORWARD);
 
         // define imu
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
@@ -63,8 +63,8 @@ public class Drive {
 
     private void checkGamepad(Gamepad gamepad) {
         y = -gamepad.left_stick_y;
-        x = gamepad.left_stick_x;
-        rx = -gamepad.right_stick_x;
+        x = -gamepad.left_stick_x;
+        rx = gamepad.right_stick_x;
     }
     public void driveUsingGamepad(Gamepad gamepad) {
         checkGamepad(gamepad);

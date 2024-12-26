@@ -15,7 +15,7 @@ public class Color {
 
     // define the constructor
     public Color(HardwareMap hardwareMap, Telemetry telemetry) {
-        colorSensor = hardwareMap.get(ColorSensor.class, "color_sensor");
+        //colorSensor = hardwareMap.get(ColorSensor.class, "color_sensor");
 
         // save the telemetry
         this.telemetry = telemetry;
@@ -42,6 +42,6 @@ public class Color {
         int alpha = colorSensor.alpha(); // Overall light intensity
 
         // Check for an object based on light intensity or color threshold
-        return alpha > 800 || red > 100 || blue > 100 || green > 800;
+        return alpha > 800 || red > 400 || blue > 100 || green > 800;
     }
 }

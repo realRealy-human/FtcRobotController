@@ -3,16 +3,11 @@ package org.firstinspires.ftc.teamcode;
 // import stuff
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import org.firstinspires.ftc.teamcode.Elevator.ElevatorPControl;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
-
+import org.firstinspires.ftc.teamcode.Drive.Drive1;
 import org.firstinspires.ftc.teamcode.Elevator.ElevatorPControl;
+
 import org.firstinspires.ftc.teamcode.Intake.Intake1;
-import org.firstinspires.ftc.teamcode.Basket;
 import org.firstinspires.ftc.teamcode.Intake.Claw;
 
 
@@ -25,7 +20,8 @@ public class firstAuto extends LinearOpMode {
     private boolean open = false;
     private double openPos = 0.232;
     private double closePos = 0.055;
-    private Color colorSensor;
+    private Distance distanceSensor;
+    private Drive1 drive;
     // defining the basic things for the system
 
 
@@ -35,7 +31,8 @@ public class firstAuto extends LinearOpMode {
         elevatorPControl = new ElevatorPControl(hardwareMap, telemetry);
         Claw = new Claw(hardwareMap, telemetry);
         intake = new Intake1(hardwareMap, telemetry);
-        colorSensor = new Color(hardwareMap, telemetry);
+        distanceSensor = new Distance(hardwareMap, telemetry);
+        drive = new Drive1(hardwareMap, telemetry);
 
         basket.closeBasket();
 
@@ -51,21 +48,20 @@ public class firstAuto extends LinearOpMode {
 //        basket.closeBasket();
 //        sleep(1000);
 //        elevatorPControl.goTo(0);
-        intake.waitForGamePiece();
 
+//        intake.waitForGamePieceWIthDistance();
         while (opModeIsActive()) {
+            drive.driveUsingGamepad(gamepad1);
             if (gamepad1.a) {
-                elevatorPControl.goTo(0);
-                if (elevatorPControl.FindLocation() < 500) {
-                    elevatorPControl.goTo(1000);
-                    basket.openBasketLimited(1000);
+                if (elevatorPControl.FindLocation() < 25) {
+                    elevatorPControl.goTo(70);
                 } else {
                     elevatorPControl.goTo(0);
                 }
             }
             // if you press on A and it's starting position is below 500 it will go up and if its higher it will go down
             if (gamepad1.y) {
-                intake.waitForGamePiece();
+                intake.waitForGamePieceWIthDistance();
                 // if Y is pressed it will find a game piece and take it
 
             }
@@ -83,6 +79,7 @@ public class firstAuto extends LinearOpMode {
                 }
                 sleep(750);
             }
+
         }
     }
 }
