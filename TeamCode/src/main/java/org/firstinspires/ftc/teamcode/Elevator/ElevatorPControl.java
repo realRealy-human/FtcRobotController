@@ -13,8 +13,9 @@ public class ElevatorPControl {
     // define the motor, telemetry and the PID object
     private DcMotor motor;
     private Telemetry telemetry;
-    private PID pID;
+    private PID pidController;
     private double conversion = 2600 / 125.6;
+    private double setPoint;
 
     // define the constructor
     public ElevatorPControl(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -27,18 +28,29 @@ public class ElevatorPControl {
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // create the PID object
-        pID = new PID(0.0001);
+        pidController = new PID(0.005);
 
         // save the telemetry
         this.telemetry = telemetry;
     }
 
-    public void goTo(double target) {
-        // use p from pid
-        motor.setPower(pID.calculateP(0,0));
+    public void setSetPoint(double setPoint) {
+        this.setPoint = setPoint;
     }
 
-    public double FindLocation(){
+    public double getSetPoint() {
+        return setPoint;
+    }
+
+    public void updateBySetPoint() {
+        motor.setPower(pidController.calculateP(getSetPoint() * 23f , motor.getCurrentPosition()));
+    }
+
+    public boolean atPoint() {
+        return Math.abs(getSetPoint() - getPosition()) <= 0.5;
+    }
+
+    public double getPosition(){
         return motor.getCurrentPosition() /23f;
     }
 }

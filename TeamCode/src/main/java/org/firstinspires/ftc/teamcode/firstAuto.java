@@ -27,6 +27,10 @@ public class firstAuto extends LinearOpMode {
     private Drive1 drive;
     private FtcDashboard dashboard;
     private Telemetry dashTele;
+    private boolean isPressedArm;
+    private boolean isPressedArm2;
+    private boolean isPressedElevator;
+    private boolean isPressedBasket;
     // defining the basic things for the system
 
 
@@ -49,6 +53,9 @@ public class firstAuto extends LinearOpMode {
 
         dashTele.addData("armPose", arm.getPosition());
         dashTele.addData("armSetPoint", arm.getSetPoint());
+
+        dashTele.addData("elevatorPose", elevatorPControl.getPosition());
+        dashTele.addData("elevatorSetPoint", elevatorPControl.getSetPoint());
         dashTele.update();
 
         waitForStart();
@@ -65,23 +72,19 @@ public class firstAuto extends LinearOpMode {
 //        intake.waitForGamePieceWIthDistance();
         while (opModeIsActive()) {
             drive.driveUsingGamepad(gamepad1);
-            if (gamepad1.a) {
-                if (elevatorPControl.FindLocation() < 25) {
-                    elevatorPControl.goTo(70);
-                } else {
-                    elevatorPControl.goTo(0);
-                }
-            }
-            // if you press on A and it's starting position is below 500 it will go up and if its higher it will go down
-            if (gamepad1.y) {
-                intake.waitForGamePieceWIthDistance(true);
-                // if Y is pressed it will find a game piece and take it
 
+            if (gamepad1.a && elevatorPControl.getSetPoint() == 0 && !isPressedElevator) {
+                elevatorPControl.setSetPoint(70);
+                isPressedElevator = true;
+            } else if (gamepad1.a && elevatorPControl.getSetPoint() == 70 && !isPressedElevator) {
+                elevatorPControl.setSetPoint(0);
+                isPressedElevator = true;
             }
-//            if (gamepad1.x) {
-//                Claw.toggleClaw(true);
-//            }
-            if (gamepad1.b) {
+            if (!gamepad1.a) {
+                isPressedElevator = false;
+            }
+
+            if (gamepad1.b && !isPressedBasket) {
                 open = !open;
 
                 if (open) {
@@ -89,16 +92,62 @@ public class firstAuto extends LinearOpMode {
                 } else {
                     basket.closeBasket();
                 }
-                sleep(750);
+                isPressedBasket = true;
             }
 
-            if (gamepad1.x && arm.getSetPoint() == 0) {
-                arm.setSetPoint(-250);
-            } else if (gamepad1.x && arm.getSetPoint() == -250) {
-                arm.setSetPoint(0);
+            if (!gamepad1.b) {
+                isPressedBasket = false;
             }
+
+            intake.waitForGamePieceWIthDistance(gamepad1.y);
+
+            if (gamepad1.x && arm.getSetPoint() == 0 && !isPressedArm) {
+                arm.setSetPoint(-250);
+                isPressedArm = true;
+            } else if (gamepad1.x && arm.getSetPoint() == -250 && !isPressedArm) {
+                arm.setSetPoint(0);
+                isPressedArm = true;
+            }
+
+            if (!gamepad1.x) {
+                isPressedArm = false;
+            }
+
+            if (gamepad1.dpad_up && arm.getSetPoint() == 0 && !isPressedArm2) {
+                arm.setSetPoint(-10);
+                isPressedArm2 = true;
+            } else if (gamepad1.dpad_up && arm.getSetPoint() == -10 && !isPressedArm2) {
+                arm.setSetPoint(0);
+                isPressedArm2 = true;
+            }
+
+            if (!gamepad1.dpad_up) {
+                isPressedArm2 = false;
+            }
+
+            if (gamepad1.dpad_down){
+                intake.move(0.1);
+            }
+            if (gamepad1.left_bumper){
+                elevatorPControl.setSetPoint(70);
+                while (elevatorPControl.getPosition() != 70) {
+                    elevatorPControl.updateBySetPoint();
+                }
+                basket.openBasket();
+                sleep(100);
+                basket.closeBasket();
+                elevatorPControl.setSetPoint(0);
+            }
+
+            elevatorPControl.updateBySetPoint();
+            arm.updateBySetPoint();
+
             dashTele.addData("armPose", arm.getPosition());
             dashTele.addData("armSetPoint", arm.getSetPoint());
+            dashTele.addData("leftBumper" , gamepad1.left_bumper );
+
+            dashTele.addData("elevatorPose", elevatorPControl.getPosition());
+            dashTele.addData("elevatorSetPoint", elevatorPControl.getSetPoint());
             dashTele.update();
         }
     }

@@ -49,4 +49,8 @@ public class Arm {
     public void updateBySetPoint() {
         arm.setPower(pidController.calculateP(getSetPoint() , arm.getCurrentPosition()));
     }
+
+    public boolean atPoint() {
+        return Math.abs(getSetPoint() - getPosition()) <= 0.5;
+    }
 }
