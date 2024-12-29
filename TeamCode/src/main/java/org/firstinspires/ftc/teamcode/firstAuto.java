@@ -134,10 +134,21 @@ public class firstAuto extends LinearOpMode {
                     elevatorPControl.updateBySetPoint();
                 }
                 basket.openBasket();
-                sleep(100);
+                sleep(300);
                 basket.closeBasket();
                 elevatorPControl.setSetPoint(0);
             }
+            if (gamepad1.right_bumper){
+                elevatorPControl.setSetPoint(70);
+                while (elevatorPControl.getPosition() != 70) {
+                    elevatorPControl.updateBySetPoint();
+                }
+                Claw.openOrCloseClaw(true,false);
+                sleep(100);
+                Claw.openOrCloseClaw(false,true);
+                elevatorPControl.setSetPoint(0);
+            }
+
 
             elevatorPControl.updateBySetPoint();
             arm.updateBySetPoint();
