@@ -29,14 +29,14 @@ public class IntakeAndArm {
 
     public void searchAndCollectGamePiece(boolean redGroup) {
        while(!(((redGroup ? colorSensor.blue() : colorSensor.red()) > 200) || colorSensor.green() > 200 && colorSensor.red() > 200)) {}
-        arm.moveArmP(95);
+        //arm.moveArmP(95);
         //moving the arm using P
 
         intake.waitForGamePieceWIthColor();
         intake.move(0.5);
         //when a game piece is found the intake will move
 
-        arm.moveArmP(0);
+        //arm.moveArmP(0);
         intake.move(0);
         // stopping the system
     }

@@ -15,23 +15,38 @@ public class Arm {
     // define the motor, the telemetry and the PID object variables
     private DcMotor arm;
     private Telemetry telemetry;
-    private PID pID;
+    private PID pidController;
+    private double endPose = -269;
+    private double setPoint;
 
     // define the constructor
     public Arm(HardwareMap hardwareMap, Telemetry telemetry) {
         arm = hardwareMap.get(DcMotor.class, "arm");
+        arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        pID = new PID(telemetry);
+        pidController = new PID(0.001);
 
         // save the telemetry
         this.telemetry = telemetry;
     }
-    public void goToGamePad(Gamepad gamepad) {
+    public void setPowerByGamePad(Gamepad gamepad) {
         arm.setPower(gamepad.right_stick_y);
     }
-    // making the arm move when the right stick is moved
-    public void moveArmP(double target) {
-        pID.p(arm, target, 0.5);
+
+    public double getPosition() {
+        return arm.getCurrentPosition();
     }
-    // the P in PID of the arm
+
+    public void setSetPoint(double setPoint) {
+        this.setPoint = setPoint;
+    }
+
+    public double getSetPoint() {
+        return setPoint;
+    }
+
+    public void updateBySetPoint() {
+        arm.setPower(pidController.calculateP(getSetPoint() , arm.getCurrentPosition()));
+    }
 }

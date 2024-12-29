@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
 // import stuff
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Drive.Drive1;
 import org.firstinspires.ftc.teamcode.Elevator.ElevatorPControl;
 
@@ -17,11 +19,14 @@ public class firstAuto extends LinearOpMode {
     private Basket basket;
     private Claw Claw;
     private ElevatorPControl elevatorPControl;
+    private  Arm arm;
     private boolean open = false;
     private double openPos = 0.232;
     private double closePos = 0.055;
     private Distance distanceSensor;
     private Drive1 drive;
+    private FtcDashboard dashboard;
+    private Telemetry dashTele;
     // defining the basic things for the system
 
 
@@ -33,10 +38,18 @@ public class firstAuto extends LinearOpMode {
         intake = new Intake1(hardwareMap, telemetry);
         distanceSensor = new Distance(hardwareMap, telemetry);
         drive = new Drive1(hardwareMap, telemetry);
+        arm = new Arm(hardwareMap, telemetry);
+        dashboard = FtcDashboard.getInstance();
+        dashTele = dashboard.getTelemetry();
 
+        arm.setSetPoint(0);
         basket.closeBasket();
 
         // more defining and putting things in their starting positions
+
+        dashTele.addData("armPose", arm.getPosition());
+        dashTele.addData("armSetPoint", arm.getSetPoint());
+        dashTele.update();
 
         waitForStart();
 
@@ -60,14 +73,14 @@ public class firstAuto extends LinearOpMode {
                 }
             }
             // if you press on A and it's starting position is below 500 it will go up and if its higher it will go down
+            if (gamepad1.y) {
+                intake.waitForGamePieceWIthDistance(true);
+                // if Y is pressed it will find a game piece and take it
 
-            intake.waitForGamePieceWIthDistance(gamepad1.y);
-            // if Y is pressed it will find a game piece and take it
-
-            if (gamepad1.x) {
-                Claw.toggleClaw(true);
-                sleep(500);
             }
+//            if (gamepad1.x) {
+//                Claw.toggleClaw(true);
+//            }
             if (gamepad1.b) {
                 open = !open;
 
@@ -78,6 +91,15 @@ public class firstAuto extends LinearOpMode {
                 }
                 sleep(750);
             }
+
+            if (gamepad1.x && arm.getSetPoint() == 0) {
+                arm.setSetPoint(-250);
+            } else if (gamepad1.x && arm.getSetPoint() == -250) {
+                arm.setSetPoint(0);
+            }
+            dashTele.addData("armPose", arm.getPosition());
+            dashTele.addData("armSetPoint", arm.getSetPoint());
+            dashTele.update();
         }
     }
 }

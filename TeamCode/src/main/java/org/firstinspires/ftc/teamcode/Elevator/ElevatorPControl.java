@@ -27,7 +27,7 @@ public class ElevatorPControl {
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // create the PID object
-        pID = new PID(telemetry);
+        pID = new PID(0.0001);
 
         // save the telemetry
         this.telemetry = telemetry;
@@ -35,7 +35,7 @@ public class ElevatorPControl {
 
     public void goTo(double target) {
         // use p from pid
-        pID.p(motor, target * 23f, 0.005);
+        motor.setPower(pID.calculateP(0,0));
     }
 
     public double FindLocation(){

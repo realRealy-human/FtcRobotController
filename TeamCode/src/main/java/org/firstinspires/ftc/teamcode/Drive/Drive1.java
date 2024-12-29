@@ -65,6 +65,7 @@ public class Drive1 {
         y = -gamepad.left_stick_y;
         x = -gamepad.left_stick_x;
         rx = gamepad.right_stick_x;
+
     }
     public void driveUsingGamepad(Gamepad gamepad) {
         checkGamepad(gamepad);

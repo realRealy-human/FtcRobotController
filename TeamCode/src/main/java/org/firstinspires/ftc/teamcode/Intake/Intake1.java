@@ -50,8 +50,8 @@ public class Intake1 {
         }
 
         // report the distance
-        telemetry.addData("distance", distanceSensor.whatDistance(DistanceUnit.CM));
-        telemetry.update();
+//        telemetry.addData("distance", distanceSensor.whatDistance(DistanceUnit.CM));
+//        telemetry.update();
 
         //when the distanceSensor sense the game piece it will stop
         if (distanceSensor.senseGamePiece()) {
@@ -61,8 +61,8 @@ public class Intake1 {
     public void takeOutGamePiece() {
         motor.setPower(0.5);
         while (distanceSensor.senseGamePiece()) { //TODO make use opModeIsActive
-            telemetry.addData("distance", distanceSensor.whatDistance(DistanceUnit.CM));
-            telemetry.update();
+//            telemetry.addData("distance", distanceSensor.whatDistance(DistanceUnit.CM));
+//            telemetry.update();
         }
         //when the red colorSensor doesn't sense red it will go backwards
         motor.setPower(0);
