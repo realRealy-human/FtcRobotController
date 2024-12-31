@@ -47,10 +47,28 @@ public class Arm {
     }
 
     public void updateBySetPoint() {
-        arm.setPower(pidController.calculateP(getSetPoint() , arm.getCurrentPosition()));
+        //arm.setPower(pidController.calculateP(getSetPoint() , arm.getCurrentPosition()));
+
+        if (setPoint == -250) {
+             if (getPosition() > -60)   {
+                 arm.setPower(-0.1);
+             } else if (getPosition() > -200) {
+                 arm.setPower(0.1);
+             } else {
+                 arm.setPower(0);
+             }
+        } else {
+            if (getPosition() > -60 && getPosition() < -10) {
+                arm.setPower(-0.2);
+            } else if (getPosition() < -60){
+                arm.setPower(0.05);
+            } else {
+                arm.setPower(0);
+            }
+        }
     }
 
     public boolean atPoint() {
-        return Math.abs(getSetPoint() - getPosition()) <= 0.5;
+        return Math.abs(getSetPoint() - getPosition()) <= 2;
     }
 }

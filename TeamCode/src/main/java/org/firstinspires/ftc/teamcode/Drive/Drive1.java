@@ -91,7 +91,7 @@ public class Drive1 {
         }
 
         // calculate the bot's heading
-        botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        botHeading = imu.getRobotYawPitchRollAngles().getRoll(AngleUnit.RADIANS);
 
         // report the bot's heading to the imu
         telemetry.addData("imu", botHeading);

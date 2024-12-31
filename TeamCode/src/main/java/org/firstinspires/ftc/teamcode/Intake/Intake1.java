@@ -73,4 +73,12 @@ public class Intake1 {
         motor.setPower(speed);
         // the intake will move at the speed we tell it to
     }
+
+    public boolean isGamePiece(){
+        return distanceSensor.senseGamePiece();
+    }
+
+    public double getDistanceSensor(){
+        return distanceSensor.whatDistance(DistanceUnit.CM);
+    }
 }
