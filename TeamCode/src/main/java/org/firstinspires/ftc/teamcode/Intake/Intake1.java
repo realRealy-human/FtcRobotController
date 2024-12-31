@@ -14,6 +14,7 @@ public class Intake1 {
     private Distance distanceSensor;
     private DcMotor motor;
     private Telemetry telemetry;
+    private double speed;
     // defining the main things for the system
 
     public Intake1(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -69,7 +70,15 @@ public class Intake1 {
         // after that it will stop moving
     }
 
-    public void move(double speed) {
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public void moveWithSpeed() {
         motor.setPower(speed);
         // the intake will move at the speed we tell it to
     }

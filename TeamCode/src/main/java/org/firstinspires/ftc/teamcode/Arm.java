@@ -59,9 +59,9 @@ public class Arm {
              }
         } else {
             if (getPosition() > -60 && getPosition() < -10) {
-                arm.setPower(-0.2);
+                arm.setPower(0.3);
             } else if (getPosition() < -60){
-                arm.setPower(0.05);
+                arm.setPower(0.3);
             } else {
                 arm.setPower(0);
             }

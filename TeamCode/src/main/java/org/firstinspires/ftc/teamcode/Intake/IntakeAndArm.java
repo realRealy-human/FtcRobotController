@@ -33,11 +33,13 @@ public class IntakeAndArm {
         //moving the arm using P
 
         intake.waitForGamePieceWIthColor();
-        intake.move(0.5);
+       intake.setSpeed(0.5);
+        intake.moveWithSpeed();
         //when a game piece is found the intake will move
 
         //arm.moveArmP(0);
-        intake.move(0);
+        intake.setSpeed(0);
+        intake.moveWithSpeed();
         // stopping the system
     }
 }

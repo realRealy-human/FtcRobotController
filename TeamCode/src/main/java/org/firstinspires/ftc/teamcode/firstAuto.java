@@ -13,8 +13,6 @@ import org.firstinspires.ftc.teamcode.Elevator.ElevatorPControl;
 import org.firstinspires.ftc.teamcode.Intake.Intake1;
 import org.firstinspires.ftc.teamcode.Intake.Claw;
 
-import java.util.Timer;
-
 
 @TeleOp(name = "firstAuto", group = "Examples")
 public class firstAuto extends LinearOpMode {
@@ -63,6 +61,7 @@ public class firstAuto extends LinearOpMode {
 
         dashTele.addData("elevatorPose", elevatorPControl.getPosition());
         dashTele.addData("elevatorSetPoint", elevatorPControl.getSetPoint());
+        dashTele.addData("getIntakeSpeed", intake.getSpeed());
         dashTele.update();
 
         waitForStart();
@@ -105,20 +104,31 @@ public class firstAuto extends LinearOpMode {
             dashTele.addData("elevatorSetPoint", elevatorPControl.getSetPoint());
             dashTele.addData("gamePieceInside", intake.isGamePiece());
             dashTele.addData("getDistanceSensor", intake.getDistanceSensor());
+            dashTele.addData("getIntakeSpeed", intake.getSpeed());
             dashTele.update();
         }
     }
     private void intakeAutomation() {
-        if (robotState == "INTAKE" && arm.atPoint() && !intake.isGamePiece()) {
-            intake.move(0.5);
+        if (robotState == "INTAKE" && arm.atPoint() && arm.getSetPoint() == -250 && !intake.isGamePiece()) {
+            intake.setSpeed(0.5);
+            intake.moveWithSpeed();
         }
 
         if (robotState == "INTAKE" && intake.isGamePiece()){
-            intake.move(0);
+            intake.setSpeed(0);
+            intake.moveWithSpeed();
             arm.setSetPoint(0);
         }
 
         if (robotState == "INTAKE" && intake.isGamePiece() && arm.getSetPoint() == 0 && arm.atPoint()) {
+            intake.setSpeed(0.5);
+            intake.moveWithSpeed();
+        }
+
+        if (robotState == "INTAKE" && intake.getSpeed() == 0.5 && !intake.isGamePiece() && arm.getSetPoint() == 0 && arm.atPoint()) {
+            intake.setSpeed(0);
+            intake.moveWithSpeed();
+
             robotState = "IDLE";
         }
 
@@ -131,8 +141,8 @@ public class firstAuto extends LinearOpMode {
         if (robotState == "HIGHSCORING" && elevatorPControl.atPoint() && !isGamePieceDoingScoring) {
             if (elevatorPControl.getSetPoint() == 0) {
                 basket.setPosition(0.95);
-                elevatorPControl.setSetPoint(70);
-            } else if (elevatorPControl.getSetPoint() == 70) {
+                elevatorPControl.setSetPoint(100);
+            } else if (elevatorPControl.getSetPoint() == 100) {
                 basket.closeBasket();
                 isGamePieceDoingScoring = true;
 
@@ -140,7 +150,7 @@ public class firstAuto extends LinearOpMode {
             }
         }
 
-        if (robotState == "HIGHSCORING" && elevatorPControl.atPoint() && elevatorPControl.getSetPoint() == 70  && isGamePieceDoingScoring) {
+        if (robotState == "HIGHSCORING" && elevatorPControl.atPoint() && elevatorPControl.getSetPoint() == 100  && isGamePieceDoingScoring) {
             if (basket.getPosition() > 0.65) {
                 basket.openBasket();
                 timer.reset();
@@ -160,7 +170,7 @@ public class firstAuto extends LinearOpMode {
         }
     }
 
-    public void manualControl(){
+    public void manualControl() {
 
         if (gamepad1.a && elevatorPControl.getSetPoint() == 0 && !isPressedElevator) {
             elevatorPControl.setSetPoint(70);
@@ -214,8 +224,9 @@ public class firstAuto extends LinearOpMode {
             isPressedArm2 = false;
         }
 
-        if (gamepad1.dpad_down){
-            intake.move(0.1);
+        if (gamepad1.dpad_down) {
+            intake.setSpeed(0.1);
+            intake.moveWithSpeed();
         }
     }
 }
