@@ -34,7 +34,9 @@ public class firstAuto extends LinearOpMode {
     private boolean isPressedBasket;
     private String robotState = "IDLE";
     private boolean isGamePieceDoingScoring;
-    private ElapsedTime timer;
+    private ElapsedTime timerScoring;
+    private  boolean hasReset;
+    private ElapsedTime timerPassing;
     // defining the basic things for the system
 
 
@@ -49,7 +51,8 @@ public class firstAuto extends LinearOpMode {
         arm = new Arm(hardwareMap, telemetry);
         dashboard = FtcDashboard.getInstance();
         dashTele = dashboard.getTelemetry();
-        timer = new ElapsedTime();
+        timerScoring = new ElapsedTime();
+        timerPassing = new ElapsedTime();
 
         arm.setSetPoint(0);
         basket.closeBasket();
@@ -115,21 +118,29 @@ public class firstAuto extends LinearOpMode {
         }
 
         if (robotState == "INTAKE" && intake.isGamePiece()){
-//            intake.setSpeed(0);
-            arm.setSetPoint(0);
-
-//            robotState = "IDLE";
-        }
-
-        if (robotState == "INTAKE" && intake.isGamePiece() && arm.getSetPoint() == 0 && arm.atPoint()) {
-            intake.setSpeed(0.5);
-        }
-
-        if (robotState == "INTAKE" && intake.getSpeed() == 0.5 && !intake.isGamePiece() && arm.getSetPoint() == 0 && arm.atPoint()) {
             intake.setSpeed(0);
+            arm.setSetPoint(0);
 
             robotState = "IDLE";
         }
+
+//        if (robotState == "PASSING") {
+//            if (!hasReset) {
+//                hasReset = true;
+//                timerPassing.reset();
+//                timerPassing.startTime();
+//            }
+//        }
+//
+//        if (robotState == "PASSING" && hasReset && timerPassing.seconds() < 1.5) {
+//            intake.setSpeed(0.2);
+//        }
+//
+//        if (robotState == "PASSING" && hasReset && timerPassing.seconds() > 1.5) {
+//            intake.setSpeed(0);
+//            hasReset = false;
+//            robotState = "IDLE";
+//        }
 
         if (robotState == "INTAKE" && !intake.isGamePiece()) {
             arm.setSetPoint(-250);
@@ -152,9 +163,9 @@ public class firstAuto extends LinearOpMode {
         if (robotState == "HIGHSCORING" && elevatorPControl.atPoint() && elevatorPControl.getSetPoint() == 100  && isGamePieceDoingScoring) {
             if (basket.getPosition() > 0.65) {
                 basket.openBasket();
-                timer.reset();
-                timer.startTime();
-            } else if (timer.seconds() > 1){
+                timerScoring.reset();
+                timerScoring.startTime();
+            } else if (timerScoring.seconds() > 1){
                 basket.setPosition(0.95);
                 elevatorPControl.setSetPoint(0);
 
