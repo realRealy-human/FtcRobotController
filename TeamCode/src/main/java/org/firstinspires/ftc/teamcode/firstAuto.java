@@ -94,7 +94,7 @@ public class firstAuto extends LinearOpMode {
 
 
 
-
+            intake.moveWithSpeed();
             elevatorPControl.updateBySetPoint();
             arm.updateBySetPoint();
 
@@ -111,26 +111,25 @@ public class firstAuto extends LinearOpMode {
     private void intakeAutomation() {
         if (robotState == "INTAKE" && arm.atPoint() && arm.getSetPoint() == -250 && !intake.isGamePiece()) {
             intake.setSpeed(0.5);
-            intake.moveWithSpeed();
+
         }
 
         if (robotState == "INTAKE" && intake.isGamePiece()){
             intake.setSpeed(0);
-            intake.moveWithSpeed();
             arm.setSetPoint(0);
-        }
-
-        if (robotState == "INTAKE" && intake.isGamePiece() && arm.getSetPoint() == 0 && arm.atPoint()) {
-            intake.setSpeed(0.5);
-            intake.moveWithSpeed();
-        }
-
-        if (robotState == "INTAKE" && intake.getSpeed() == 0.5 && !intake.isGamePiece() && arm.getSetPoint() == 0 && arm.atPoint()) {
-            intake.setSpeed(0);
-            intake.moveWithSpeed();
 
             robotState = "IDLE";
         }
+
+//        if (robotState == "INTAKE" && intake.isGamePiece() && arm.getSetPoint() == 0 && arm.atPoint()) {
+//            intake.setSpeed(0.5);
+//        }
+
+//        if (robotState == "INTAKE" && intake.getSpeed() == 0.5 && !intake.isGamePiece() && arm.getSetPoint() == 0 && arm.atPoint()) {
+//            intake.setSpeed(0);
+//
+//            robotState = "IDLE";
+//        }
 
         if (robotState == "INTAKE" && !intake.isGamePiece()) {
             arm.setSetPoint(-250);
