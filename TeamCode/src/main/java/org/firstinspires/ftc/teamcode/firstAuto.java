@@ -115,21 +115,21 @@ public class firstAuto extends LinearOpMode {
         }
 
         if (robotState == "INTAKE" && intake.isGamePiece()){
-            intake.setSpeed(0);
+//            intake.setSpeed(0);
             arm.setSetPoint(0);
+
+//            robotState = "IDLE";
+        }
+
+        if (robotState == "INTAKE" && intake.isGamePiece() && arm.getSetPoint() == 0 && arm.atPoint()) {
+            intake.setSpeed(0.5);
+        }
+
+        if (robotState == "INTAKE" && intake.getSpeed() == 0.5 && !intake.isGamePiece() && arm.getSetPoint() == 0 && arm.atPoint()) {
+            intake.setSpeed(0);
 
             robotState = "IDLE";
         }
-
-//        if (robotState == "INTAKE" && intake.isGamePiece() && arm.getSetPoint() == 0 && arm.atPoint()) {
-//            intake.setSpeed(0.5);
-//        }
-
-//        if (robotState == "INTAKE" && intake.getSpeed() == 0.5 && !intake.isGamePiece() && arm.getSetPoint() == 0 && arm.atPoint()) {
-//            intake.setSpeed(0);
-//
-//            robotState = "IDLE";
-//        }
 
         if (robotState == "INTAKE" && !intake.isGamePiece()) {
             arm.setSetPoint(-250);

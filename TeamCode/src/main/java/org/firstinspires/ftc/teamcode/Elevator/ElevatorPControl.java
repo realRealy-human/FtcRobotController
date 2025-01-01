@@ -28,7 +28,7 @@ public class ElevatorPControl {
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // create the PID object
-        pidController = new PID(0.005);
+        pidController = new PID(0.001);
 
         // save the telemetry
         this.telemetry = telemetry;
@@ -47,7 +47,7 @@ public class ElevatorPControl {
     }
 
     public boolean atPoint() {
-        return Math.abs(getSetPoint() - getPosition()) <= 0.5;
+        return Math.abs(getSetPoint() - getPosition()) <= 2;
     }
 
     public double getPosition(){
