@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 // import stuff
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -20,7 +21,7 @@ public class firstAuto extends LinearOpMode {
     private Basket basket;
     private Claw Claw;
     private ElevatorPControl elevatorPControl;
-    private  Arm arm;
+    private Arm arm;
     private boolean open = false;
     private double openPos = 0.232;
     private double closePos = 0.055;
@@ -35,13 +36,15 @@ public class firstAuto extends LinearOpMode {
     private String robotState = "IDLE";
     private boolean isGamePieceDoingScoring;
     private ElapsedTime timerScoring;
-    private  boolean hasReset;
+    private boolean hasReset;
     private ElapsedTime timerPassing;
+    private int buttonPresses = 0;
+    private boolean wasBPressed = false;
     // defining the basic things for the system
 
 
     @Override
-      public void runOpMode() {
+    public void runOpMode() {
         basket = new Basket(hardwareMap, telemetry);
         elevatorPControl = new ElevatorPControl(hardwareMap, telemetry);
         Claw = new Claw(hardwareMap, telemetry);
@@ -74,7 +77,7 @@ public class firstAuto extends LinearOpMode {
         while (opModeIsActive()) {
             drive.driveUsingGamepad(gamepad1);
 
-            if (gamepad1.x && !intake.isGamePiece()){
+            if (gamepad1.x && !intake.isGamePiece()) {
                 robotState = "INTAKE";
             }
 
@@ -82,19 +85,15 @@ public class firstAuto extends LinearOpMode {
                 robotState = "HIGHSCORING";
             }
 
-
-
-
-
+            if (gamepad1.b) {
+                robotState = "CLAW";
+            }
 
 
             intakeAutomation();
 
             highScoringAutomation();
-
-
-
-
+             clawControl();
 
 
             intake.moveWithSpeed();
@@ -108,39 +107,47 @@ public class firstAuto extends LinearOpMode {
             dashTele.addData("gamePieceInside", intake.isGamePiece());
             dashTele.addData("getDistanceSensor", intake.getDistanceSensor());
             dashTele.addData("getIntakeSpeed", intake.getSpeed());
+            dashTele.addData("buttonPresses", buttonPresses);
+            dashTele.addData("roboState", robotState);
             dashTele.update();
         }
     }
+
     private void intakeAutomation() {
         if (robotState == "INTAKE" && arm.atPoint() && arm.getSetPoint() == -250 && !intake.isGamePiece()) {
             intake.setSpeed(0.5);
 
         }
 
-        if (robotState == "INTAKE" && intake.isGamePiece()){
+        if (robotState == "INTAKE" && intake.isGamePiece()) {
             intake.setSpeed(0);
             arm.setSetPoint(0);
 
-            robotState = "IDLE";
+            robotState = "PASSING";
         }
 
-//        if (robotState == "PASSING") {
-//            if (!hasReset) {
-//                hasReset = true;
-//                timerPassing.reset();
-//                timerPassing.startTime();
-//            }
-//        }
-//
-//        if (robotState == "PASSING" && hasReset && timerPassing.seconds() < 1.5) {
-//            intake.setSpeed(0.2);
-//        }
-//
-//        if (robotState == "PASSING" && hasReset && timerPassing.seconds() > 1.5) {
-//            intake.setSpeed(0);
-//            hasReset = false;
-//            robotState = "IDLE";
-//        }
+        if (robotState == "PASSING" && intake.isGamePiece() && arm.getSetPoint() == -250) {
+            intake.setSpeed(0.2);
+        }
+
+        // if (robotState == "PASSING") {
+        //   if (!hasReset) {
+        //          hasReset = true;
+        //          timerPassing.reset();
+        //         timerPassing.startTime();
+        //      }
+        //  }
+
+        //   if (robotState == "PASSING" && hasReset && timerPassing.seconds() < 1) {
+        //    intake.setSpeed(0.2);
+        //   }
+
+        // if (robotState == "PASSING" && hasReset && timerPassing.seconds() > 1) {
+        //       intake.setSpeed(0);
+        //       hasReset = false;
+        //       robotState = "IDLE";
+        //  }
+
 
         if (robotState == "INTAKE" && !intake.isGamePiece()) {
             arm.setSetPoint(-250);
@@ -160,12 +167,12 @@ public class firstAuto extends LinearOpMode {
             }
         }
 
-        if (robotState == "HIGHSCORING" && elevatorPControl.atPoint() && elevatorPControl.getSetPoint() == 100  && isGamePieceDoingScoring) {
+        if (robotState == "HIGHSCORING" && elevatorPControl.atPoint() && elevatorPControl.getSetPoint() == 100 && isGamePieceDoingScoring) {
             if (basket.getPosition() > 0.65) {
                 basket.openBasket();
                 timerScoring.reset();
                 timerScoring.startTime();
-            } else if (timerScoring.seconds() > 1){
+            } else if (timerScoring.seconds() > 1) {
                 basket.setPosition(0.95);
                 elevatorPControl.setSetPoint(0);
 
@@ -177,6 +184,44 @@ public class firstAuto extends LinearOpMode {
                     robotState = "IDLE";
                 }
             }
+        }
+    }
+
+    public void clawControl() {
+        if (robotState.equals("CLAW")) {
+            if (gamepad1.b && !wasBPressed){
+                buttonPresses++;
+                switch (buttonPresses) {
+                    case 1:
+                        Claw.openOrCloseClaw(true, false);
+                        elevatorPControl.setSetPoint(20);
+
+                        break;
+
+                    case 2:
+                        Claw.openOrCloseClaw(false, true);
+                        elevatorPControl.setSetPoint(50);
+                        break;
+
+                    case 3:
+                        elevatorPControl.setSetPoint(40);
+                        sleep(1000);
+                        Claw.openOrCloseClaw(true, false);
+                        break;
+                    case 4:
+                        elevatorPControl.setSetPoint(0);
+                        Claw.openOrCloseClaw(false,true);
+                        buttonPresses = 0;
+                        break;
+                }
+            }
+
+            wasBPressed = gamepad1.b;
+        } else {
+
+            wasBPressed = false;
+
+
         }
     }
 
@@ -239,4 +284,5 @@ public class firstAuto extends LinearOpMode {
             intake.moveWithSpeed();
         }
     }
+
 }
