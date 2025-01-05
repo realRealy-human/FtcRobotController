@@ -45,15 +45,15 @@ public class firstAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+        dashboard = FtcDashboard.getInstance();
+        dashTele = dashboard.getTelemetry();
         basket = new Basket(hardwareMap, telemetry);
         elevatorPControl = new ElevatorPControl(hardwareMap, telemetry);
         Claw = new Claw(hardwareMap, telemetry);
         intake = new Intake1(hardwareMap, telemetry);
         distanceSensor = new Distance(hardwareMap, telemetry);
         drive = new Drive1(hardwareMap, telemetry);
-        arm = new Arm(hardwareMap, telemetry);
-        dashboard = FtcDashboard.getInstance();
-        dashTele = dashboard.getTelemetry();
+        arm = new Arm(hardwareMap, dashTele);
         timerScoring = new ElapsedTime();
         timerPassing = new ElapsedTime();
 

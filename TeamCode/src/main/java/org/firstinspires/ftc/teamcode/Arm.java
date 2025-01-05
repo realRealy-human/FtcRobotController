@@ -50,20 +50,26 @@ public class Arm {
         //arm.setPower(pidController.calculateP(getSetPoint() , arm.getCurrentPosition()));
 
         if (setPoint == -207) {
-             if (getPosition() > -60)   {
+             if (getPosition() > -60) {
                  arm.setPower(-0.2);
+                 telemetry.addData("arm con", 1);
              } else if (getPosition() > -200) {
                  arm.setPower(0.2);
+                 telemetry.addData("arm con", 2);
              } else {
                  arm.setPower(0);
+                 telemetry.addData("arm con", 3);
              }
         } else {
             if (getPosition() > -60 && getPosition() < -10) {
-                arm.setPower(0.18);
-            } else if (getPosition() < -60){
-                arm.setPower(0.34);
+                arm.setPower(0.5);
+                telemetry.addData("arm con", 4);
+            } else if (getPosition() < -60) {
+                arm.setPower(1);
+                telemetry.addData("arm con", 5);
             } else {
                 arm.setPower(0);
+                telemetry.addData("arm con", 6);
             }
         }
     }
