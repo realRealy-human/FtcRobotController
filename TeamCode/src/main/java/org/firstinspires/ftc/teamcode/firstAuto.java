@@ -88,7 +88,9 @@ public class firstAuto extends LinearOpMode {
             if (gamepad1.b) {
                 robotState = "CLAW";
             }
-
+           if (gamepad1.y){
+               arm.setSetPoint(0);
+           }
 
             intakeAutomation();
 
@@ -109,25 +111,31 @@ public class firstAuto extends LinearOpMode {
             dashTele.addData("getIntakeSpeed", intake.getSpeed());
             dashTele.addData("buttonPresses", buttonPresses);
             dashTele.addData("roboState", robotState);
+            dashTele.addData("presses", gamepad1.y);
             dashTele.update();
         }
     }
 
     private void intakeAutomation() {
-        if (robotState == "INTAKE" && arm.atPoint() && arm.getSetPoint() == -250 && !intake.isGamePiece()) {
+        if (robotState == "INTAKE" && arm.atPoint() && arm.getSetPoint() == -207 && !intake.isGamePiece()) {
             intake.setSpeed(0.5);
 
+            dashTele.addData("intakeAuto state", 2);
         }
 
         if (robotState == "INTAKE" && intake.isGamePiece()) {
             intake.setSpeed(0);
             arm.setSetPoint(0);
 
-            robotState = "PASSING";
+            //robotState = "PASSING";
+
+            dashTele.addData("intakeAuto state", 3);
         }
 
-        if (robotState == "PASSING" && intake.isGamePiece() && arm.getSetPoint() == -250) {
+        if (robotState == "PASSING" && intake.isGamePiece() && arm.getSetPoint() == -207) {
             intake.setSpeed(0.2);
+
+            dashTele.addData("intakeAuto state", 4);
         }
 
         // if (robotState == "PASSING") {
@@ -149,8 +157,10 @@ public class firstAuto extends LinearOpMode {
         //  }
 
 
-        if (robotState == "INTAKE" && !intake.isGamePiece()) {
-            arm.setSetPoint(-250);
+        if (robotState == "INTAKE" && !intake.isGamePiece() && arm.getSetPoint() == 0) {
+            arm.setSetPoint(-207);
+
+            dashTele.addData("intakeAuto state", 1);
         }
     }
 
@@ -256,9 +266,9 @@ public class firstAuto extends LinearOpMode {
         intake.waitForGamePieceWIthDistance(gamepad1.y);
 
         if (gamepad1.x && arm.getSetPoint() == 0 && !isPressedArm) {
-            arm.setSetPoint(-250);
+            arm.setSetPoint(-207);
             isPressedArm = true;
-        } else if (gamepad1.x && arm.getSetPoint() == -250 && !isPressedArm) {
+        } else if (gamepad1.x && arm.getSetPoint() == -207 && !isPressedArm) {
             arm.setSetPoint(0);
             isPressedArm = true;
         }
