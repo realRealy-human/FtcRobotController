@@ -90,9 +90,7 @@ public class firstAuto extends LinearOpMode {
             if (gamepad1.b) {
                 robotState = "CLAW";
             }
-            if (gamepad1.y) {
-                arm.setSetPoint(0);
-            }
+
 
             intakeAutomation();
 
@@ -113,63 +111,31 @@ public class firstAuto extends LinearOpMode {
             dashTele.addData("getIntakeSpeed", intake.getSpeed());
             dashTele.addData("buttonPresses", buttonPresses);
             dashTele.addData("roboState", robotState);
-            dashTele.addData("presses", gamepad1.y);
+            dashTele.addData("pressesA", gamepad1.a);
+            dashTele.addData("pressesB", gamepad1.b);
             dashTele.update();
             telemetry.update();
         }
     }
 
     private void intakeAutomation() {
-        /*if (robotState.equals("INTAKE")){
-            if (gamepad1.x && !wasXPressed){
-                buttonPresses++;
-                switch (buttonPresses) {
-                    case 1:
-                        arm.setSetPoint(-250);
-                        break;
-
-                    case 2:
-                        intake.setSpeed(0.5);
-                        sleep(1500);
-                        break;
-
-                    case 3:
-                        arm.setSetPoint(0);
-
-                        break;
-                    case 4:
-                        intake.setSpeed(-0.2);
-                        sleep(500);
-                        break;
-                }
-
-                }
-            wasXPressed = gamepad1.x;
-        } else {
-
-            wasXPressed = false;
-        }*/
 
 
-        if (robotState == "INTAKE" && arm.atPoint() && arm.getSetPoint() == -230 && !intake.isGamePiece()) {
+        if (robotState == "INTAKE" && arm.atPoint() && arm.getSetPoint() == -279) {
             intake.setSpeed(0.5);
-
-
             dashTele.addData("intakeAuto state", 2);
         }
 
-        if (robotState == "INTAKE" && intake.isGamePiece()) {
+        if (robotState == "INTAKE" && intake.isGamePiece() && arm.atPoint() && arm.getSetPoint() >= -290 && arm.getSetPoint() <= -279) {
             intake.setSpeed(0);
             arm.setSetPoint(0);
-
-
-            dashTele.addData("intakeAuto state", 3);
         }
 
         if (robotState == "INTAKE" && intake.isGamePiece() && arm.getSetPoint() == 0) {
-            intake.setSpeed(0.2);
+            intake.setSpeed(1);
 
-            dashTele.addData("intakeAuto state", 4);
+
+          robotState = "INTAKE";
         }
         if (robotState == "INTAKE" && !intake.isGamePiece() && arm.getSetPoint() == 0) {
             arm.setSetPoint(-230);
@@ -202,8 +168,8 @@ public class firstAuto extends LinearOpMode {
             if (robotState == "HIGHSCORING" && elevatorPControl.atPoint() && !isGamePieceDoingScoring) {
                 if (elevatorPControl.getSetPoint() == 0) {
                     basket.setPosition(0.95);
-                    elevatorPControl.setSetPoint(80);
-                } else if (elevatorPControl.getSetPoint() == 80) {
+                    elevatorPControl.setSetPoint(150);
+                } else if (elevatorPControl.getSetPoint() == 150) {
                     basket.closeBasket();
                     isGamePieceDoingScoring = true;
 
@@ -211,7 +177,7 @@ public class firstAuto extends LinearOpMode {
                 }
             }
 
-            if (robotState == "HIGHSCORING" && elevatorPControl.atPoint() && elevatorPControl.getSetPoint() == 80 && isGamePieceDoingScoring) {
+            if (robotState == "HIGHSCORING" && elevatorPControl.atPoint() && elevatorPControl.getSetPoint() == 150 && isGamePieceDoingScoring) {
                 if (basket.getPosition() > 0.65) {
                     basket.openBasket();
                     timerScoring.reset();
@@ -249,7 +215,7 @@ public class firstAuto extends LinearOpMode {
 
                         case 3:
                             elevatorPControl.setSetPoint(40);
-                            sleep(1000);
+
                             Claw.openOrCloseClaw(true, false);
                             break;
                         case 4:
