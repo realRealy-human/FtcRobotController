@@ -49,12 +49,12 @@ public class Arm {
     public void updateBySetPoint() {
         //arm.setPower(pidController.calculateP(getSetPoint() , arm.getCurrentPosition()));
 
-        if (setPoint == -207) {
+        if (setPoint == -230) {
              if (getPosition() > -60) {
                  arm.setPower(-0.2);
                  telemetry.addData("arm con", 1);
              } else if (getPosition() > -200) {
-                 arm.setPower(0.2);
+                 arm.setPower(0.1);
                  telemetry.addData("arm con", 2);
              } else {
                  arm.setPower(0);
@@ -75,6 +75,6 @@ public class Arm {
     }
 
     public boolean atPoint() {
-        return Math.abs(getSetPoint() - getPosition()) <= 2;
+        return Math.abs(getSetPoint() - getPosition()) <= 12;
     }
 }

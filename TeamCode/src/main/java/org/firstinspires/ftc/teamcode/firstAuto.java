@@ -40,6 +40,8 @@ public class firstAuto extends LinearOpMode {
     private ElapsedTime timerPassing;
     private int buttonPresses = 0;
     private boolean wasBPressed = false;
+    private int buttonsPresses = 0;
+    private boolean wasXPressed = false;
     // defining the basic things for the system
 
 
@@ -88,14 +90,14 @@ public class firstAuto extends LinearOpMode {
             if (gamepad1.b) {
                 robotState = "CLAW";
             }
-           if (gamepad1.y){
-               arm.setSetPoint(0);
-           }
+            if (gamepad1.y) {
+                arm.setSetPoint(0);
+            }
 
             intakeAutomation();
 
             highScoringAutomation();
-             clawControl();
+            clawControl();
 
 
             intake.moveWithSpeed();
@@ -113,12 +115,45 @@ public class firstAuto extends LinearOpMode {
             dashTele.addData("roboState", robotState);
             dashTele.addData("presses", gamepad1.y);
             dashTele.update();
+            telemetry.update();
         }
     }
 
     private void intakeAutomation() {
-        if (robotState == "INTAKE" && arm.atPoint() && arm.getSetPoint() == -207 && !intake.isGamePiece()) {
+        /*if (robotState.equals("INTAKE")){
+            if (gamepad1.x && !wasXPressed){
+                buttonPresses++;
+                switch (buttonPresses) {
+                    case 1:
+                        arm.setSetPoint(-250);
+                        break;
+
+                    case 2:
+                        intake.setSpeed(0.5);
+                        sleep(1500);
+                        break;
+
+                    case 3:
+                        arm.setSetPoint(0);
+
+                        break;
+                    case 4:
+                        intake.setSpeed(-0.2);
+                        sleep(500);
+                        break;
+                }
+
+                }
+            wasXPressed = gamepad1.x;
+        } else {
+
+            wasXPressed = false;
+        }*/
+
+
+        if (robotState == "INTAKE" && arm.atPoint() && arm.getSetPoint() == -230 && !intake.isGamePiece()) {
             intake.setSpeed(0.5);
+
 
             dashTele.addData("intakeAuto state", 2);
         }
@@ -127,15 +162,20 @@ public class firstAuto extends LinearOpMode {
             intake.setSpeed(0);
             arm.setSetPoint(0);
 
-            //robotState = "PASSING";
 
             dashTele.addData("intakeAuto state", 3);
         }
 
-        if (robotState == "PASSING" && intake.isGamePiece() && arm.getSetPoint() == -207) {
+        if (robotState == "INTAKE" && intake.isGamePiece() && arm.getSetPoint() == 0) {
             intake.setSpeed(0.2);
 
             dashTele.addData("intakeAuto state", 4);
+        }
+        if (robotState == "INTAKE" && !intake.isGamePiece() && arm.getSetPoint() == 0) {
+            arm.setSetPoint(-230);
+
+             dashTele.addData("intakeAuto state", 1);
+
         }
 
         // if (robotState == "PASSING") {
@@ -156,143 +196,137 @@ public class firstAuto extends LinearOpMode {
         //       robotState = "IDLE";
         //  }
 
-
-        if (robotState == "INTAKE" && !intake.isGamePiece() && arm.getSetPoint() == 0) {
-            arm.setSetPoint(-207);
-
-            dashTele.addData("intakeAuto state", 1);
-        }
     }
 
-    private void highScoringAutomation() {
-        if (robotState == "HIGHSCORING" && elevatorPControl.atPoint() && !isGamePieceDoingScoring) {
-            if (elevatorPControl.getSetPoint() == 0) {
-                basket.setPosition(0.95);
-                elevatorPControl.setSetPoint(100);
-            } else if (elevatorPControl.getSetPoint() == 100) {
-                basket.closeBasket();
-                isGamePieceDoingScoring = true;
-
-                robotState = "IDLE";
-            }
-        }
-
-        if (robotState == "HIGHSCORING" && elevatorPControl.atPoint() && elevatorPControl.getSetPoint() == 100 && isGamePieceDoingScoring) {
-            if (basket.getPosition() > 0.65) {
-                basket.openBasket();
-                timerScoring.reset();
-                timerScoring.startTime();
-            } else if (timerScoring.seconds() > 1) {
-                basket.setPosition(0.95);
-                elevatorPControl.setSetPoint(0);
-
-                if (elevatorPControl.atPoint() && elevatorPControl.getSetPoint() == 0) {
+        private void highScoringAutomation() {
+            if (robotState == "HIGHSCORING" && elevatorPControl.atPoint() && !isGamePieceDoingScoring) {
+                if (elevatorPControl.getSetPoint() == 0) {
+                    basket.setPosition(0.95);
+                    elevatorPControl.setSetPoint(80);
+                } else if (elevatorPControl.getSetPoint() == 80) {
                     basket.closeBasket();
-
-                    isGamePieceDoingScoring = false;
+                    isGamePieceDoingScoring = true;
 
                     robotState = "IDLE";
                 }
             }
-        }
-    }
 
-    public void clawControl() {
-        if (robotState.equals("CLAW")) {
-            if (gamepad1.b && !wasBPressed){
-                buttonPresses++;
-                switch (buttonPresses) {
-                    case 1:
-                        Claw.openOrCloseClaw(true, false);
-                        elevatorPControl.setSetPoint(20);
+            if (robotState == "HIGHSCORING" && elevatorPControl.atPoint() && elevatorPControl.getSetPoint() == 80 && isGamePieceDoingScoring) {
+                if (basket.getPosition() > 0.65) {
+                    basket.openBasket();
+                    timerScoring.reset();
+                    timerScoring.startTime();
+                } else if (timerScoring.seconds() > 1) {
+                    basket.setPosition(0.95);
+                    elevatorPControl.setSetPoint(0);
 
-                        break;
+                    if (elevatorPControl.atPoint() && elevatorPControl.getSetPoint() == 0) {
+                        basket.closeBasket();
 
-                    case 2:
-                        Claw.openOrCloseClaw(false, true);
-                        elevatorPControl.setSetPoint(50);
-                        break;
+                        isGamePieceDoingScoring = false;
 
-                    case 3:
-                        elevatorPControl.setSetPoint(40);
-                        sleep(1000);
-                        Claw.openOrCloseClaw(true, false);
-                        break;
-                    case 4:
-                        elevatorPControl.setSetPoint(0);
-                        Claw.openOrCloseClaw(false,true);
-                        buttonPresses = 0;
-                        break;
+                        robotState = "IDLE";
+                    }
                 }
             }
-
-            wasBPressed = gamepad1.b;
-        } else {
-
-            wasBPressed = false;
-
-
-        }
-    }
-
-    public void manualControl() {
-
-        if (gamepad1.a && elevatorPControl.getSetPoint() == 0 && !isPressedElevator) {
-            elevatorPControl.setSetPoint(70);
-            isPressedElevator = true;
-        } else if (gamepad1.a && elevatorPControl.getSetPoint() == 70 && !isPressedElevator) {
-            elevatorPControl.setSetPoint(0);
-            isPressedElevator = true;
-        }
-        if (!gamepad1.a) {
-            isPressedElevator = false;
         }
 
-        if (gamepad1.b && !isPressedBasket) {
-            open = !open;
+        public void clawControl () {
+            if (robotState.equals("CLAW")) {
+                if (gamepad1.b && !wasBPressed) {
+                    buttonPresses++;
+                    switch (buttonPresses) {
+                        case 1:
+                            Claw.openOrCloseClaw(true, false);
+                            elevatorPControl.setSetPoint(20);
 
-            if (open) {
-                basket.openBasket();
+                            break;
+
+                        case 2:
+                            Claw.openOrCloseClaw(false, true);
+                            elevatorPControl.setSetPoint(50);
+                            break;
+
+                        case 3:
+                            elevatorPControl.setSetPoint(40);
+                            sleep(1000);
+                            Claw.openOrCloseClaw(true, false);
+                            break;
+                        case 4:
+                            elevatorPControl.setSetPoint(0);
+                            Claw.openOrCloseClaw(false, true);
+                            buttonPresses = 0;
+                            break;
+                    }
+                }
+
+                wasBPressed = gamepad1.b;
             } else {
-                basket.closeBasket();
+
+                wasBPressed = false;
+
+
             }
-            isPressedBasket = true;
         }
 
-        if (!gamepad1.b) {
-            isPressedBasket = false;
-        }
+        public void manualControl() {
 
-        intake.waitForGamePieceWIthDistance(gamepad1.y);
+            if (gamepad1.a && elevatorPControl.getSetPoint() == 0 && !isPressedElevator) {
+                elevatorPControl.setSetPoint(70);
+                isPressedElevator = true;
+            } else if (gamepad1.a && elevatorPControl.getSetPoint() == 70 && !isPressedElevator) {
+                elevatorPControl.setSetPoint(0);
+                isPressedElevator = true;
+            }
+            if (!gamepad1.a) {
+                isPressedElevator = false;
+            }
 
-        if (gamepad1.x && arm.getSetPoint() == 0 && !isPressedArm) {
-            arm.setSetPoint(-207);
-            isPressedArm = true;
-        } else if (gamepad1.x && arm.getSetPoint() == -207 && !isPressedArm) {
-            arm.setSetPoint(0);
-            isPressedArm = true;
-        }
+            if (gamepad1.b && !isPressedBasket) {
+                open = !open;
 
-        if (!gamepad1.x) {
-            isPressedArm = false;
-        }
+                if (open) {
+                    basket.openBasket();
+                } else {
+                    basket.closeBasket();
+                }
+                isPressedBasket = true;
+            }
 
-        if (gamepad1.dpad_up && arm.getSetPoint() == 0 && !isPressedArm2) {
-            arm.setSetPoint(-10);
-            isPressedArm2 = true;
-        } else if (gamepad1.dpad_up && arm.getSetPoint() == -10 && !isPressedArm2) {
-            arm.setSetPoint(0);
-            isPressedArm2 = true;
-        }
+            if (!gamepad1.b) {
+                isPressedBasket = false;
+            }
 
-        if (!gamepad1.dpad_up) {
-            isPressedArm2 = false;
-        }
+            intake.waitForGamePieceWIthDistance(gamepad1.y);
 
-        if (gamepad1.dpad_down) {
-            intake.setSpeed(0.1);
-            intake.moveWithSpeed();
+            if (gamepad1.x && arm.getSetPoint() == 0 && !isPressedArm) {
+                arm.setSetPoint(-230);
+                isPressedArm = true;
+            } else if (gamepad1.x && arm.getSetPoint() == -230 && !isPressedArm) {
+                arm.setSetPoint(0);
+                isPressedArm = true;
+            }
+
+            if (!gamepad1.x) {
+                isPressedArm = false;
+            }
+
+            if (gamepad1.dpad_up && arm.getSetPoint() == 0 && !isPressedArm2) {
+                arm.setSetPoint(-10);
+                isPressedArm2 = true;
+            } else if (gamepad1.dpad_up && arm.getSetPoint() == -10 && !isPressedArm2) {
+                arm.setSetPoint(0);
+                isPressedArm2 = true;
+            }
+
+            if (!gamepad1.dpad_up) {
+                isPressedArm2 = false;
+            }
+
+            if (gamepad1.dpad_down) {
+                intake.setSpeed(0.1);
+                intake.moveWithSpeed();
+            }
         }
-    }
 
 }

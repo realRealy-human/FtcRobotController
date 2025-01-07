@@ -43,7 +43,8 @@ public class ElevatorPControl {
     }
 
     public void updateBySetPoint() {
-        motor.setPower(pidController.calculateP(getSetPoint() * 23f , motor.getCurrentPosition()));
+        boolean isMovingDown = !(motor.getCurrentPosition() < getPosition() * 23);
+        motor.setPower(pidController.calculateP(getSetPoint() * 23 , motor.getCurrentPosition()) * (isMovingDown ? 0.6 : 1));
     }
 
     public boolean atPoint() {
