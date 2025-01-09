@@ -24,7 +24,7 @@ public class Arm {
         arm = hardwareMap.get(DcMotor.class, "arm");
         arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         pidController = new PID(0.001);
 
         // save the telemetry
@@ -49,32 +49,35 @@ public class Arm {
     public void updateBySetPoint() {
         //arm.setPower(pidController.calculateP(getSetPoint() , arm.getCurrentPosition()));
 
-        if (setPoint == -230) {
+        if (setPoint == -250) {
              if (getPosition() > -60) {
-                 arm.setPower(-0.2);
+                 arm.setPower(-0.45);
                  telemetry.addData("arm con", 1);
              } else if (getPosition() > -200) {
-                 arm.setPower(0.1);
+                 arm.setPower(0.02);
                  telemetry.addData("arm con", 2);
              } else {
                  arm.setPower(0);
                  telemetry.addData("arm con", 3);
              }
         } else {
-            if (getPosition() > -60 && getPosition() < -10) {
-                arm.setPower(0.5);
+            if (getPosition() < -50) {
+                arm.setPower(0.85);
                 telemetry.addData("arm con", 4);
-            } else if (getPosition() < -60) {
-                arm.setPower(1);
+            } else if (getPosition() > -40 && getPosition() < -60) {
+                arm.setPower(-0.04);
                 telemetry.addData("arm con", 5);
+            } else if (getPosition() > -60 && getPosition() < -20) {
+                arm.setPower(-0.05);
+                telemetry.addData("arm con", 6);
             } else {
                 arm.setPower(0);
-                telemetry.addData("arm con", 6);
+                telemetry.addData("arm con", 7);
             }
         }
     }
 
     public boolean atPoint() {
-        return Math.abs(getSetPoint() - getPosition()) <= 12;
+        return Math.abs(getSetPoint() - getPosition()) <= 32;
     }
 }

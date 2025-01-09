@@ -90,12 +90,20 @@ public class firstAuto extends LinearOpMode {
             if (gamepad1.b) {
                 robotState = "CLAW";
             }
+            if (gamepad1.left_bumper){
+                robotState = "PROBLEM";
+            }
+            if (gamepad1.right_bumper){
+                robotState = "EMERGENCY";
+            }
 
 
             intakeAutomation();
 
             highScoringAutomation();
             clawControl();
+            emergencyElevator();
+            emergencyArm();
 
 
             intake.moveWithSpeed();
@@ -110,57 +118,87 @@ public class firstAuto extends LinearOpMode {
             dashTele.addData("getDistanceSensor", intake.getDistanceSensor());
             dashTele.addData("getIntakeSpeed", intake.getSpeed());
             dashTele.addData("buttonPresses", buttonPresses);
-            dashTele.addData("roboState", robotState);
+            dashTele.addData("robotState", robotState);
             dashTele.addData("pressesA", gamepad1.a);
             dashTele.addData("pressesB", gamepad1.b);
+            dashTele.addData("arm at point", arm.atPoint());
+//            dashTele
+//                    .addData("armPose", arm.getPosition())
+//                    .addData("armSetPoint", arm.getSetPoint())
+//                    .addData("elevatorPose", elevatorPControl.getPosition())
+//                    .addData("elevatorSetPoint", elevatorPControl.getSetPoint())
+//                    .addData("gamePieceInside", intake.isGamePiece())
+//                    .addData("getDistanceSensor", intake.getDistanceSensor())
+//                    .addData("getIntakeSpeed", intake.getSpeed())
+//                    .addData("buttonPresses", buttonPresses)
+//                    .addData("roboState", robotState)
+//                    .addData("pressesA", gamepad1.a)
+//                    .addData("pressesB", gamepad1.b)
+//                    .addData("arm at point", arm.atPoint());
             dashTele.update();
             telemetry.update();
         }
     }
 
     private void intakeAutomation() {
+        if (robotState == "INTAKE" && !intake.isGamePiece() && arm.getSetPoint() == -250 && arm.atPoint()) {
+            intake.setSpeed(0.35);
 
-
-        if (robotState == "INTAKE" && arm.atPoint() && arm.getSetPoint() == -279) {
-            intake.setSpeed(0.5);
             dashTele.addData("intakeAuto state", 2);
         }
 
-        if (robotState == "INTAKE" && intake.isGamePiece() && arm.atPoint() && arm.getSetPoint() >= -290 && arm.getSetPoint() <= -279) {
+        if (robotState == "INTAKE" && intake.isGamePiece() && arm.atPoint() && arm.getSetPoint() == -250) {
             intake.setSpeed(0);
             arm.setSetPoint(0);
+
+
+
+            dashTele.addData("intakeAuto state", 3);
+        }
+        if (robotState == "INTAKE" && intake.isGamePiece() && arm.atPoint() && arm.getSetPoint() == 0){
+            robotState = "PASSING";
+            dashTele.addData("intakeAuto state", 4);
         }
 
-        if (robotState == "INTAKE" && intake.isGamePiece() && arm.getSetPoint() == 0) {
-            intake.setSpeed(1);
 
-
-          robotState = "INTAKE";
-        }
         if (robotState == "INTAKE" && !intake.isGamePiece() && arm.getSetPoint() == 0) {
-            arm.setSetPoint(-230);
+            arm.setSetPoint(-250);
 
-             dashTele.addData("intakeAuto state", 1);
-
+            dashTele.addData("intakeAuto state", 1);
         }
 
-        // if (robotState == "PASSING") {
-        //   if (!hasReset) {
-        //          hasReset = true;
-        //          timerPassing.reset();
-        //         timerPassing.startTime();
-        //      }
-        //  }
+        if (robotState == "PASSING" && intake.isGamePiece() && arm.getSetPoint() == 0 && arm.atPoint()) {
+            intake.setSpeed(0.4);
+            dashTele.addData("intakeAuto state", 5);
+            robotState = "IDLE";
+          //if (!hasReset) {
+            //     hasReset = true;
+             //     timerPassing.reset();
+             //   timerPassing.startTime();
+             //}
+         }
 
-        //   if (robotState == "PASSING" && hasReset && timerPassing.seconds() < 1) {
-        //    intake.setSpeed(0.2);
-        //   }
+        if (robotState == "PASSING" && hasReset && timerPassing.seconds() < 1 ) {
+           intake.setSpeed(0.4);
 
-        // if (robotState == "PASSING" && hasReset && timerPassing.seconds() > 1) {
+           robotState = "IDLE";
+          }
+
+
+        //if (robotState == "PASSING" && hasReset && timerPassing.seconds() > 1) {
         //       intake.setSpeed(0);
-        //       hasReset = false;
-        //       robotState = "IDLE";
-        //  }
+         //      hasReset = false;
+         //     robotState = "IDLE";
+
+         // }
+        if (robotState == "IDLE" && intake.isGamePiece()){
+            intake.setSpeed(0.6);
+            dashTele.addData("intakeAuto state", 6);
+        }
+     if (robotState == "IDLE" && !intake.isGamePiece() ){
+         intake.setSpeed(0);
+         dashTele.addData("intakeAuto state", 7);
+     }
 
     }
 
@@ -169,7 +207,7 @@ public class firstAuto extends LinearOpMode {
                 if (elevatorPControl.getSetPoint() == 0) {
                     basket.setPosition(0.95);
                     elevatorPControl.setSetPoint(150);
-                } else if (elevatorPControl.getSetPoint() == 150) {
+                } else if (elevatorPControl.getSetPoint() == 103) {
                     basket.closeBasket();
                     isGamePieceDoingScoring = true;
 
@@ -177,7 +215,7 @@ public class firstAuto extends LinearOpMode {
                 }
             }
 
-            if (robotState == "HIGHSCORING" && elevatorPControl.atPoint() && elevatorPControl.getSetPoint() == 150 && isGamePieceDoingScoring) {
+            if (robotState == "HIGHSCORING" && elevatorPControl.atPoint() && elevatorPControl.getSetPoint() == 103) {
                 if (basket.getPosition() > 0.65) {
                     basket.openBasket();
                     timerScoring.reset();
@@ -234,6 +272,17 @@ public class firstAuto extends LinearOpMode {
 
             }
         }
+        public void emergencyElevator(){
+        if (robotState == "EMERGENCY") {
+            elevatorPControl.setSetPoint(0);
+        }
+        }
+        public void emergencyArm(){
+        if (robotState == "PROBLEM") {
+            arm.setSetPoint(0);
+            intake.setSpeed(0);
+        }
+        }
 
         public void manualControl() {
 
@@ -266,9 +315,9 @@ public class firstAuto extends LinearOpMode {
             intake.waitForGamePieceWIthDistance(gamepad1.y);
 
             if (gamepad1.x && arm.getSetPoint() == 0 && !isPressedArm) {
-                arm.setSetPoint(-230);
+                arm.setSetPoint(-250);
                 isPressedArm = true;
-            } else if (gamepad1.x && arm.getSetPoint() == -230 && !isPressedArm) {
+            } else if (gamepad1.x && arm.getSetPoint() == -250 && !isPressedArm) {
                 arm.setSetPoint(0);
                 isPressedArm = true;
             }
