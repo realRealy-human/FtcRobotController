@@ -24,7 +24,7 @@ public class Arm {
         arm = hardwareMap.get(DcMotor.class, "arm");
         arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         pidController = new PID(0.001);
 
         // save the telemetry
@@ -50,29 +50,26 @@ public class Arm {
         //arm.setPower(pidController.calculateP(getSetPoint() , arm.getCurrentPosition()));
 
         if (setPoint == -250) {
-             if (getPosition() > -60) {
-                 arm.setPower(-0.43);
-                 telemetry.addData("arm con", 1);
-             } else if (getPosition() > -200) {
-                 arm.setPower(0.03);
-                 telemetry.addData("arm con", 2);
-             } else {
-                 arm.setPower(0);
-                 telemetry.addData("arm con", 3);
-             }
-        } else {
-            if (getPosition() < -50) {
-                arm.setPower(0.9);
-                telemetry.addData("arm con", 4);
-            } else if (getPosition() > -40 && getPosition() < -60) {
-                arm.setPower(-0.13);
-                telemetry.addData("arm con", 5);
-            } else if (getPosition() > -60 && getPosition() < -20) {
-                arm.setPower(-0.07);
-                telemetry.addData("arm con", 6);
+            if (getPosition() > -60) {
+                arm.setPower(-0.25);
+                telemetry.addData("arm con", 1);
+            } else if (getPosition() > -200) {
+                arm.setPower(0.1);
+                telemetry.addData("arm con", 2);
             } else {
                 arm.setPower(0);
-                telemetry.addData("arm con", 7);
+                telemetry.addData("arm con", 3);
+            }
+        } else {
+            if (getPosition() > -60 && getPosition() < -10) {
+                arm.setPower(0.8);
+                telemetry.addData("arm con", 4);
+            } else if (getPosition() < -60) {
+                arm.setPower(0);
+                telemetry.addData("arm con", 5);
+            } else {
+                arm.setPower(0);
+                telemetry.addData("arm con", 6);
             }
         }
     }
