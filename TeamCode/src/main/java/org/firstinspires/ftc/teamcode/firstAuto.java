@@ -142,7 +142,7 @@ public class firstAuto extends LinearOpMode {
 
     private void intakeAutomation() {
         if (robotState == "INTAKE" && !intake.isGamePiece() && arm.getSetPoint() == -250 && arm.atPoint()) {
-            intake.setSpeed(0.35);
+            intake.setSpeed(0.6);
 
             dashTele.addData("intakeAuto state", 2);
         }
@@ -168,7 +168,7 @@ public class firstAuto extends LinearOpMode {
         }
 
         if (robotState == "PASSING" && intake.isGamePiece() && arm.getSetPoint() == 0 && arm.atPoint()) {
-            intake.setSpeed(0.4);
+            intake.setSpeed(0.6);
             dashTele.addData("intakeAuto state", 5);
             robotState = "IDLE";
           //if (!hasReset) {
@@ -179,7 +179,7 @@ public class firstAuto extends LinearOpMode {
          }
 
         if (robotState == "PASSING" && hasReset && timerPassing.seconds() < 1 ) {
-           intake.setSpeed(0.4);
+           intake.setSpeed(0.6);
 
            robotState = "IDLE";
           }
@@ -206,8 +206,8 @@ public class firstAuto extends LinearOpMode {
             if (robotState == "HIGHSCORING" && elevatorPControl.atPoint() && !isGamePieceDoingScoring) {
                 if (elevatorPControl.getSetPoint() == 0) {
                     basket.setPosition(0.95);
-                    elevatorPControl.setSetPoint(150);
-                } else if (elevatorPControl.getSetPoint() == 103) {
+                    elevatorPControl.setSetPoint(105);
+                } else if (elevatorPControl.getSetPoint() == 105 && elevatorPControl.atPoint()) {
                     basket.closeBasket();
                     isGamePieceDoingScoring = true;
 
@@ -215,7 +215,7 @@ public class firstAuto extends LinearOpMode {
                 }
             }
 
-            if (robotState == "HIGHSCORING" && elevatorPControl.atPoint() && elevatorPControl.getSetPoint() == 103) {
+            if (robotState == "HIGHSCORING" && elevatorPControl.atPoint() && elevatorPControl.getSetPoint() == 105) {
                 if (basket.getPosition() > 0.65) {
                     basket.openBasket();
                     timerScoring.reset();
@@ -224,7 +224,7 @@ public class firstAuto extends LinearOpMode {
                     basket.setPosition(0.95);
                     elevatorPControl.setSetPoint(0);
 
-                    if (elevatorPControl.atPoint() && elevatorPControl.getSetPoint() == 0) {
+                    if (elevatorPControl.atPoint() && elevatorPControl.getSetPoint() == 0 &&  elevatorPControl.atPoint()) {
                         basket.closeBasket();
 
                         isGamePieceDoingScoring = false;

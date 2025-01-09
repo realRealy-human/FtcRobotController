@@ -44,11 +44,11 @@ public class ElevatorPControl {
 
     public void updateBySetPoint() {
         boolean isMovingDown = !(motor.getCurrentPosition() < getPosition() * 23);
-        motor.setPower(pidController.calculateP(getSetPoint() * 23 , motor.getCurrentPosition()) * (isMovingDown ? 0.6 : 1));
+        motor.setPower(pidController.calculateP(getSetPoint() * 23 , motor.getCurrentPosition()) * (isMovingDown ? 0.55 : 1));
     }
 
     public boolean atPoint() {
-        return Math.abs(getSetPoint() - getPosition()) <= 2;
+        return Math.abs(getSetPoint() - getPosition()) <= 10;
     }
 
     public double getPosition(){

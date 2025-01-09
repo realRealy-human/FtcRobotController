@@ -51,10 +51,10 @@ public class Arm {
 
         if (setPoint == -250) {
              if (getPosition() > -60) {
-                 arm.setPower(-0.45);
+                 arm.setPower(-0.43);
                  telemetry.addData("arm con", 1);
              } else if (getPosition() > -200) {
-                 arm.setPower(0.02);
+                 arm.setPower(0.03);
                  telemetry.addData("arm con", 2);
              } else {
                  arm.setPower(0);
@@ -65,10 +65,10 @@ public class Arm {
                 arm.setPower(0.85);
                 telemetry.addData("arm con", 4);
             } else if (getPosition() > -40 && getPosition() < -60) {
-                arm.setPower(-0.04);
+                arm.setPower(-0.13);
                 telemetry.addData("arm con", 5);
             } else if (getPosition() > -60 && getPosition() < -20) {
-                arm.setPower(-0.05);
+                arm.setPower(-0.07);
                 telemetry.addData("arm con", 6);
             } else {
                 arm.setPower(0);
