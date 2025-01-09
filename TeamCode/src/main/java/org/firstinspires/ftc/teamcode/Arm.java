@@ -62,7 +62,7 @@ public class Arm {
              }
         } else {
             if (getPosition() < -50) {
-                arm.setPower(0.85);
+                arm.setPower(0.9);
                 telemetry.addData("arm con", 4);
             } else if (getPosition() > -40 && getPosition() < -60) {
                 arm.setPower(-0.13);

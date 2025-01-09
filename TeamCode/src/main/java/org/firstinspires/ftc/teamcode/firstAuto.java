@@ -207,29 +207,41 @@ public class firstAuto extends LinearOpMode {
                 if (elevatorPControl.getSetPoint() == 0) {
                     basket.setPosition(0.95);
                     elevatorPControl.setSetPoint(105);
+
+                    dashTele.addData("basketStages", 1);
+
                 } else if (elevatorPControl.getSetPoint() == 105 && elevatorPControl.atPoint()) {
                     basket.closeBasket();
                     isGamePieceDoingScoring = true;
+
+                    dashTele.addData("basketStages", 2);
 
                     robotState = "IDLE";
                 }
             }
 
-            if (robotState == "HIGHSCORING" && elevatorPControl.atPoint() && elevatorPControl.getSetPoint() == 105) {
-                if (basket.getPosition() > 0.65) {
+            if (robotState == "HIGHSCORING" && elevatorPControl.atPoint() && isGamePieceDoingScoring) {
+                if (basket.getPosition() > 0.65 && basket.getPosition() < 1) {
                     basket.openBasket();
                     timerScoring.reset();
                     timerScoring.startTime();
+
+                    dashTele.addData("basketStages", 3);
+
                 } else if (timerScoring.seconds() > 1) {
-                    basket.setPosition(0.95);
+                    basket.setPosition(1);
                     elevatorPControl.setSetPoint(0);
 
-                    if (elevatorPControl.atPoint() && elevatorPControl.getSetPoint() == 0 &&  elevatorPControl.atPoint()) {
+                    dashTele.addData("basketStages", 4);
+
+                    if (elevatorPControl.atPoint() && elevatorPControl.getSetPoint() == 0 && elevatorPControl.atPoint()) {
                         basket.closeBasket();
 
                         isGamePieceDoingScoring = false;
 
                         robotState = "IDLE";
+
+                        dashTele.addData("basketStages", 5);
                     }
                 }
             }
