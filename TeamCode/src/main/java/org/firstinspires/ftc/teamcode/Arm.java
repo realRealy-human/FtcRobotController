@@ -47,6 +47,10 @@ public class Arm {
         return setPoint;
     }
 
+    public void setPower(double power) {
+        arm.setPower(power);
+    }
+
     public void updateBySetPoint() {
         //arm.setPower(pidController.calculateP(getSetPoint() , arm.getCurrentPosition()));
 
@@ -55,29 +59,28 @@ public class Arm {
                 arm.setPower(-0.4);
                 telemetry.addData("arm con", 1);
             } else if (getPosition() > -200) {
-                arm.setPower(0.1);
+                arm.setPower(0.15);
                 telemetry.addData("arm con", 2);
             } else {
                 arm.setPower(0);
                 telemetry.addData("arm con", 3);
             }
-        }
-          else {
-                if (getPosition() < -50) {
-                    arm.setPower(0.85);
-                    telemetry.addData("arm con", 4);
-                } else if (getPosition() > -50 && getPosition() < -60) {
-                    arm.setPower(-0.03);
-                    telemetry.addData("arm con", 5);
-                } else if (getPosition() > -50 && getPosition() < -20) {
-                    arm.setPower(-0.03);
-                    telemetry.addData("arm con", 6);
-                } else {
-                    arm.setPower(0);
-                    telemetry.addData("arm con", 7);
-                }
+        } else {
+            if (getPosition() < -50) {
+                arm.setPower(0.85);
+                telemetry.addData("arm con", 4);
+            } else if (getPosition() > -50 && getPosition() < -60) {
+                arm.setPower(-0.03);
+                telemetry.addData("arm con", 5);
+            } else if (getPosition() > -50 && getPosition() < -20) {
+                arm.setPower(-0.03);
+                telemetry.addData("arm con", 6);
+            } else {
+                arm.setPower(0);
+                telemetry.addData("arm con", 7);
             }
         }
+    }
 
     public boolean atPoint() {
         return Math.abs(getSetPoint() - getPosition()) <= 36;
