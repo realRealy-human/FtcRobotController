@@ -48,12 +48,15 @@ public class firstAuto extends LinearOpMode {
     private boolean wasXPressed = false;
     private TouchSensor touchTop;
     private TouchSensor touchBottom;
+    private ElapsedTime armUpTimer;
 
     // defining the basic things for the system
 
 
     @Override
     public void runOpMode() {
+
+
         dashboard = FtcDashboard.getInstance();
         dashTele = dashboard.getTelemetry();
         basket = new Basket(hardwareMap, telemetry);
@@ -66,6 +69,7 @@ public class firstAuto extends LinearOpMode {
         timerScoring = new ElapsedTime();
         timerPassing = new ElapsedTime();
         armDownTimer = new ElapsedTime();
+        armUpTimer = new ElapsedTime();
         touchTop = hardwareMap.get(TouchSensor.class, "arm_top");
 //        Touch1 = new TouchSensor() {
 //            @Override
@@ -152,52 +156,52 @@ public class firstAuto extends LinearOpMode {
 //        };
 
 
-
-
         arm.setSetPoint(0);
         basket.closeBasket();
 
         // more defining and putting things in their starting positions
 
-        dashTele.addData("armPose", arm.getPosition());
+       /* dashTele.addData("armPose", arm.getPosition());
         dashTele.addData("armSetPoint", arm.getSetPoint());
 
         dashTele.addData("elevatorPose", elevatorPControl.getPosition());
         dashTele.addData("elevatorSetPoint", elevatorPControl.getSetPoint());
         dashTele.addData("getIntakeSpeed", intake.getSpeed());
-        dashTele.update();
+        dashTele.update();*/
 
         waitForStart();
 
         boolean previousAState = false;
 
         armDownTimer.reset();
+        armUpTimer.reset();
 
         while (opModeIsActive()) {
             drive.driveUsingGamepad(gamepad1);
 
-            if (gamepad1.x && !intake.isGamePiece()) {
+
+            if (gamepad1.right_bumper && !intake.isGamePiece()) {
                 robotState = "INTAKE";
             }
 
-            if (gamepad1.a) {
+            if (gamepad1.left_bumper) {
                 robotState = "HIGHSCORING";
             }
 
             if (gamepad1.b) {
                 robotState = "CLAW";
             }
-            if (gamepad1.left_bumper) {
-                robotState = "PROBLEM";
-            }
-            if (gamepad1.right_bumper) {
-                robotState = "EMERGENCY";
-            }
+
             if (gamepad2.x) {
                 robotState = "IDLE";
             }
             if (gamepad2.b){
-                arm.setSetPoint(0);
+                if (!touchTop.isPressed()){
+                    arm.setPower(0.1);
+                }
+                else {
+                    arm.setPower(0);
+                }
             }
             if (gamepad2.y){
                 elevatorPControl.setSetPoint(0);
@@ -226,11 +230,9 @@ public class firstAuto extends LinearOpMode {
             emergencyArm();
 
 
-            //intake.moveWithSpeed();
             elevatorPControl.updateBySetPoint();
-//            arm.updateBySetPoint();
 
-            dashTele.addData("armPose", arm.getPosition());
+         /*   dashTele.addData("armPose", arm.getPosition());
             dashTele.addData("armSetPoint", arm.getSetPoint());
             dashTele.addData("elevatorPose", elevatorPControl.getPosition());
             dashTele.addData("elevatorSetPoint", elevatorPControl.getSetPoint());
@@ -245,138 +247,92 @@ public class firstAuto extends LinearOpMode {
             dashTele.addData( "touch top is pressed", touchTop.isPressed());
             dashTele.addData( "touch bottom is pressed", touchBottom.isPressed());
 
-//
-//            dashTele
-//                    .addData("armPose", arm.getPosition())
-//                    .addData("armSetPoint", arm.getSetPoint())
-//                    .addData("elevatorPose", elevatorPControl.getPosition())
-//                    .addData("elevatorSetPoint", elevatorPControl.getSetPoint())
-//                    .addData("gamePieceInside", intake.isGamePiece())
-//                    .addData("getDistanceSensor", intake.getDistanceSensor())
-//                    .addData("getIntakeSpeed", intake.getSpeed())
-//                    .addData("buttonPresses", buttonPresses)
-//                    .addData("roboState", robotState)
-//                    .addData("pressesA", gamepad1.a)
-//                    .addData("pressesB", gamepad1.b)
-//                    .addData("arm at point", arm.atPoint());
+
+
+
+            dashTele
+                    .addData("armPose", arm.getPosition())
+                    .addData("armSetPoint", arm.getSetPoint())
+                    .addData("elevatorPose", elevatorPControl.getPosition())
+                    .addData("elevatorSetPoint", elevatorPControl.getSetPoint())
+                    .addData("gamePieceInside", intake.isGamePiece())
+                    .addData("getDistanceSensor", intake.getDistanceSensor())
+                    .addData("getIntakeSpeed", intake.getSpeed())
+                    .addData("buttonPresses", buttonPresses)
+                    .addData("roboState", robotState)
+                    .addData("pressesA", gamepad1.a)
+                    .addData("pressesB", gamepad1.b)
+                    .addData("arm at point", arm.atPoint());
             dashTele.update();
-            telemetry.update();
+            telemetry.update();*/
         }
     }
 
-    private void intakeAutomation() {
-        intake.setPower(1);
-       /* if (robotState.equals("INTAKE")) {
-            if (gamepad1.x && !wasXPressed) {
-                pressesButtonX++;
-                switch (pressesButtonX) {
-                    case 1:
-                        arm.setSetPoint(-250);
-                        intake.setSpeed(0.6);
-                        if (intake.isGamePiece() == true) {
-                            intake.setSpeed(0);
-
-                        }
-                        break;
-                    case 2:
-                        arm.setSetPoint(0);
-                        intake.setSpeed(0.6);
-                        if (intake.isGamePiece() == false) {
-                            intake.setSpeed(0);
-                            pressesButtonX = 0;
-                            break;
-
-                        }
-                        wasXPressed = gamepad1.b;
+     private void intakeAutomation() {
 
 
-                }
+         if (robotState == "INTAKE" && !intake.isGamePiece()) {
+             dashTele.addData("intakeAuto state", 1);
+             intake.setPower(-0.4);
 
-            }*/
+             if (!touchBottom.isPressed()) {
+                 arm.setPower(-0.1);
+             } else {
+                 arm.setPower(0);
+             }
+         }
+
+         if (robotState == "INTAKE" && intake.isGamePiece() ) {
+             intake.setPower(0);
+             if (!touchTop.isPressed()) {
+                 arm.setPower(0.17);
+             } else {
+                 arm.setPower(0);
+             }
 
 
 
 
-        if (touchBottom.isPressed()){
-            dashTele.addData("touch 2 is pressed", true);
-        }
-        if (touchTop.isPressed()){
-            dashTele.addData("touch 1 is pressed", true);
-        }
-        if (!touchBottom.isPressed()){
-            dashTele.addData("touch 2 isn pressed", false);
-        }
-        if (!touchTop.isPressed()){
-            dashTele.addData("touch 1 is pressed", false);
-        }
-        if (robotState == "INTAKE" && !intake.isGamePiece() && !touchBottom.isPressed()) {
-            dashTele.addData("intakeAuto state", 1);
+             dashTele.addData("intakeAuto state", 2);
+         }
 
-            arm.setPower(-0.1);
-        }
-
-        if (robotState == "INTAKE" && !intake.isGamePiece() && touchBottom.isPressed()) {
-            arm.setPower(0);
-            intake.setSpeed(1);
-
-            dashTele.addData("intakeAuto state", 2);
-        }
-
-        if (robotState == "INTAKE" && intake.isGamePiece() ) {
-           if (!touchTop.isPressed()){
-               arm.setPower(0.7);
-           } else {
-               arm.setPower(0);
-           }
-
-
-            dashTele.addData("intakeAuto state", 3);
-        }
-        if (robotState == "INTAKE" && intake.isGamePiece() && touchTop.isPressed()) {
-           robotState = "PASSING";
-
-
-            dashTele.addData("intakeAuto state", 3);
-        }
-
-        if (robotState == "PASSING" && intake.isGamePiece() ) {
-            intake.setSpeed(0.6);
-
-
-            dashTele.addData("intakeAuto state", 4);
-        }
-        if (robotState == "PASSING" && !intake.isGamePiece() ) {
-            intake.setSpeed(0);
-            robotState = "IDLE";
-
-
-            dashTele.addData("intakeAuto state", 5);
-        }
+         if (robotState == "INTAKE" && intake.isGamePiece() && touchTop.isPressed()) {
+             robotState = "PASSING";
 
 
 
-//        if (robotState == "PASSING" && intake.isGamePiece() && armDownTimer.seconds() < 6.8) {
-//            intake.setSpeed(0.6);
-//            dashTele.addData("intakeAuto state", 4);
-//        }
+
+             dashTele.addData("intakeAuto state", 3);
+         }
+
+
+         if (robotState == "PASSING" && intake.isGamePiece() && touchTop.isPressed()) {
+             if (armUpTimer.seconds() <= 0) {
+                 armUpTimer.startTime();
+             } else if (armUpTimer.seconds() > 0.1) {
+                 armUpTimer.reset();
+
+                 intake.setPower(-0.7);
+             }
+
+             dashTele.addData("intakeAuto state", 4);
+         }
+
+         if (robotState == "PASSING" && !intake.isGamePiece()) {
+             intake.setPower(0);
+             robotState = "IDLE";
+
+
+
+
+             dashTele.addData("intakeAuto state", 5);
+         }
+
+
+
+
+     }
 //
-//        if (robotState.equals("PASSING") && !intake.isGamePiece() &&  armDownTimer.seconds() < 6.9){
-//            intake.setSpeed(0);
-//            dashTele.addData("intakeAuto state", 5);
-//        }
-//
-//        if (robotState.equals("PASSING") && !intake.isGamePiece() &&  armDownTimer.seconds() < 7 ){
-//            robotState = "IDLE";
-//        }
-//
-//        if (robotState == "IDLE"){
-//            intake.setSpeed(0);
-//            arm.setSetPoint(0);
-//            armDownTimer.reset();
-
-
-//
-    }
 
 
 
@@ -434,6 +390,7 @@ public class firstAuto extends LinearOpMode {
                         case 1:
                             Claw.openOrCloseClaw(true, false);
                             elevatorPControl.setSetPoint(20);
+                            basket.setPosition(1);
 
                             break;
 
@@ -471,68 +428,68 @@ public class firstAuto extends LinearOpMode {
         public void emergencyArm() {
             if (robotState == "PROBLEM") {
                 arm.setSetPoint(0);
-                intake.setSpeed(0);
+                intake.setPower(0);
             }
         }
 
         public void manualControl() {
 
-            if (gamepad1.a && elevatorPControl.getSetPoint() == 0 && !isPressedElevator) {
-                elevatorPControl.setSetPoint(70);
-                isPressedElevator = true;
-            } else if (gamepad1.a && elevatorPControl.getSetPoint() == 70 && !isPressedElevator) {
-                elevatorPControl.setSetPoint(0);
-                isPressedElevator = true;
-            }
-            if (!gamepad1.a) {
-                isPressedElevator = false;
-            }
-
-            if (gamepad1.b && !isPressedBasket) {
-                open = !open;
-
-                if (open) {
-                    basket.openBasket();
-                } else {
-                    basket.closeBasket();
-                }
-                isPressedBasket = true;
-            }
-
-            if (!gamepad1.b) {
-                isPressedBasket = false;
-            }
-
-            intake.waitForGamePieceWIthDistance(gamepad1.y);
-
-            if (gamepad1.x && arm.getSetPoint() == 0 && !isPressedArm) {
-                arm.setSetPoint(-250);
-                isPressedArm = true;
-            } else if (gamepad1.x && arm.getSetPoint() == -250 && !isPressedArm) {
-                arm.setSetPoint(0);
-                isPressedArm = true;
-            }
-
-            if (!gamepad1.x) {
-                isPressedArm = false;
-            }
-
-            if (gamepad1.dpad_up && arm.getSetPoint() == 0 && !isPressedArm2) {
-                arm.setSetPoint(-10);
-                isPressedArm2 = true;
-            } else if (gamepad1.dpad_up && arm.getSetPoint() == -10 && !isPressedArm2) {
-                arm.setSetPoint(0);
-                isPressedArm2 = true;
-            }
-
-            if (!gamepad1.dpad_up) {
-                isPressedArm2 = false;
-            }
-
-            if (gamepad1.dpad_down) {
-                intake.setSpeed(0.1);
-                intake.moveWithSpeed();
-            }
+//            /*if (gamepad1.a && elevatorPControl.getSetPoint() == 0 && !isPressedElevator) {
+//                elevatorPControl.setSetPoint(70);
+//                isPressedElevator = true;
+//            } else if (gamepad1.a && elevatorPControl.getSetPoint() == 70 && !isPressedElevator) {
+//                elevatorPControl.setSetPoint(0);
+//                isPressedElevator = true;
+//            }
+//            if (!gamepad1.a) {
+//                isPressedElevator = false;
+//            }
+//
+//            if (gamepad1.b && !isPressedBasket) {
+//                open = !open;
+//
+//                if (open) {
+//                    basket.openBasket();
+//                } else {
+//                    basket.closeBasket();
+//                }
+//                isPressedBasket = true;
+//            }
+//
+//            if (!gamepad1.b) {
+//                isPressedBasket = false;
+//            }
+//
+//
+//
+//            if (gamepad1.x && arm.getSetPoint() == 0 && !isPressedArm) {
+//                arm.setSetPoint(-250);
+//                isPressedArm = true;
+//            } else if (gamepad1.x && arm.getSetPoint() == -250 && !isPressedArm) {
+//                arm.setSetPoint(0);
+//                isPressedArm = true;
+//            }
+//
+//            if (!gamepad1.x) {
+//                isPressedArm = false;
+//            }
+//
+//            if (gamepad1.dpad_up && arm.getSetPoint() == 0 && !isPressedArm2) {
+//                arm.setSetPoint(-10);
+//                isPressedArm2 = true;
+//            } else if (gamepad1.dpad_up && arm.getSetPoint() == -10 && !isPressedArm2) {
+//                arm.setSetPoint(0);
+//                isPressedArm2 = true;
+//            }
+//
+//            if (!gamepad1.dpad_up) {
+//                isPressedArm2 = false;
+//            }
+//
+//            if (gamepad1.dpad_down) {
+//                intake.setSpeed(0.1);
+//                intake.moveWithSpeed();
+//            }*/
         }
     }
 
