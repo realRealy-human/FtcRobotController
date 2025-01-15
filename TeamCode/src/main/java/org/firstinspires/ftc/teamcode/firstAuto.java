@@ -232,20 +232,11 @@ public class firstAuto extends LinearOpMode {
 
             elevatorPControl.updateBySetPoint();
 
-         /*   dashTele.addData("armPose", arm.getPosition());
-            dashTele.addData("armSetPoint", arm.getSetPoint());
-            dashTele.addData("elevatorPose", elevatorPControl.getPosition());
-            dashTele.addData("elevatorSetPoint", elevatorPControl.getSetPoint());
+
             dashTele.addData("gamePieceInside", intake.isGamePiece());
             dashTele.addData("getDistanceSensor", intake.getDistanceSensor());
             dashTele.addData("getIntakeSpeed", intake.getSpeed());
-            dashTele.addData("buttonPresses", buttonPresses);
             dashTele.addData("robotState", robotState);
-            dashTele.addData("pressesA", gamepad1.a);
-            dashTele.addData("pressesB", gamepad1.b);
-            dashTele.addData("arm at point", arm.atPoint());
-            dashTele.addData( "touch top is pressed", touchTop.isPressed());
-            dashTele.addData( "touch bottom is pressed", touchBottom.isPressed());
 
 
 
@@ -258,13 +249,12 @@ public class firstAuto extends LinearOpMode {
                     .addData("gamePieceInside", intake.isGamePiece())
                     .addData("getDistanceSensor", intake.getDistanceSensor())
                     .addData("getIntakeSpeed", intake.getSpeed())
-                    .addData("buttonPresses", buttonPresses)
-                    .addData("roboState", robotState)
-                    .addData("pressesA", gamepad1.a)
-                    .addData("pressesB", gamepad1.b)
-                    .addData("arm at point", arm.atPoint());
+
+                    .addData("roboState", robotState);
+
+
             dashTele.update();
-            telemetry.update();*/
+            telemetry.update();
         }
     }
 
@@ -282,7 +272,7 @@ public class firstAuto extends LinearOpMode {
              }
          }
 
-         if (robotState == "INTAKE" && intake.isGamePiece() ) {
+         if (robotState == "INTAKE" && intake.isGamePiece() && !touchTop.isPressed()) {
              intake.setPower(0);
              if (!touchTop.isPressed()) {
                  arm.setPower(0.17);
@@ -307,23 +297,16 @@ public class firstAuto extends LinearOpMode {
 
 
          if (robotState == "PASSING" && intake.isGamePiece() && touchTop.isPressed()) {
-             if (armUpTimer.seconds() <= 0) {
-                 armUpTimer.startTime();
-             } else if (armUpTimer.seconds() > 0.1) {
-                 armUpTimer.reset();
 
                  intake.setPower(-0.7);
-             }
+
 
              dashTele.addData("intakeAuto state", 4);
          }
 
-         if (robotState == "PASSING" && !intake.isGamePiece()) {
+         if (robotState == "PASSING" && !intake.isGamePiece() && touchTop.isPressed()) {
              intake.setPower(0);
              robotState = "IDLE";
-
-
-
 
              dashTele.addData("intakeAuto state", 5);
          }

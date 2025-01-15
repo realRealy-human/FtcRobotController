@@ -42,7 +42,7 @@ public class Drive1 {
         imu = hardwareMap.get(IMU.class, "imu");
 // Adjust the orientation parameters to match your robot
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
+                RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
                 RevHubOrientationOnRobot.UsbFacingDirection.UP));
 // Without this, the REV Hub's orientation is assumed to be logo up / USB forward
         imu.initialize(parameters);
@@ -84,7 +84,7 @@ public class Drive1 {
     }
     public void fieldCentricUsingGamePad(Gamepad gamepad) {
         double y = -gamepad.left_stick_y; // Remember, Y stick value is reversed
-        double x = gamepad.left_stick_x;
+        double x = -gamepad.left_stick_x;
         double rx = gamepad.right_stick_x;
 
         // reset position when option button is clicked
@@ -94,7 +94,7 @@ public class Drive1 {
 
 
         // calculate the bot's heading
-        botHeading = imu.getRobotYawPitchRollAngles().getRoll(AngleUnit.RADIANS);
+        botHeading = -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
         // report the bot's heading to the imu
         telemetry.addData("imu", botHeading);
