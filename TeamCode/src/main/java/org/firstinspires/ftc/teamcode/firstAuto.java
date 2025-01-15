@@ -177,7 +177,7 @@ public class firstAuto extends LinearOpMode {
         armUpTimer.reset();
 
         while (opModeIsActive()) {
-            drive.driveUsingGamepad(gamepad1);
+            drive.fieldCentricUsingGamePad(gamepad1);
 
 
             if (gamepad1.right_bumper && !intake.isGamePiece()) {

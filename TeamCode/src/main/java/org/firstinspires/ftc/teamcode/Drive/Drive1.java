@@ -30,7 +30,6 @@ public class Drive1 {
         rightRear = hardwareMap.get(DcMotor.class, "rightBack");
 
         // map imu to harware
-        imu = hardwareMap.get(IMU.class, "imu");
 
         // define motors direction
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -39,9 +38,13 @@ public class Drive1 {
         rightRear.setDirection(DcMotorSimple.Direction.FORWARD);
 
         // define imu
+        // Retrieve the IMU from the hardware map
+        imu = hardwareMap.get(IMU.class, "imu");
+// Adjust the orientation parameters to match your robot
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.DOWN,
-                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
+                RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
+                RevHubOrientationOnRobot.UsbFacingDirection.UP));
+// Without this, the REV Hub's orientation is assumed to be logo up / USB forward
         imu.initialize(parameters);
 
         // save telemetry
@@ -80,15 +83,15 @@ public class Drive1 {
         rightRear.setPower(y + x - rx / denominator);
     }
     public void fieldCentricUsingGamePad(Gamepad gamepad) {
-        checkGamepad(gamepad);
+        double y = -gamepad.left_stick_y; // Remember, Y stick value is reversed
+        double x = gamepad.left_stick_x;
+        double rx = gamepad.right_stick_x;
 
         // reset position when option button is clicked
         // This button choice was made so that it is hard to hit on accident,
         // it can be freely changed based on preference.
         // The equivalent button is start on Xbox-style controllers.
-        if (gamepad.options) {
-            imu.resetYaw();
-        }
+
 
         // calculate the bot's heading
         botHeading = imu.getRobotYawPitchRollAngles().getRoll(AngleUnit.RADIANS);
@@ -98,8 +101,8 @@ public class Drive1 {
         telemetry.update();
 
         // Rotate the movement direction counter to the bot's rotation
-        rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
-        rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
+        double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
+        double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
 
         rotX = rotX * 1.1;  // Counteract imperfect strafing
 
@@ -107,14 +110,12 @@ public class Drive1 {
         // Denominator is the largest motor power (absolute value) or 1
         // This ensures all the powers maintain the same ratio,
         // but only if at least one is out of the range [-1, 1]
-        denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
+        double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
+        double frontLeftPower = (rotY + rotX + rx) / denominator;
+        double backLeftPower = (rotY - rotX + rx) / denominator;
+        double frontRightPower = (rotY - rotX - rx) / denominator;
+        double backRightPower = (rotY + rotX - rx) / denominator;
 
-        // calculate motor power
-        frontLeftPower = (rotY + rotX + rx) / denominator;
-        backLeftPower = (rotY - rotX + rx) / denominator;
-        frontRightPower = (rotY - rotX - rx) / denominator;
-        backRightPower = (rotY + rotX - rx) / denominator;
-        // power the motors
         leftFront.setPower(frontLeftPower);
         leftRear.setPower(backLeftPower);
         rightFront.setPower(frontRightPower);
