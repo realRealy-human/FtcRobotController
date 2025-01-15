@@ -46,8 +46,8 @@ public class firstAuto extends LinearOpMode {
     private boolean wasBPressed = false;
     private int buttonsPresses = 0;
     private boolean wasXPressed = false;
-    private TouchSensor Touch1;
-    private TouchSensor Touch2;
+    private TouchSensor touchTop;
+    private TouchSensor touchBottom;
 
     // defining the basic things for the system
 
@@ -66,88 +66,90 @@ public class firstAuto extends LinearOpMode {
         timerScoring = new ElapsedTime();
         timerPassing = new ElapsedTime();
         armDownTimer = new ElapsedTime();
-        Touch1 = new TouchSensor() {
-            @Override
-            public double getValue() {
-                return Touch1.getValue();            }
+        touchTop = hardwareMap.get(TouchSensor.class, "arm_top");
+//        Touch1 = new TouchSensor() {
+//            @Override
+//            public double getValue() {
+//                return Touch1.getValue();            }
+//
+//            @Override
+//            public boolean isPressed() {
+//                return false;
+//            }
+//
+//            @Override
+//            public Manufacturer getManufacturer() {
+//                return null;
+//            }
+//
+//            @Override
+//            public String getDeviceName() {
+//                return "";
+//            }
+//
+//            @Override
+//            public String getConnectionInfo() {
+//                return "";
+//            }
+//
+//            @Override
+//            public int getVersion() {
+//                return 0;
+//            }
+//
+//            @Override
+//            public void resetDeviceConfigurationForOpMode() {
+//
+//            }
+//
+//            @Override
+//            public void close() {
+//
+//            }
+//        };
 
-            @Override
-            public boolean isPressed() {
-                return false;
-            }
-
-            @Override
-            public Manufacturer getManufacturer() {
-                return null;
-            }
-
-            @Override
-            public String getDeviceName() {
-                return "";
-            }
-
-            @Override
-            public String getConnectionInfo() {
-                return "";
-            }
-
-            @Override
-            public int getVersion() {
-                return 0;
-            }
-
-            @Override
-            public void resetDeviceConfigurationForOpMode() {
-
-            }
-
-            @Override
-            public void close() {
-
-            }
-        };
-
-        Touch2 = new TouchSensor() {
-
-            public double getValue() {
-                return Touch2.getValue();
-            }
-
-
-            public boolean isPressed() {
-                return false;
-            }
-
-
-            public Manufacturer getManufacturer() {
-                return null;
-            }
-
-
-            public String getDeviceName() {
-                return "";
-            }
-
-
-            public String getConnectionInfo() {
-                return "";
-            }
-
-
-            public int getVersion() {
-                return 0;
-            }
-
-
-            public void resetDeviceConfigurationForOpMode() {
-
-            }
-
-
-            public void close() {
-
-            }
-        };
+        touchBottom = hardwareMap.get(TouchSensor.class, "arm_bottom");
+//        Touch2 = new TouchSensor() {
+//
+//            public double getValue() {
+//                return Touch2.getValue();
+//            }
+//
+//
+//            public boolean isPressed() {
+//                return false;
+//            }
+//
+//
+//            public Manufacturer getManufacturer() {
+//                return null;
+//            }
+//
+//
+//            public String getDeviceName() {
+//                return "";
+//            }
+//
+//
+//            public String getConnectionInfo() {
+//                return "";
+//            }
+//
+//
+//            public int getVersion() {
+//                return 0;
+//            }
+//
+//
+//            public void resetDeviceConfigurationForOpMode() {
+//
+//            }
+//
+//
+//            public void close() {
+//
+//            }
+//        };
 
 
 
@@ -191,6 +193,30 @@ public class firstAuto extends LinearOpMode {
             if (gamepad1.right_bumper) {
                 robotState = "EMERGENCY";
             }
+            if (gamepad2.x) {
+                robotState = "IDLE";
+            }
+            if (gamepad2.b){
+                arm.setSetPoint(0);
+            }
+            if (gamepad2.y){
+                elevatorPControl.setSetPoint(0);
+            }
+            if (gamepad2.a){
+                intake.setPower(0);
+            }
+            if (gamepad2.left_bumper){
+                basket.closeBasket();
+            }
+            if (gamepad2.right_bumper){
+                intake.setPower(1);
+            }
+            if (gamepad2.dpad_right){
+                Claw.openOrCloseClaw(false, true);
+            }
+            if (gamepad2.dpad_left){
+                Claw.openOrCloseClaw(true, false);
+            }
 
             intakeAutomation();
 
@@ -200,9 +226,9 @@ public class firstAuto extends LinearOpMode {
             emergencyArm();
 
 
-            intake.moveWithSpeed();
+            //intake.moveWithSpeed();
             elevatorPControl.updateBySetPoint();
-            arm.updateBySetPoint();
+//            arm.updateBySetPoint();
 
             dashTele.addData("armPose", arm.getPosition());
             dashTele.addData("armSetPoint", arm.getSetPoint());
@@ -216,6 +242,10 @@ public class firstAuto extends LinearOpMode {
             dashTele.addData("pressesA", gamepad1.a);
             dashTele.addData("pressesB", gamepad1.b);
             dashTele.addData("arm at point", arm.atPoint());
+            dashTele.addData( "touch top is pressed", touchTop.isPressed());
+            dashTele.addData( "touch bottom is pressed", touchBottom.isPressed());
+
+//
 //            dashTele
 //                    .addData("armPose", arm.getPosition())
 //                    .addData("armSetPoint", arm.getSetPoint())
@@ -235,7 +265,8 @@ public class firstAuto extends LinearOpMode {
     }
 
     private void intakeAutomation() {
-        /*if (robotState.equals("INTAKE")) {
+        intake.setPower(1);
+       /* if (robotState.equals("INTAKE")) {
             if (gamepad1.x && !wasXPressed) {
                 pressesButtonX++;
                 switch (pressesButtonX) {
@@ -265,57 +296,63 @@ public class firstAuto extends LinearOpMode {
 
 
 
-        if (robotState == "INTAKE" && !intake.isGamePiece() && Touch1.isPressed()) {
-            while (!Touch2.isPressed()) {
 
-                arm.setPower(-0.7);
-            
-
-
-            dashTele.addData("intakeAuto state", 1);
+        if (touchBottom.isPressed()){
+            dashTele.addData("touch 2 is pressed", true);
         }
-}
+        if (touchTop.isPressed()){
+            dashTele.addData("touch 1 is pressed", true);
+        }
+        if (!touchBottom.isPressed()){
+            dashTele.addData("touch 2 isn pressed", false);
+        }
+        if (!touchTop.isPressed()){
+            dashTele.addData("touch 1 is pressed", false);
+        }
+        if (robotState == "INTAKE" && !intake.isGamePiece() && !touchBottom.isPressed()) {
+            dashTele.addData("intakeAuto state", 1);
 
+            arm.setPower(-0.1);
+        }
 
-        if (robotState == "INTAKE" && !intake.isGamePiece() && Touch2.isPressed()) {
-            intake.setSpeed(0.6);
+        if (robotState == "INTAKE" && !intake.isGamePiece() && touchBottom.isPressed()) {
+            arm.setPower(0);
+            intake.setSpeed(1);
 
             dashTele.addData("intakeAuto state", 2);
         }
 
-        if (robotState == "INTAKE" && intake.isGamePiece() && Touch2.isPressed()) {
-            while (!Touch1.isPressed()) {
-                arm.setPower(0.7);
-            }
+        if (robotState == "INTAKE" && intake.isGamePiece() ) {
+           if (!touchTop.isPressed()){
+               arm.setPower(0.7);
+           } else {
+               arm.setPower(0);
+           }
 
 
             dashTele.addData("intakeAuto state", 3);
         }
-        if (robotState == "INTAKE" && intake.isGamePiece() && Touch2.isPressed()) {
+        if (robotState == "INTAKE" && intake.isGamePiece() && touchTop.isPressed()) {
            robotState = "PASSING";
 
 
             dashTele.addData("intakeAuto state", 3);
         }
 
-        if (robotState == "PASSING" && intake.isGamePiece() && Touch1.isPressed()) {
+        if (robotState == "PASSING" && intake.isGamePiece() ) {
             intake.setSpeed(0.6);
 
 
             dashTele.addData("intakeAuto state", 4);
         }
-        if (robotState == "PASSING" && !intake.isGamePiece() && Touch1.isPressed()) {
+        if (robotState == "PASSING" && !intake.isGamePiece() ) {
             intake.setSpeed(0);
-
-
-            dashTele.addData("intakeAuto state", 5);
-        }
-        if (robotState == "PASSING" && !intake.isGamePiece() && Touch1.isPressed()) {
             robotState = "IDLE";
 
 
             dashTele.addData("intakeAuto state", 5);
         }
+
 
 
 //        if (robotState == "PASSING" && intake.isGamePiece() && armDownTimer.seconds() < 6.8) {
@@ -336,6 +373,8 @@ public class firstAuto extends LinearOpMode {
 //            intake.setSpeed(0);
 //            arm.setSetPoint(0);
 //            armDownTimer.reset();
+
+
 //
     }
 

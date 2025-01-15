@@ -74,6 +74,10 @@ public class Intake1 {
         this.speed = speed;
     }
 
+    public void setPower(double power) {
+        motor.setPower(power);
+    }
+
     public double getSpeed() {
         return speed;
     }
