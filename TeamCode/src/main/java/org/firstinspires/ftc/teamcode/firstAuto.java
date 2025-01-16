@@ -393,6 +393,7 @@ public class firstAuto extends LinearOpMode {
                 }
             }
         }
+
     private void lowScoringAutomation() {
 
         if (robotState == "LOW" && elevatorPControl.atPoint() && !isGamePieceDoingScoringLow) {
