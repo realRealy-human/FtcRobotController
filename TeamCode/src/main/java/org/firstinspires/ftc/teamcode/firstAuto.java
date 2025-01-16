@@ -19,6 +19,7 @@ import org.firstinspires.ftc.teamcode.Intake.Claw;
 @TeleOp(name = "firstAuto", group = "Examples")
 public class firstAuto extends LinearOpMode {
     private Intake1 intake;
+
     private Basket basket;
     private Claw Claw;
     private ElevatorPControl elevatorPControl;
@@ -36,8 +37,12 @@ public class firstAuto extends LinearOpMode {
     private boolean isPressedBasket;
     private String robotState = "IDLE";
     private boolean isGamePieceDoingScoring;
+    private boolean isGamePieceDoingScoringLow;
+
     private boolean armPose;
     private ElapsedTime timerScoring;
+    private ElapsedTime timerScoringL;
+
     private ElapsedTime armDownTimer;
     private boolean hasReset;
     private ElapsedTime timerPassing;
@@ -49,6 +54,7 @@ public class firstAuto extends LinearOpMode {
     private TouchSensor touchTop;
     private TouchSensor touchBottom;
     private ElapsedTime armUpTimer;
+
 
     // defining the basic things for the system
 
@@ -67,6 +73,7 @@ public class firstAuto extends LinearOpMode {
         drive = new Drive1(hardwareMap, telemetry);
         arm = new Arm(hardwareMap, dashTele);
         timerScoring = new ElapsedTime();
+        timerScoringL = new ElapsedTime();
         timerPassing = new ElapsedTime();
         armDownTimer = new ElapsedTime();
         armUpTimer = new ElapsedTime();
@@ -221,6 +228,23 @@ public class firstAuto extends LinearOpMode {
             if (gamepad2.dpad_left){
                 Claw.openOrCloseClaw(true, false);
             }
+            if (gamepad2.dpad_down){
+                if (!touchBottom.isPressed()){
+                    arm.setPower(-0.1);
+                }
+                else {
+                    arm.setPower(0);
+                }
+            }
+            if (gamepad2.dpad_up){
+                basket.openBasket();
+            }
+            if (gamepad1.left_trigger > 0.1){
+                robotState = "LOW";
+
+
+            }
+
 
             intakeAutomation();
 
@@ -228,12 +252,13 @@ public class firstAuto extends LinearOpMode {
             clawControl();
             emergencyElevator();
             emergencyArm();
+            lowScoringAutomation();
 
 
             elevatorPControl.updateBySetPoint();
 
 
-            dashTele.addData("gamePieceInside", intake.isGamePiece());
+            /*dashTele.addData("gamePieceInside", intake.isGamePiece());
             dashTele.addData("getDistanceSensor", intake.getDistanceSensor());
             dashTele.addData("getIntakeSpeed", intake.getSpeed());
             dashTele.addData("robotState", robotState);
@@ -254,7 +279,7 @@ public class firstAuto extends LinearOpMode {
 
 
             dashTele.update();
-            telemetry.update();
+            telemetry.update();*/
         }
     }
 
@@ -296,7 +321,7 @@ public class firstAuto extends LinearOpMode {
          }
 
 
-         if (robotState == "PASSING" && intake.isGamePiece() && touchTop.isPressed()) {
+         if (robotState == "PASSING" && intake.isGamePiece()) {
 
                  intake.setPower(-0.7);
 
@@ -304,11 +329,15 @@ public class firstAuto extends LinearOpMode {
              dashTele.addData("intakeAuto state", 4);
          }
 
-         if (robotState == "PASSING" && !intake.isGamePiece() && touchTop.isPressed()) {
-             intake.setPower(0);
+         if (robotState == "PASSING" && !intake.isGamePiece()) {
              robotState = "IDLE";
 
              dashTele.addData("intakeAuto state", 5);
+         }
+         if (robotState == "IDLE" && !intake.isGamePiece()) {
+             intake.setPower(0);
+
+             dashTele.addData("intakeAuto state", 6);
          }
 
 
@@ -364,6 +393,27 @@ public class firstAuto extends LinearOpMode {
                 }
             }
         }
+    private void lowScoringAutomation() {
+
+        if (robotState == "LOW" && elevatorPControl.atPoint() && !isGamePieceDoingScoringLow) {
+            if (elevatorPControl.getSetPoint() == 0) {
+                basket.setPosition(0.95);
+                elevatorPControl.setSetPoint(58);
+
+                dashTele.addData("basketStages", 1);
+
+            } else if (elevatorPControl.getSetPoint() == 58 && elevatorPControl.atPoint()) {
+                basket.closeBasket();
+                isGamePieceDoingScoringLow = true;
+
+                dashTele.addData("basketStages", 2);
+
+                robotState = "IDLE";
+            }
+        }
+    }
+
+
 
         public void clawControl() {
             if (robotState.equals("CLAW")) {

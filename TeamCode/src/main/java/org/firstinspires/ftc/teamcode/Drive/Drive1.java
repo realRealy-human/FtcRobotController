@@ -69,6 +69,7 @@ public class Drive1 {
         x = -gamepad.left_stick_x;
         rx = gamepad.right_stick_x;
 
+
     }
     public void driveUsingGamepad(Gamepad gamepad) {
         checkGamepad(gamepad);
@@ -86,6 +87,7 @@ public class Drive1 {
         double y = -gamepad.left_stick_y; // Remember, Y stick value is reversed
         double x = -gamepad.left_stick_x;
         double rx = gamepad.right_stick_x;
+         
 
         // reset position when option button is clicked
         // This button choice was made so that it is hard to hit on accident,
