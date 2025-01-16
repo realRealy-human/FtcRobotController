@@ -164,7 +164,7 @@ public class firstAuto extends LinearOpMode {
 
 
         arm.setSetPoint(0);
-        basket.closeBasket();
+
 
         // more defining and putting things in their starting positions
 
@@ -288,10 +288,10 @@ public class firstAuto extends LinearOpMode {
 
          if (robotState == "INTAKE" && !intake.isGamePiece()) {
              dashTele.addData("intakeAuto state", 1);
-             intake.setPower(-0.4);
+             intake.setPower(-0.5);
 
              if (!touchBottom.isPressed()) {
-                 arm.setPower(-0.1);
+                 arm.setPower(-0.3);
              } else {
                  arm.setPower(0);
              }
@@ -300,7 +300,7 @@ public class firstAuto extends LinearOpMode {
          if (robotState == "INTAKE" && intake.isGamePiece() && !touchTop.isPressed()) {
              intake.setPower(0);
              if (!touchTop.isPressed()) {
-                 arm.setPower(0.17);
+                 arm.setPower(0.3);
              } else {
                  arm.setPower(0);
              }

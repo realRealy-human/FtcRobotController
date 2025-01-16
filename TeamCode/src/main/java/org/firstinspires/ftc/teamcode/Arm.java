@@ -48,7 +48,7 @@ public class Arm {
     }
 
     public void setPower(double power) {
-        arm.setPower(power);
+        arm.setPower(power * (60 / 36));
     }
 
     public void updateBySetPoint() {
