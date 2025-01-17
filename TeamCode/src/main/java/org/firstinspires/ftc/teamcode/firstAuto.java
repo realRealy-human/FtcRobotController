@@ -202,6 +202,10 @@ public class firstAuto extends LinearOpMode {
             if (gamepad2.x) {
                 robotState = "IDLE";
             }
+            if (gamepad1.a){
+                basket.closeBasket();
+            }
+
             if (gamepad2.b){
                 if (!touchTop.isPressed()){
                     arm.setPower(0.1);
@@ -217,7 +221,7 @@ public class firstAuto extends LinearOpMode {
                 intake.setPower(0);
             }
             if (gamepad2.left_bumper){
-                basket.closeBasket();
+                basket.openBasket();
             }
             if (gamepad2.right_bumper){
                 intake.setPower(1);
@@ -236,14 +240,17 @@ public class firstAuto extends LinearOpMode {
                     arm.setPower(0);
                 }
             }
-            if (gamepad2.dpad_up){
-                basket.openBasket();
-            }
+
             if (gamepad1.left_trigger > 0.1){
                 robotState = "LOW";
 
 
             }
+            if (gamepad1.x){
+                Claw.close();
+            }
+
+
 
 
             intakeAutomation();
@@ -423,25 +430,23 @@ public class firstAuto extends LinearOpMode {
                     buttonPresses++;
                     switch (buttonPresses) {
                         case 1:
-                            Claw.openOrCloseClaw(true, false);
-                            elevatorPControl.setSetPoint(20);
+                            Claw.close();
+                            elevatorPControl.setSetPoint(50);
                             basket.setPosition(1);
 
                             break;
 
                         case 2:
-                            Claw.openOrCloseClaw(false, true);
-                            elevatorPControl.setSetPoint(50);
+                            elevatorPControl.setSetPoint(40);
                             break;
 
                         case 3:
-                            elevatorPControl.setSetPoint(40);
 
-                            Claw.openOrCloseClaw(true, false);
+                            Claw.open();
                             break;
                         case 4:
                             elevatorPControl.setSetPoint(0);
-                            Claw.openOrCloseClaw(false, true);
+
                             buttonPresses = 0;
                             break;
                     }

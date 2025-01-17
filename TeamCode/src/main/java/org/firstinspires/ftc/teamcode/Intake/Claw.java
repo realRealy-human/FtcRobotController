@@ -61,4 +61,10 @@ public class Claw {
         telemetry.addData("servo pos", servo.getPos());
         telemetry.update();
     }
+    public void open(){
+        servo.servoPositionX(openPos);
+    }
+    public void close(){
+        servo.servoPositionX(closePos);
+    }
 }

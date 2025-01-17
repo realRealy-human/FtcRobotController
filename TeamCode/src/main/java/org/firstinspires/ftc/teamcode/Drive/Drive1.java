@@ -87,6 +87,13 @@ public class Drive1 {
         double y = -gamepad.left_stick_y; // Remember, Y stick value is reversed
         double x = -gamepad.left_stick_x;
         double rx = gamepad.right_stick_x;
+
+        if (gamepad.right_trigger > 0.1){
+          y = y * 0.4;
+          x = x * 0.4;
+          rx = rx * 0.4;
+
+        }
          
 
         // reset position when option button is clicked
