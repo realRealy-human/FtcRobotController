@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Arm;
 import org.firstinspires.ftc.teamcode.Basket;
+import org.firstinspires.ftc.teamcode.Drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.Elevator.ElevatorControl;
 import org.firstinspires.ftc.teamcode.Elevator.ElevatorPControl;
 
@@ -26,7 +27,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Autonomous(name = "AutoBasketOne", group = "Examples")
 public class AutoBasketOne extends LinearOpMode {
-    private org.firstinspires.ftc.teamcode. Drive.Drive1 drive;
+    private SampleMecanumDrive drive;
     private Pose2d startPose = new Pose2d( 0, -72, 0); // 1
     private Arm arm;
     private ElevatorPControl Elevator;
@@ -46,7 +47,7 @@ public class AutoBasketOne extends LinearOpMode {
 
 
 
-        drive = new Drive1(HardwareMap);
+        drive = new SampleMecanumDrive(hardwareMap);
         drive.setPoseEstimate(startPose);
         TrajectorySequence seq1 = drive.trajectorySequenceBuilder(startPose)
                 .lineToConstantHeading(new Vector2d(0, -18)) // 2
