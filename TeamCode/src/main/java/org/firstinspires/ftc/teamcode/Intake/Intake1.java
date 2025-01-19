@@ -59,6 +59,22 @@ public class Intake1 {
     public double getDistanceSensor(){
         return distanceSensor.whatDistance(DistanceUnit.CM);
     }
+
+    public void startAndStop(){
+        motor.setPower(0.5);
+        if (distanceSensor.senseGamePiece()){
+            motor.setPower(0);
+        }
+    }
+
+    public void takeOut(){
+        if (distanceSensor.senseGamePiece()){
+            motor.setPower(0.5);
+        }
+        else {
+            motor.setPower(0);
+        }
+    }
 }
 
 
