@@ -99,10 +99,10 @@ public class SampleMecanumDrive extends MecanumDrive {
                 org.firstinspires.ftc.teamcode.drive.DriveConstants.LOGO_FACING_DIR, org.firstinspires.ftc.teamcode.drive.DriveConstants.USB_FACING_DIR));
         imu.initialize(parameters);
 
-        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
-        leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
-        rightRear = hardwareMap.get(DcMotorEx.class, "rightRear");
-        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+        leftFront = hardwareMap.get(DcMotorEx.class, "leftMotor");
+        leftRear = hardwareMap.get(DcMotorEx.class, "leftBack");
+        rightRear = hardwareMap.get(DcMotorEx.class, "rightBack");
+        rightFront = hardwareMap.get(DcMotorEx.class, "rightMotor");
 
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 
@@ -123,6 +123,10 @@ public class SampleMecanumDrive extends MecanumDrive {
         }
 
         // TODO: reverse any motors using DcMotor.setDirection()
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
+        rightFront.setDirection(DcMotor.Direction.FORWARD);
+        leftRear.setDirection(DcMotor.Direction.REVERSE);
+        rightRear.setDirection(DcMotor.Direction.FORWARD);
 
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();
@@ -295,7 +299,7 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     @Override
     public Double getExternalHeadingVelocity() {
-        return (double) imu.getRobotAngularVelocity(AngleUnit.RADIANS).zRotationRate;
+        return (double) imu.getRobotAngularVelocity(AngleUnit.RADIANS).xRotationRate;
     }
 
     public static TrajectoryVelocityConstraint getVelocityConstraint(double maxVel, double maxAngularVel, double trackWidth) {

@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.Intake.Claw;
 
 
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
-import org.firstinspires.ftc.teamcode.Drive.Drive1;
+//import org.firstinspires.ftc.teamcode.Drive.Drive1;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Autonomous(name = "AutoBasketOne", group = "Examples")
@@ -37,15 +37,12 @@ public class AutoBasketOne extends LinearOpMode {
     private Color Color;
     private HardwareMap hardwareMap;
 
-
     @Override
     public void runOpMode() {
-       arm = new Arm(hardwareMap, telemetry);
+        arm = new Arm(hardwareMap, telemetry);
         Elevator = new ElevatorPControl(hardwareMap,telemetry );
         Claw = new Claw(hardwareMap, telemetry);
         Intake = new Intake1(hardwareMap, telemetry);
-
-
 
         drive = new SampleMecanumDrive(hardwareMap);
         drive.setPoseEstimate(startPose);
@@ -120,12 +117,8 @@ public class AutoBasketOne extends LinearOpMode {
         if (!isStopRequested()) {
             drive.followTrajectorySequence(seq1);
         }
-
-
     }
     private double MeterToInch(double Meter) {
         return Meter * 39.3701;
     }
-
-
 }

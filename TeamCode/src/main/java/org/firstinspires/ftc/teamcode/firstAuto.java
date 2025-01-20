@@ -9,17 +9,15 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Drive.Drive1;
+import org.firstinspires.ftc.teamcode.Drive.DriveTeleOp1;
 import org.firstinspires.ftc.teamcode.Elevator.ElevatorPControl;
 
 import org.firstinspires.ftc.teamcode.Intake.Intake1;
 import org.firstinspires.ftc.teamcode.Intake.Claw;
 
-
 @TeleOp(name = "firstAuto", group = "Examples")
 public class firstAuto extends LinearOpMode {
     private Intake1 intake;
-
     private Basket basket;
     private Claw Claw;
     private ElevatorPControl elevatorPControl;
@@ -28,7 +26,7 @@ public class firstAuto extends LinearOpMode {
     private double openPos = 0.232;
     private double closePos = 0.055;
     private Distance distanceSensor;
-    private Drive1 drive;
+    private DriveTeleOp1 drive;
     private FtcDashboard dashboard;
     private Telemetry dashTele;
     private boolean isPressedArm;
@@ -70,7 +68,7 @@ public class firstAuto extends LinearOpMode {
         Claw = new Claw(hardwareMap, telemetry);
         intake = new Intake1(hardwareMap, telemetry);
         distanceSensor = new Distance(hardwareMap, telemetry);
-        drive = new Drive1(hardwareMap, telemetry);
+        drive = new DriveTeleOp1(hardwareMap, telemetry);
         arm = new Arm(hardwareMap, dashTele);
         timerScoring = new ElapsedTime();
         timerScoringL = new ElapsedTime();
