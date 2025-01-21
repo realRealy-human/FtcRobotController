@@ -5,29 +5,25 @@ import android.graphics.Color;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.google.blocks.ftcrobotcontroller.hardware.HardwareItemMap;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Arm;
 import org.firstinspires.ftc.teamcode.Basket;
-import org.firstinspires.ftc.teamcode.Drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.Elevator.ElevatorControl;
+import org.firstinspires.ftc.teamcode.Drive.SampleMecanumDrive1;
 import org.firstinspires.ftc.teamcode.Elevator.ElevatorPControl;
 
 import org.firstinspires.ftc.teamcode.Intake.Intake1;
 import org.firstinspires.ftc.teamcode.Intake.Claw;
 
 
-import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 //import org.firstinspires.ftc.teamcode.Drive.Drive1;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Autonomous(name = "AutoBasketOne", group = "Examples")
 public class AutoBasketOne extends LinearOpMode {
-    private SampleMecanumDrive drive;
+    private SampleMecanumDrive1 drive;
     private Pose2d startPose = new Pose2d( 0, -72, 0); // 1
     private Arm arm;
     private ElevatorPControl Elevator;
@@ -44,7 +40,7 @@ public class AutoBasketOne extends LinearOpMode {
         Claw = new Claw(hardwareMap, telemetry);
         Intake = new Intake1(hardwareMap, telemetry);
 
-        drive = new SampleMecanumDrive(hardwareMap);
+        drive = new SampleMecanumDrive1(hardwareMap);
         drive.setPoseEstimate(startPose);
         TrajectorySequence seq1 = drive.trajectorySequenceBuilder(startPose)
                 .lineToConstantHeading(new Vector2d(0, -18)) // 2

@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Drive.DriveTeleOp1;
+import org.firstinspires.ftc.teamcode.Drive.DriveTeleOp;
 import org.firstinspires.ftc.teamcode.Elevator.ElevatorPControl;
 
 import org.firstinspires.ftc.teamcode.Intake.Intake1;
@@ -26,7 +26,7 @@ public class firstAuto extends LinearOpMode {
     private double openPos = 0.232;
     private double closePos = 0.055;
     private Distance distanceSensor;
-    private DriveTeleOp1 drive;
+    private DriveTeleOp drive;
     private FtcDashboard dashboard;
     private Telemetry dashTele;
     private boolean isPressedArm;
@@ -68,7 +68,7 @@ public class firstAuto extends LinearOpMode {
         Claw = new Claw(hardwareMap, telemetry);
         intake = new Intake1(hardwareMap, telemetry);
         distanceSensor = new Distance(hardwareMap, telemetry);
-        drive = new DriveTeleOp1(hardwareMap, telemetry);
+        drive = new DriveTeleOp(hardwareMap, telemetry);
         arm = new Arm(hardwareMap, dashTele);
         timerScoring = new ElapsedTime();
         timerScoringL = new ElapsedTime();
@@ -374,7 +374,7 @@ public class firstAuto extends LinearOpMode {
 
         if (robotState == "HIGHSCORING" && elevatorPControl.atPoint() && isGamePieceDoingScoring) {
             if (basket.getPosition() > 0.65 && basket.getPosition() < 1) {
-                basket.openBasket();
+                basket.setPosition(0.2);
                 timerScoring.reset();
                 timerScoring.startTime();
 

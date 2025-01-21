@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 // define class
-public class DriveTeleOp1 {
+public class DriveTeleOp {
     // define motors, imu and telemetry
     private DcMotor leftFront;
     private DcMotor rightFront;
@@ -23,7 +23,7 @@ public class DriveTeleOp1 {
 
 
     // define constructor
-    public DriveTeleOp1(HardwareMap hardwareMap, Telemetry telemetry) {
+    public DriveTeleOp(HardwareMap hardwareMap, Telemetry telemetry) {
         // map motors to hardware
         leftFront = hardwareMap.get(DcMotor.class, "leftMotor");
         rightFront = hardwareMap.get(DcMotor.class, "rightMotor");
