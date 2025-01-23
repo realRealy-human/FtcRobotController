@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Drive.DriveTeleOp;
+import org.firstinspires.ftc.teamcode.Drive.DriveTeleOp1;
 import org.firstinspires.ftc.teamcode.Elevator.ElevatorPControl;
 
 import org.firstinspires.ftc.teamcode.Intake.Intake1;
@@ -26,7 +26,7 @@ public class firstAuto extends LinearOpMode {
     private double openPos = 0.232;
     private double closePos = 0.055;
     private Distance distanceSensor;
-    private DriveTeleOp drive;
+    private DriveTeleOp1 drive;
     private FtcDashboard dashboard;
     private Telemetry dashTele;
     private boolean isPressedArm;
@@ -68,7 +68,7 @@ public class firstAuto extends LinearOpMode {
         Claw = new Claw(hardwareMap, telemetry);
         intake = new Intake1(hardwareMap, telemetry);
         distanceSensor = new Distance(hardwareMap, telemetry);
-        drive = new DriveTeleOp(hardwareMap, telemetry);
+        drive = new DriveTeleOp1(hardwareMap, telemetry);
         arm = new Arm(hardwareMap, dashTele);
         timerScoring = new ElapsedTime();
         timerScoringL = new ElapsedTime();
@@ -180,6 +180,7 @@ public class firstAuto extends LinearOpMode {
 
         armDownTimer.reset();
         armUpTimer.reset();
+        timerScoring.reset();
 
         while (opModeIsActive()) {
             drive.fieldCentricUsingGamePad(gamepad1);
@@ -222,7 +223,7 @@ public class firstAuto extends LinearOpMode {
                 basket.openBasket();
             }
             if (gamepad2.right_bumper){
-                intake.setPower(1);
+                intake.takeOut2();
             }
             if (gamepad2.dpad_right){
                 Claw.openOrCloseClaw(false, true);
@@ -344,21 +345,14 @@ public class firstAuto extends LinearOpMode {
 
              dashTele.addData("intakeAuto state", 6);
          }
-
-
-
-
      }
-//
-
-
-
 
     private void highScoringAutomation() {
         if (robotState == "HIGHSCORING" && elevatorPControl.atPoint() && !isGamePieceDoingScoring) {
             if (elevatorPControl.getSetPoint() == 0) {
-                basket.setPosition(0.95);
+                basket.setPosition(0.64);
                 elevatorPControl.setSetPoint(105);
+//                basket.openBasket();
 
                 dashTele.addData("basketStages", 1);
 
@@ -373,15 +367,16 @@ public class firstAuto extends LinearOpMode {
         }
 
         if (robotState == "HIGHSCORING" && elevatorPControl.atPoint() && isGamePieceDoingScoring) {
-            if (basket.getPosition() > 0.65 && basket.getPosition() < 1) {
-                basket.setPosition(0.2);
+            if (basket.getPosition() > 0.4 && basket.getPosition() < 0.8) {
+                basket.setPosition(0.3);
+
                 timerScoring.reset();
                 timerScoring.startTime();
 
                 dashTele.addData("basketStages", 3);
-
             } else if (timerScoring.seconds() > 1) {
-                basket.setPosition(1);
+                basket.setPosition(0.85);
+//                basket.closeBasket();
                 elevatorPControl.setSetPoint(0);
 
                 dashTele.addData("basketStages", 4);
@@ -392,8 +387,6 @@ public class firstAuto extends LinearOpMode {
                     isGamePieceDoingScoring = false;
 
                     robotState = "IDLE";
-
-
                 }
             }
         }
@@ -428,10 +421,8 @@ public class firstAuto extends LinearOpMode {
                     buttonPresses++;
                     switch (buttonPresses) {
                         case 1:
-                            Claw.close();
+                            Claw.openOrCloseClaw(false, true);
                             elevatorPControl.setSetPoint(50);
-                            basket.setPosition(1);
-
                             break;
 
                         case 2:
@@ -440,7 +431,7 @@ public class firstAuto extends LinearOpMode {
 
                         case 3:
 
-                            Claw.open();
+                            Claw.openOrCloseClaw(true, false);
                             break;
                         case 4:
                             elevatorPControl.setSetPoint(0);

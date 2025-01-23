@@ -12,8 +12,9 @@ public class Basket {
     // define the servoManage object, the telemetry and the open and close position variables
     private ServoManage servoManage;
     private Telemetry telemetry;
-    private double openPos = 0.6;
-    private double closePos = 0.85;
+    private double openPos = 0.01;
+    private double halfPos = 0.85;
+    private double closePos = 0.565;
 
     // define the constructor
     public Basket(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -26,7 +27,7 @@ public class Basket {
     public void closeBasket() {
         servoManage.servoPositionX(closePos);
     }
-
+    public void halfBasket(){servoManage.servoPositionX(halfPos);}
     public void openBasket() {
         servoManage.servoPositionX(openPos);
     }

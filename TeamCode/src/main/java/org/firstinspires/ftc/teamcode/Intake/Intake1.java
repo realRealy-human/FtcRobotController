@@ -75,6 +75,14 @@ public class Intake1 {
             motor.setPower(0);
         }
     }
+    public void takeOut2(){
+        if (distanceSensor.senseGamePiece()){
+            motor.setPower(-0.5);
+        }
+        else {
+            motor.setPower(0);
+        }
+    }
 }
 
 

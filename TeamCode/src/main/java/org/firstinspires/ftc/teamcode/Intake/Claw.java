@@ -4,17 +4,19 @@ package org.firstinspires.ftc.teamcode.Intake;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.ServoManage;
+import org.firstinspires.ftc.teamcode.Basket;
 
 // define the class
 public class Claw {
     // define the servoManage object, telemetry and open and close position of the claw
     private ServoManage servo;
     private Telemetry telemetry;
-    private double openPos = 1;
-    private double closePos = 0.823;
+    private double openPos = 0.8;
+    private double closePos = 0.4;
 
     // define the constructor
     public Claw(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -24,6 +26,7 @@ public class Claw {
         // save the telemetry
         this.telemetry = telemetry;
     }
+
 
     public void toggleClaw(boolean toggle) {
         // if you toggle...
@@ -64,6 +67,7 @@ public class Claw {
     public void open(){
         servo.servoPositionX(openPos);
     }
+
     public void close(){
         servo.servoPositionX(closePos);
     }
