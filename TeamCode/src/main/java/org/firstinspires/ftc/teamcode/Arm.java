@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-
+import com.qualcomm.robotcore.hardware.TouchSensor;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 // define the class
@@ -19,12 +19,17 @@ public class Arm {
     private double endPose = -269;
     private double setPoint;
 
+    private TouchSensor touchTop;
+    private TouchSensor touchBottom;
+
     // define the constructor
     public Arm(HardwareMap hardwareMap, Telemetry telemetry) {
         arm = hardwareMap.get(DcMotor.class, "arm");
         arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        touchTop = hardwareMap.get(TouchSensor.class, "arm_top");
+        touchBottom = hardwareMap.get(TouchSensor.class, "arm_bottom");
 
         pidController = new PID(0.001);
 
@@ -79,6 +84,21 @@ public class Arm {
                 arm.setPower(0);
                 telemetry.addData("arm con", 7);
             }
+        }
+    }
+    public void armGoDown(){
+        if (!touchBottom.isPressed()){
+            arm.setPower(-0.5);
+        }else {
+            arm.setPower(0);
+        }
+    }
+
+    public void armGoUp(){
+        if (!touchTop.isPressed()){
+            arm.setPower(0.5);
+        }else {
+            arm.setPower(0);
         }
     }
 

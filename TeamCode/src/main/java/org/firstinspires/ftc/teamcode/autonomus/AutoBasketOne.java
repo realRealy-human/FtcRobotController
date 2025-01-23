@@ -8,6 +8,7 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.Arm;
 import org.firstinspires.ftc.teamcode.Basket;
@@ -33,32 +34,41 @@ public class AutoBasketOne extends LinearOpMode {
     private Color Color;
     private HardwareMap hardwareMap;
 
+    private TouchSensor touchTop;
+    private TouchSensor touchBottom;
+
+
+
+
     @Override
     public void runOpMode() {
         arm = new Arm(hardwareMap, telemetry);
         Elevator = new ElevatorPControl(hardwareMap,telemetry );
         Claw = new Claw(hardwareMap, telemetry);
         Intake = new Intake1(hardwareMap, telemetry);
+        touchTop = hardwareMap.get(TouchSensor.class, "arm_top");
+        touchBottom = hardwareMap.get(TouchSensor.class, "arm_bottom");
 //
         drive = new SampleMecanumDrive(hardwareMap);
         drive.setPoseEstimate(startPose);
         TrajectorySequence seq1 = drive.trajectorySequenceBuilder(startPose)
                 .lineToConstantHeading(new Vector2d(0, -18)) // 2
-                .addTemporalMarker(2,() -> Elevator.setSetPoint(100))
+                .addTemporalMarker(2,() -> Elevator.setSetPoint(50))
 
                 .lineToConstantHeading(new Vector2d(0, -16)) // 2
-                .addDisplacementMarker(() -> Elevator.setSetPoint(50))
+                .addDisplacementMarker(() -> Elevator.setSetPoint(40))
                 .addDisplacementMarker(() -> Claw.openOrCloseClaw(true,false))
 
                 .lineToConstantHeading(new Vector2d(0, -18))
                 .addTemporalMarker(7,() -> Elevator.setSetPoint(0))
                 .addTemporalMarker(8,() -> Claw.openOrCloseClaw(false,true))
 
-                .splineToLinearHeading(new Pose2d(52, -36, Math.toRadians(180)), Math.toRadians(0)) // 3
+                .splineToLinearHeading(new Pose2d(-40, -24, Math.toRadians(-90)), Math.toRadians(0))
+                .addDisplacementMarker(() -> arm.armGoDown())// 3
                 .addDisplacementMarker(() -> Intake.startAndStop())
 
-                .lineToLinearHeading(new Pose2d(60,-60,Math.toRadians(225))) // 4
-                .addTemporalMarker(11,() -> arm.setSetPoint(0))
+                .lineToLinearHeading(new Pose2d(-60,-60,Math.toRadians(-210)))
+                .addDisplacementMarker(() -> arm.armGoUp())
                 .addDisplacementMarker(() -> Intake.takeOut())
                 .addTemporalMarker(() -> {
                     sleep(200);
@@ -70,13 +80,13 @@ public class AutoBasketOne extends LinearOpMode {
                 .addTemporalMarker(() -> Basket.closeBasket())
 
 
-                .lineToLinearHeading(new Pose2d(60,-36, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-52,-24, Math.toRadians(30)))
                 // 5
-                .addTemporalMarker(() -> arm.setSetPoint(-250))
+                .addTemporalMarker(() -> arm.armGoDown())
                 .addDisplacementMarker(() -> Intake.startAndStop())
 
-                .lineToLinearHeading(new Pose2d(60,-60,Math.toRadians(225))) // 6
-                .addTemporalMarker(17,() -> arm.setSetPoint(0))
+                .lineToLinearHeading(new Pose2d(-60,-60,Math.toRadians(-30))) // 6
+                .addTemporalMarker(17,() -> arm.armGoUp())
                 .addDisplacementMarker(() -> Intake.takeOut())
                 .addTemporalMarker(() -> {
                     sleep(200);
@@ -88,12 +98,12 @@ public class AutoBasketOne extends LinearOpMode {
                 .addTemporalMarker(20,() -> Basket.closeBasket())
 
 
-                .lineToLinearHeading(new Pose2d(60,-36,Math.toRadians(45)))
-                .addTemporalMarker(20,() -> arm.setSetPoint(-250))
+                .lineToLinearHeading(new Pose2d(-60,-24,Math.toRadians(45)))
+                .addTemporalMarker(20,() -> arm.armGoDown())
                 .addDisplacementMarker(() -> Intake.startAndStop())
 
-                .lineToLinearHeading(new Pose2d(60,-60,Math.toRadians(45))) // 8
-               .addTemporalMarker(22,() -> arm.setSetPoint(0))
+                .lineToLinearHeading(new Pose2d(-60,-60,Math.toRadians(45))) // 8
+               .addTemporalMarker(22,() -> arm.armGoUp())
                 .addTemporalMarker(22.5,() -> Intake.takeOut())
                 .addTemporalMarker(() -> {
                     sleep(200);
@@ -104,14 +114,17 @@ public class AutoBasketOne extends LinearOpMode {
                 .addDisplacementMarker(() -> Elevator.setSetPoint(0))
                 .addTemporalMarker(24.5,() -> Basket.closeBasket())
 
-                .splineToLinearHeading(new Pose2d(-16, 0, Math.toRadians(180)), Math.toRadians(0)) //9
+                .splineToLinearHeading(new Pose2d(-16, 0, Math.toRadians(210)), Math.toRadians(0)) //9
 
                 .build();
 
         waitForStart();
 
         if (!isStopRequested()) {
-            drive.followTrajectorySequence(seq1);
+            drive.followTrajectorySequenceAsync(seq1);
+        }
+        while (opModeIsActive()) {
+            Elevator.updateBySetPoint();
         }
     }
     private double MeterToInch(double Meter) {

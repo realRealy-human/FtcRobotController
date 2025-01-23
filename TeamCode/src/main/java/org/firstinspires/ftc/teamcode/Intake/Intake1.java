@@ -31,11 +31,6 @@ public class Intake1 {
         // updating telemetry
     }
 
-
-
-
-
-
     public void setPower(double power) {
         motor.setPower(power);
     }
@@ -44,15 +39,12 @@ public class Intake1 {
         return speed;
     }
 
-
-
-
     public void moveWithSpeed() {
         motor.setPower(speed);
         // the intake will move at the speed we tell it to
     }
 
-    public boolean isGamePiece(){
+    public boolean isGamePiece() {
         return distanceSensor.senseGamePiece();
     }
 
@@ -61,7 +53,7 @@ public class Intake1 {
     }
 
     public void startAndStop(){
-        motor.setPower(0.5);
+        motor.setPower(-0.5);
         if (distanceSensor.senseGamePiece()){
             motor.setPower(0);
         }
@@ -82,6 +74,13 @@ public class Intake1 {
         else {
             motor.setPower(0);
         }
+    }
+    public void takeOutGamePiece() {
+        motor.setPower(0.5);
+        while (distanceSensor.senseGamePiece())
+        //when the red colorSensor doesn't sense red it will go backwards
+        motor.setPower(0);
+        // after that it will stop moving
     }
 }
 
