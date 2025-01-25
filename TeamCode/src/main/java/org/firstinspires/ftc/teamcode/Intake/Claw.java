@@ -15,7 +15,7 @@ public class Claw {
     // define the servoManage object, telemetry and open and close position of the claw
     private ServoManage servo;
     private Telemetry telemetry;
-    private double openPos = 0.8;
+    private double openPos = 1;
     private double closePos = 0.4;
 
     // define the constructor

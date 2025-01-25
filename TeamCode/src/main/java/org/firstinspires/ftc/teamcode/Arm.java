@@ -88,7 +88,7 @@ public class Arm {
     }
     public void armGoDown(){
         if (!touchBottom.isPressed()){
-            arm.setPower(-0.5);
+            arm.setPower(-0.1);
         }else {
             arm.setPower(0);
         }
@@ -96,7 +96,7 @@ public class Arm {
 
     public void armGoUp(){
         if (!touchTop.isPressed()){
-            arm.setPower(0.5);
+            arm.setPower(0.1);
         }else {
             arm.setPower(0);
         }

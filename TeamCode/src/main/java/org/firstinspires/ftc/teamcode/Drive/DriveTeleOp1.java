@@ -89,7 +89,7 @@ public class DriveTeleOp1 {
         double x = -gamepad.left_stick_x;
         double rx = gamepad.right_stick_x;
 
-        if (gamepad.right_trigger > 0.1){
+        while (gamepad.right_trigger > 0.1){
           y = y * 0.4;
           x = x * 0.4;
           rx = rx * 0.4;
@@ -139,6 +139,9 @@ public class DriveTeleOp1 {
         rightFront.setPower(0);
         rightRear.setPower(0);
     }
+
+
+
 }
 
 

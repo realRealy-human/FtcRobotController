@@ -252,6 +252,8 @@ public class firstAuto extends LinearOpMode {
 
 
 
+
+
             intakeAutomation();
 
             highScoringAutomation();
@@ -262,6 +264,7 @@ public class firstAuto extends LinearOpMode {
 
 
             elevatorPControl.updateBySetPoint();
+
 
 
             /*dashTele.addData("gamePieceInside", intake.isGamePiece());
@@ -375,7 +378,7 @@ public class firstAuto extends LinearOpMode {
 
                 dashTele.addData("basketStages", 3);
             } else if (timerScoring.seconds() > 1) {
-                basket.setPosition(0.85);
+                basket.setPosition(1);
 //                basket.closeBasket();
                 elevatorPControl.setSetPoint(0);
 
@@ -421,19 +424,24 @@ public class firstAuto extends LinearOpMode {
                     buttonPresses++;
                     switch (buttonPresses) {
                         case 1:
-                            Claw.openOrCloseClaw(false, true);
-                            elevatorPControl.setSetPoint(50);
+                            Claw.close();
                             break;
 
                         case 2:
-                            elevatorPControl.setSetPoint(40);
+
+                            elevatorPControl.setSetPoint(50);
                             break;
 
                         case 3:
+                            elevatorPControl.setSetPoint(30);
 
-                            Claw.openOrCloseClaw(true, false);
                             break;
                         case 4:
+                            Claw.open();
+                            break;
+
+
+                        case 5:
                             elevatorPControl.setSetPoint(0);
 
                             buttonPresses = 0;

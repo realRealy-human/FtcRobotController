@@ -37,17 +37,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ACCEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ANG_ACCEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ANG_VEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_VEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MOTOR_VELO_PID;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.RUN_USING_ENCODER;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.TRACK_WIDTH;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.encoderTicksToInches;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kA;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kStatic;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
+import static org.firstinspires.ftc.teamcode.Drive.DriveConstants.MAX_ACCEL;
+import static org.firstinspires.ftc.teamcode.Drive.DriveConstants.MAX_ANG_ACCEL;
+import static org.firstinspires.ftc.teamcode.Drive.DriveConstants.MAX_ANG_VEL;
+import static org.firstinspires.ftc.teamcode.Drive.DriveConstants.MAX_VEL;
+import static org.firstinspires.ftc.teamcode.Drive.DriveConstants.MOTOR_VELO_PID;
+import static org.firstinspires.ftc.teamcode.Drive.DriveConstants.RUN_USING_ENCODER;
+import static org.firstinspires.ftc.teamcode.Drive.DriveConstants.TRACK_WIDTH;
+import static org.firstinspires.ftc.teamcode.Drive.DriveConstants.encoderTicksToInches;
+import static org.firstinspires.ftc.teamcode.Drive.DriveConstants.kA;
+import static org.firstinspires.ftc.teamcode.Drive.DriveConstants.kStatic;
+import static org.firstinspires.ftc.teamcode.Drive.DriveConstants.kV;
 
 /*
  * Simple mecanum drive hardware implementation for REV hardware.
@@ -57,7 +57,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
 
-    public static double LATERAL_MULTIPLIER = 1;
+    public static double LATERAL_MULTIPLIER = 1.036967;
 
     public static double VX_WEIGHT = 1;
     public static double VY_WEIGHT = 1;
@@ -96,7 +96,7 @@ public class SampleMecanumDrive extends MecanumDrive {
         // TODO: adjust the names of the following hardware devices to match your configuration
         imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                org.firstinspires.ftc.teamcode.drive.DriveConstants.LOGO_FACING_DIR, org.firstinspires.ftc.teamcode.drive.DriveConstants.USB_FACING_DIR));
+                org.firstinspires.ftc.teamcode.Drive.DriveConstants.LOGO_FACING_DIR, org.firstinspires.ftc.teamcode.Drive.DriveConstants.USB_FACING_DIR));
         imu.initialize(parameters);
 
         leftFront = hardwareMap.get(DcMotorEx.class, "leftMotor");

@@ -17,9 +17,9 @@ import com.qualcomm.robotcore.util.WebHandlerManager;
 import org.firstinspires.ftc.ftccommon.external.WebHandlerRegistrar;
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.teamcode.Drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.drive.DriveConstants;
+import org.firstinspires.ftc.teamcode.Drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.Drive.SampleTankDrive;
-import org.firstinspires.ftc.teamcode.Drive.StandardTrackingWheelLocalizer;
+import org.firstinspires.ftc.teamcode.Drive.opmode.LocalizationTest;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -84,11 +84,11 @@ public final class LogFiles {
         public double tankHeadingI = SampleTankDrive.HEADING_PID.kI;
         public double tankHeadingD = SampleTankDrive.HEADING_PID.kD;
 
-        public double trackingTicksPerRev = StandardTrackingWheelLocalizer.TICKS_PER_REV;
-        public double trackingWheelRadius = StandardTrackingWheelLocalizer.WHEEL_RADIUS;
-        public double trackingGearRatio = StandardTrackingWheelLocalizer.GEAR_RATIO;
-        public double trackingLateralDistance = StandardTrackingWheelLocalizer.LATERAL_DISTANCE;
-        public double trackingForwardOffset = StandardTrackingWheelLocalizer.FORWARD_OFFSET;
+        public double trackingTicksPerRev = LocalizationTest.StandardTrackingWheelLocalizer.TICKS_PER_REV;
+        public double trackingWheelRadius = LocalizationTest.StandardTrackingWheelLocalizer.WHEEL_RADIUS;
+        public double trackingGearRatio = LocalizationTest.StandardTrackingWheelLocalizer.GEAR_RATIO;
+        public double trackingLateralDistance = LocalizationTest.StandardTrackingWheelLocalizer.LATERAL_DISTANCE;
+        public double trackingForwardOffset = LocalizationTest.StandardTrackingWheelLocalizer.FORWARD_OFFSET;
 
         public RevHubOrientationOnRobot.LogoFacingDirection LOGO_FACING_DIR = DriveConstants.LOGO_FACING_DIR;
         public RevHubOrientationOnRobot.UsbFacingDirection USB_FACING_DIR = DriveConstants.USB_FACING_DIR;
