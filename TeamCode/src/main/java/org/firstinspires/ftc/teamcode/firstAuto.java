@@ -433,7 +433,7 @@ public class firstAuto extends LinearOpMode {
                             break;
 
                         case 3:
-                            elevatorPControl.setSetPoint(30);
+                            elevatorPControl.setSetPoint(15);
 
                             break;
                         case 4:
