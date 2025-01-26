@@ -125,6 +125,7 @@ public class AutoBasketOne extends LinearOpMode {
         }
         while (opModeIsActive()) {
             Elevator.updateBySetPoint();
+            drive.followTrajectorySequenceAsync(seq1);
         }
     }
     private double MeterToInch(double Meter) {
