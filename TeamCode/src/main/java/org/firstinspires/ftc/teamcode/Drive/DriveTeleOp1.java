@@ -66,8 +66,8 @@ public class DriveTeleOp1 {
     double backRightPower;
 
     private void checkGamepad(Gamepad gamepad) {
-        y = -gamepad.left_stick_y;
-        x = -gamepad.left_stick_x;
+        y = gamepad.left_stick_y;
+        x = gamepad.left_stick_x;
         rx = gamepad.right_stick_x;
 
 
@@ -85,15 +85,14 @@ public class DriveTeleOp1 {
         rightRear.setPower(y + x - rx / denominator);
     }
     public void fieldCentricUsingGamePad(Gamepad gamepad) {
-        double y = -gamepad.left_stick_y; // Remember, Y stick value is reversed
+        double y = gamepad.left_stick_y; // Remember, Y stick value is reversed
         double x = -gamepad.left_stick_x;
         double rx = gamepad.right_stick_x;
 
-        while (gamepad.right_trigger > 0.1){
+        if (gamepad.right_trigger > 0.05){
           y = y * 0.4;
           x = x * 0.4;
           rx = rx * 0.4;
-
         }
          
 
@@ -104,7 +103,7 @@ public class DriveTeleOp1 {
 
 
         // calculate the bot's heading
-        botHeading = -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
         // report the bot's heading to the imu
         telemetry.addData("imu", botHeading);

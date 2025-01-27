@@ -199,15 +199,21 @@ public class firstAuto extends LinearOpMode {
             }
 
             if (gamepad2.x) {
-                robotState = "IDLE";
+                basket.setPosition(0.7);
             }
-            if (gamepad1.a){
+            if (gamepad1.dpad_up){
                 basket.closeBasket();
             }
+            if (gamepad1.dpad_down){
+                basket.openBasket();
+            }
+            if (gamepad1.dpad_right) {
+                elevatorPControl.setSetPoint(0);
+            }
 
-            if (gamepad2.b){
+            if (gamepad2.dpad_up){
                 if (!touchTop.isPressed()){
-                    arm.setPower(0.1);
+                    arm.setPower(0.3);
                 }
                 else {
                     arm.setPower(0);
@@ -217,13 +223,13 @@ public class firstAuto extends LinearOpMode {
                 elevatorPControl.setSetPoint(0);
             }
             if (gamepad2.a){
-                intake.setPower(0);
+                intake.setPower(0.5);
             }
             if (gamepad2.left_bumper){
                 basket.openBasket();
             }
             if (gamepad2.right_bumper){
-                intake.takeOut2();
+                intake.takeOutGamePiece();
             }
             if (gamepad2.dpad_right){
                 Claw.openOrCloseClaw(false, true);
@@ -233,20 +239,34 @@ public class firstAuto extends LinearOpMode {
             }
             if (gamepad2.dpad_down){
                 if (!touchBottom.isPressed()){
-                    arm.setPower(-0.1);
+                    arm.setPower(-0.3);
                 }
                 else {
                     arm.setPower(0);
                 }
             }
+            if (gamepad2.b){
+                basket.closeBasket();
+            }
+            if (gamepad1.a){
+                intake.setPower(0);
+            }
 
             if (gamepad1.left_trigger > 0.1){
                 robotState = "LOW";
-
-
+            }
+            if (gamepad2.right_trigger > 0.1){
+                elevatorPControl.setSetPoint(50);
             }
             if (gamepad1.x){
                 Claw.close();
+            }
+            if (gamepad1.touchpad){
+                robotState = "IDLE";
+            }
+
+            if (gamepad2.touchpad){
+                robotState = "IDLE";
             }
 
 
@@ -433,11 +453,12 @@ public class firstAuto extends LinearOpMode {
                             break;
 
                         case 3:
-                            elevatorPControl.setSetPoint(15);
+                            elevatorPControl.setSetPoint(5);
 
                             break;
                         case 4:
                             Claw.open();
+                            basket.setPosition(1);
                             break;
 
 

@@ -76,8 +76,8 @@ public class Intake1 {
         }
     }
     public void takeOutGamePiece() {
-        motor.setPower(0.5);
-        while (distanceSensor.senseGamePiece())
+        motor.setPower(-0.5);
+        while (distanceSensor.senseGamePiece()) {}
         //when the red colorSensor doesn't sense red it will go backwards
         motor.setPower(0);
         // after that it will stop moving
