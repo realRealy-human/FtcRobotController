@@ -62,8 +62,6 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
             Intake = new Intake1(hardwareMap, telemetry);
             elevatorPControl = new ElevatorPControl(hardwareMap, telemetry);
             imu = hardwareMap.get(IMU.class, "imu");
-            //arm = hardwareMap.get(Arm.class, "arm");
-
 
             waitForStart();
 
@@ -86,78 +84,6 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
                     rightRear.setPower(0);
 
                     sleep(100);
-                    //
-
-//                    elevatorPControl.setSetPoint(50);
-//
-//                    sleep(100);
-//
-//                    leftFront.setPower(-0.4);
-//                    leftRear.setPower(-0.4);
-//                    rightFront.setPower(0.4);
-//                    rightRear.setPower(0.4);
-//
-//                    sleep(3000);
-//
-//                    leftFront.setPower(0);
-//                    leftRear.setPower(0);
-//                    rightFront.setPower(0);
-//                    rightRear.setPower(0);
-//
-//                    sleep(250);
-//
-//                    elevatorPControl.setSetPoint(10);
-//
-//                    sleep(500);
-//
-//                    Claw.open();
-//
-//                    sleep(500);
-//
-//                    elevatorPControl.setSetPoint(0);
-//
-//                    leftFront.setPower(0.7);
-//                    leftRear.setPower(0.7);
-//                    rightFront.setPower(-0.7);
-//                    rightRear.setPower(-0.7);
-//
-//                    sleep(500);
-//
-//                    leftFront.setPower(0);
-//                    leftRear.setPower(0);
-//                    rightFront.setPower(0);
-//                    rightRear.setPower(0);
-//
-//                    sleep(200);
-//
-//                    leftFront.setPower(-0.3);
-//                    leftRear.setPower(-0.3);
-//                    rightFront.setPower(-0.3);
-//                    rightRear.setPower(-0.3);
-//
-//                    sleep(300);
-//
-//                    leftFront.setPower(0);
-//                    leftRear.setPower(0);
-//                    rightFront.setPower(0);
-//                    rightRear.setPower(0);
-//
-//                    sleep(100);
-//
-//                    leftFront.setPower(-0.5);
-//                    leftRear.setPower(-0.5);
-//                    rightFront.setPower(0.5);
-//                    rightRear.setPower(0.5);
-//
-//                    sleep(300);
-//
-//                    leftFront.setPower(0);
-//                    leftRear.setPower(0);
-//                    rightFront.setPower(0);
-//                    rightRear.setPower(0);
-//
-//                    sleep(200);
-
 
 
 
