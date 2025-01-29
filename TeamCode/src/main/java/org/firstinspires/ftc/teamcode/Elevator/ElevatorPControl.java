@@ -54,4 +54,8 @@ public class ElevatorPControl {
     public double getPosition(){
         return motor.getCurrentPosition() /23f;
     }
+
+    public void setPower(double power) {
+
+    }
 }

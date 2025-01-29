@@ -60,32 +60,34 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
             rightRear = hardwareMap.get(DcMotor.class, "rightBack");
             Claw = new Claw(hardwareMap, telemetry);
             Intake = new Intake1(hardwareMap, telemetry);
-            elevatorPControl = new ElevatorPControl(hardwareMap, telemetry);
+            //elevatorPControl = new ElevatorPControl(hardwareMap, telemetry);
             imu = hardwareMap.get(IMU.class, "imu");
             //arm = hardwareMap.get(Arm.class, "arm");
 
 
             waitForStart();
-
-            while (opModeIsActive()) {
-                elevatorPControl.updateBySetPoint();
+            //while (opModeIsActive()) {
+                //elevatorPControl.updateBySetPoint();
 
 
                 while (opModeIsActive()) {
-                    elevatorPControl.updateBySetPoint();
-                    leftFront.setPower(-0.7);
+                    //elevatorPControl.updateBySetPoint();
+                    leftFront.setPower(0.7);
                     leftRear.setPower(-0.7);
                     rightFront.setPower(0.7);
-                    rightRear.setPower(0.7);
+                    rightRear.setPower(-0.7);
 
-                    sleep(300);
+                    sleep(900);
 
                     leftFront.setPower(0);
                     leftRear.setPower(0);
                     rightFront.setPower(0);
                     rightRear.setPower(0);
 
-                    sleep(100);
+                    sleep(29300);
+
+
+
                     //
 
 //                    elevatorPControl.setSetPoint(50);
@@ -166,6 +168,6 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
             }
 
         }
-    }
+
 
 
