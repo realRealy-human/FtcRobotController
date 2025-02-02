@@ -5,43 +5,33 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.Color;
+import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.Distance;
+import org.firstinspires.ftc.teamcode.ServoManage;
 // importing functions from other files
 
 public class Intake1 {
-    private Color colorSensor;
+
     private Distance distanceSensor;
     private DcMotor motor;
     private Telemetry telemetry;
     private double speed;
+    private ServoManage servoManage;
     // defining the main things for the system
 
     public Intake1(HardwareMap hardwareMap, Telemetry telemetry) {
-        colorSensor = new Color(hardwareMap, telemetry);
-        distanceSensor = new Distance(hardwareMap, telemetry);
-        motor = hardwareMap.get(DcMotor.class, "intake");
-        // fully defining and adding things
+        servoManage = new ServoManage(hardwareMap, telemetry);
 
-        motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        // telling the motor when to stop
-
+        // save the telemetry
         this.telemetry = telemetry;
-        // updating telemetry
     }
 
     public void setPower(double power) {
-        motor.setPower(power);
+        servoManage.setPower(power);
     }
 
     public double getSpeed() {
         return speed;
-    }
-
-    public void moveWithSpeed() {
-        motor.setPower(speed);
-        // the intake will move at the speed we tell it to
     }
 
     public boolean isGamePiece() {
@@ -52,12 +42,7 @@ public class Intake1 {
         return distanceSensor.whatDistance(DistanceUnit.CM);
     }
 
-    public void startAndStop(){
-        motor.setPower(-0.5);
-        if (distanceSensor.senseGamePiece()){
-            motor.setPower(0);
-        }
-    }
+
 
     public void takeOut(){
         if (distanceSensor.senseGamePiece()){
