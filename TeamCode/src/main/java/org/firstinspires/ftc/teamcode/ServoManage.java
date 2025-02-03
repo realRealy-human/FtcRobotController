@@ -17,7 +17,7 @@ public class ServoManage {
         servoOne = hardwareMap.get(CRServo.class, "intake");
         servoTwo = hardwareMap.get(CRServo.class, "intake1");
     }
-
+//
     public void setPower(double power) {
         servoOne.setPower(power);
         servoTwo.setPower(-power);
