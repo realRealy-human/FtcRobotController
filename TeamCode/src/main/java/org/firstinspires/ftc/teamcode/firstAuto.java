@@ -299,7 +299,7 @@ public class firstAuto extends LinearOpMode {
             telemetry.update();*/
         }
     }
-
+//
      private void intakeAutomation() {
 
 
