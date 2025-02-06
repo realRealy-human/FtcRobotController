@@ -8,12 +8,12 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import com.qualcomm.robotcore.hardware.CRServo;
 
 // define the class
-public class ServoManage {
+public class intake {
     // define the servo object and the telemetry variables
     private CRServo servoOne;
     private CRServo servoTwo;
     // define the constructor
-    public ServoManage(HardwareMap hardwareMap, Telemetry telemetry) {
+    public intake(HardwareMap hardwareMap, Telemetry telemetry) {
         servoOne = hardwareMap.get(CRServo.class, "intake");
         servoTwo = hardwareMap.get(CRServo.class, "intake1");
     }

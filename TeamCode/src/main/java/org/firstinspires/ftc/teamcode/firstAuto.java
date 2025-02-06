@@ -10,17 +10,17 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 //
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Drive.DriveTeleOp1;
-import org.firstinspires.ftc.teamcode.Elevator.ElevatorPControl;
+import org.firstinspires.ftc.teamcode.Elevator.Elevator;
 
-import org.firstinspires.ftc.teamcode.Intake.Intake1;
-import org.firstinspires.ftc.teamcode.Intake.Claw;
+//import org.firstinspires.ftc.teamcode.intake.
+
 
 @TeleOp(name = "firstAuto", group = "Examples")
 public class firstAuto extends LinearOpMode {
-    private Intake1 intake;
-    private Basket basket;
-    private Claw Claw;
-    private ElevatorPControl elevatorPControl;
+    private intake intake;
+
+
+    private Elevator elevatorPControl;
     private Arm arm;
     private boolean open = false;
     private double openPos = 0.232;
@@ -63,10 +63,10 @@ public class firstAuto extends LinearOpMode {
 
         dashboard = FtcDashboard.getInstance();
         dashTele = dashboard.getTelemetry();
-        basket = new Basket(hardwareMap, telemetry);
-        elevatorPControl = new ElevatorPControl(hardwareMap, telemetry);
-        Claw = new Claw(hardwareMap, telemetry);
-        intake = new Intake1(hardwareMap, telemetry);
+
+        elevatorPControl = new Elevator(hardwareMap, telemetry);
+
+        intake = new intake(hardwareMap, telemetry);
         distanceSensor = new Distance(hardwareMap, telemetry);
         drive = new DriveTeleOp1(hardwareMap, telemetry);
         arm = new Arm(hardwareMap, dashTele);
@@ -161,7 +161,7 @@ public class firstAuto extends LinearOpMode {
 //        };
 
 
-        arm.setSetPoint(0);
+        //arm.setSetPoint(0);
 
 
         // more defining and putting things in their starting positions
@@ -186,9 +186,7 @@ public class firstAuto extends LinearOpMode {
             drive.fieldCentricUsingGamePad(gamepad1);
 
 
-            if (gamepad1.right_bumper && !intake.isGamePiece()) {
-                robotState = "INTAKE";
-            }
+
 
             if (gamepad1.left_bumper) {
                 robotState = "HIGHSCORING";
@@ -199,13 +197,13 @@ public class firstAuto extends LinearOpMode {
             }
 
             if (gamepad2.x) {
-                basket.setPosition(0.7);
-            }
+
+
             if (gamepad1.dpad_up){
-                basket.closeBasket();
+
             }
             if (gamepad1.dpad_down){
-                basket.openBasket();
+
             }
             if (gamepad1.dpad_right) {
                 elevatorPControl.setSetPoint(0);
@@ -222,20 +220,20 @@ public class firstAuto extends LinearOpMode {
                 intake.setPower(0.5);
             }
             if (gamepad2.left_bumper){
-                basket.openBasket();
+
             }
             if (gamepad2.right_bumper){
-                intake.takeOutGamePiece();
+
             }
             if (gamepad2.dpad_right){
-                Claw.openOrCloseClaw(false, true);
+
             }
             if (gamepad2.dpad_left){
-                Claw.openOrCloseClaw(true, false);
+
             }
 
             if (gamepad2.b){
-                basket.closeBasket();
+
             }
             if (gamepad1.a){
                 intake.setPower(0);
@@ -248,7 +246,7 @@ public class firstAuto extends LinearOpMode {
                 elevatorPControl.setSetPoint(50);
             }
             if (gamepad1.x){
-                Claw.close();
+
             }
             if (gamepad1.touchpad){
                 robotState = "IDLE";
@@ -259,10 +257,10 @@ public class firstAuto extends LinearOpMode {
             }
 
             if (gamepad2.dpad_up){
-                arm.armGoUp();
+
             }
             if (gamepad2.dpad_down){
-                arm.armGoDown();
+
             }
 
 
@@ -270,13 +268,7 @@ public class firstAuto extends LinearOpMode {
 
 
 
-            intakeAutomation();
 
-            highScoringAutomation();
-            clawControl();
-            emergencyElevator();
-            emergencyArm();
-            lowScoringAutomation();
 
 
             elevatorPControl.updateBySetPoint();

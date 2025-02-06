@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 //
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Intake.Intake1;
+
 
 @TeleOp(name = "firstTele", group = "Examples")
 public class firstTele extends LinearOpMode {

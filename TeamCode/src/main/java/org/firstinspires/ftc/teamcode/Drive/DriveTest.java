@@ -6,15 +6,13 @@ package org.firstinspires.ftc.teamcode.Drive;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
-import org.firstinspires.ftc.teamcode.Arm;
-import org.firstinspires.ftc.teamcode.Basket;
-import org.firstinspires.ftc.teamcode.Elevator.ElevatorPControl;
+//import org.firstinspires.ftc.teamcode.Basket;
+import org.firstinspires.ftc.teamcode.Elevator.Elevator;
 
-import org.firstinspires.ftc.teamcode.Intake.Intake1;
-import org.firstinspires.ftc.teamcode.Intake.Claw;
+//import org.firstinspires.ftc.teamcode.Intake.Intake1;
+//import org.firstinspires.ftc.teamcode.Intake.Claw;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -25,11 +23,11 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 @Autonomous(name = "DriveTest", group = "Examples")
     public class DriveTest extends LinearOpMode {
         private Pose2d startPose = new Pose2d(0, -72, 0); // 1
-        private Arm arm;
-        private ElevatorPControl elevatorPControl;
-        private Claw Claw;
-        private Intake1 Intake;
-        private Basket Basket;
+        //private Arm arm;
+        private Elevator elevatorPControl;
+        //private Claw Claw;
+        //private Intake1 Intake;
+        //private Basket Basket;
         private android.graphics.Color Color;
 
         private TouchSensor touchTop;
@@ -58,8 +56,8 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
             rightFront = hardwareMap.get(DcMotor.class, "rightMotor");
             leftRear = hardwareMap.get(DcMotor.class, "leftBack");
             rightRear = hardwareMap.get(DcMotor.class, "rightBack");
-            Claw = new Claw(hardwareMap, telemetry);
-            Intake = new Intake1(hardwareMap, telemetry);
+            //Claw = new Claw(hardwareMap, telemetry);
+            //Intake = new Intake1(hardwareMap, telemetry);
             //elevatorPControl = new ElevatorPControl(hardwareMap, telemetry);
             imu = hardwareMap.get(IMU.class, "imu");
             //arm = hardwareMap.get(Arm.class, "arm");
