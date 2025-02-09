@@ -21,6 +21,6 @@ public class Distance {
     }
 
     public boolean senseGamePiece() {
-        return distanceSensor.getDistance(DistanceUnit.CM) < 11;
+        return distanceSensor.getDistance(DistanceUnit.CM) < 5;
     }
 }

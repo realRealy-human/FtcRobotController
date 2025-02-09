@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 // import stuff
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -11,34 +12,39 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 // define the class
 public class intake {
     // define the servo object and the telemetry variables
-    private CRServo servoOne;
-    private CRServo servoTwo;
+    private CRServo master;
+    private CRServo slave;
+    private Distance distanceSensor;
 
     private TouchSensor touchIntake;
+
     // define the constructor
     public intake(HardwareMap hardwareMap, Telemetry telemetry) {
-        servoOne = hardwareMap.get(CRServo.class, "intakeServo1");
-        servoTwo = hardwareMap.get(CRServo.class, "intakeServo2");
+        master = hardwareMap.get(CRServo.class, "master1");
+        slave = hardwareMap.get(CRServo.class, "slave1");
+        //distanceSensor = new Distance(hardwareMap, telemetry);
     }
-//
-    public void setPower(double power) {
-        servoOne.setPower(power);
-        servoTwo.setPower(-power);
-    }
-    // setting the servo position and printing it onto the telemetry
-    public void collectGamePiece(double power){
-        if (!touchIntake.isPressed()){
-            servoOne.setPower(power);
-            servoTwo.setPower(-power);
+
+    //
+    public void collectgamepiece() {
+        if (distanceSensor.senseGamePiece()) {
+            master.setPower(1);
+            slave.setPower(-1);
         }
     }
 
-    public void takeOutTheGamePiece(double power){
-        if (touchIntake.isPressed()){
-            servoOne.setPower(-power);
-            servoTwo.setPower(power);
-        }
+    public void setintake() {
+        master.setPower(1);
+        slave.setPower(-1);
     }
+
+    public void intakespeed(double power) {
+        master.setPower(power);
+        slave.setPower(-power);
+    }
+
+
+    // setting the servo position and printing it onto the telemetry
 
 
 }

@@ -13,10 +13,12 @@ public class Arm {
     private Servo master;
     private Servo slave;
     private double setPoint;
-    private double frontPos = 0.7;
-    private double beckPos = -0.7;
-    private double highscoringPos = -0.1;
-    private double specimenPos = -0.4;
+    private double intakePos = 0;
+    private double zeroPos = 0;
+    private double highscoringPos = 0;
+    private double highspecimenPos = 0;
+    private double lowspecimenPos = 0;
+    private double HPpos = 0;
     public Arm(HardwareMap hardwareMap, Telemetry telemetry){
         master = hardwareMap.get(Servo.class, "master");
         slave = hardwareMap.get(Servo.class, "slave");
