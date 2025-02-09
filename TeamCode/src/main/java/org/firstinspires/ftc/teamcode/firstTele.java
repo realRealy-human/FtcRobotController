@@ -28,11 +28,14 @@ public class firstTele extends LinearOpMode {
             arm.armUpdateBySetPoint();
 
             if (gamepad1.a) {
-                arm.armSetSetPoint(-2);
+                arm.armSetSetPoint(0);
             }
             if (gamepad1.b) {
-                arm.armSetSetPoint(0.3);
+                arm.armSetSetPoint(0.5);
             }
+
+
+            //
             if (gamepad1.dpad_up){
                 intake.setintake();
             }
