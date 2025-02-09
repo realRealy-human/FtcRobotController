@@ -28,7 +28,7 @@ public class firstTele extends LinearOpMode {
             arm.armUpdateBySetPoint();
 
             if (gamepad1.a) {
-                arm.armSetSetPoint(-0.7);
+                arm.armSetSetPoint(-2);
             }
             if (gamepad1.b) {
                 arm.armSetSetPoint(0.3);
@@ -42,6 +42,7 @@ public class firstTele extends LinearOpMode {
             if (gamepad1.dpad_right){
                 intake.intakespeed(-1);
             }
+
 //            if (gamepad1.y) {
 //                elevator.setSetPoint(70);
 //            }

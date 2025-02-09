@@ -26,7 +26,10 @@ public class Arm {
     public void armSetSetPoint(double setPoint) {
         this.setPoint = setPoint;
     }
-
+    public void armSetPos(double Pos){
+        master.setPosition(Pos);
+        slave.setPosition(1 - Pos);
+    }
     public double getSetPoint() {
     return setPoint;
 
