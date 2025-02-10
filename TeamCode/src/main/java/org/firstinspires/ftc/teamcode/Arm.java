@@ -20,7 +20,7 @@ public class Arm {
     private double lowspecimenPos = 0;
     private double HPpos = 0;
     public Arm(HardwareMap hardwareMap, Telemetry telemetry){
-        master = hardwareMap.get(Servo.class, "master");
+        master = hardwareMap.get(Servo.class, "master2");
         slave = hardwareMap.get(Servo.class, "slave");
     }
     public void armSetSetPoint(double setPoint) {
@@ -30,6 +30,7 @@ public class Arm {
         master.setPosition(Pos);
         slave.setPosition(1 - Pos);
     }
+
     public double getSetPoint() {
     return setPoint;
 

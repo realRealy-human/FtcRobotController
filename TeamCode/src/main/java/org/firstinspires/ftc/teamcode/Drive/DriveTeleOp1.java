@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 // define class
-public class DriveTeleOp {
+public class DriveTeleOp1 {
     // define motors, imu and telemetry
     private DcMotor leftFront;
     private DcMotor rightFront;
@@ -23,7 +23,7 @@ public class DriveTeleOp {
 
 
     // define constructor
-    public DriveTeleOp(HardwareMap hardwareMap, Telemetry telemetry) {
+    public DriveTeleOp1(HardwareMap hardwareMap, Telemetry telemetry) {
         // map motors to hardware
         leftFront = hardwareMap.get(DcMotor.class, "leftMotor");
         rightFront = hardwareMap.get(DcMotor.class, "rightMotor");
@@ -33,10 +33,10 @@ public class DriveTeleOp {
         // map imu to harware
 
         // define motors direction
-        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightFront.setDirection(DcMotorSimple.Direction.FORWARD);
-        leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightRear.setDirection(DcMotorSimple.Direction.FORWARD);
+        leftFront.setDirection(DcMotorSimple.Direction.FORWARD);
+        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftRear.setDirection(DcMotorSimple.Direction.FORWARD);
+        rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // define imu
         // Retrieve the IMU from the hardware map

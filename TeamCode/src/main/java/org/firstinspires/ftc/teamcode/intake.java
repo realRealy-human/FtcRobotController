@@ -22,14 +22,25 @@ public class intake {
     public intake(HardwareMap hardwareMap, Telemetry telemetry) {
         master = hardwareMap.get(CRServo.class, "master1");
         slave = hardwareMap.get(CRServo.class, "slave1");
-        //distanceSensor = new Distance(hardwareMap, telemetry);
+        distanceSensor = new Distance(hardwareMap, telemetry);
     }
 
     //
     public void collectgamepiece() {
-        if (distanceSensor.senseGamePiece()) {
+        if (!distanceSensor.senseGamePiece()) {
             master.setPower(1);
             slave.setPower(-1);
+        }
+
+    }
+
+    public Distance getDistanceSensor() {
+        return distanceSensor;
+    }
+    public void spitOutGamePiece(){
+        if (distanceSensor.senseGamePiece()) {
+            master.setPower(-1);
+            slave.setPower(1);
         }
     }
 
